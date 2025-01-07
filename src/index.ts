@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth";
 import { PrismaClient } from "@prisma/client";
 import userRoutes from "./routes/user";
 import type { User } from '@prisma/client'
+import { workoutRoutes, workoutsRoutes } from "./routes/workout";
 
 // Init Prisma client
 export const prisma = new PrismaClient()
@@ -26,6 +27,8 @@ const fastify = Fastify({
 // Register components
 fastify.register(authRoutes);
 fastify.register(userRoutes, { prefix: '/user' })
+fastify.register(workoutRoutes, { prefix: '/workout' })
+fastify.register(workoutsRoutes, { prefix: '/workouts' })
 
 
 // Basic routes
