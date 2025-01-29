@@ -12,11 +12,8 @@ model User {
   email           String        @unique
   display_name    String?       @unique
   hashed_password String
-  threshold_pace  Int?
   created_at      DateTime      @default(now())
   updated_at      DateTime      @default(now())
-  OwnedWorkouts   Workout[]
-  UserWorkouts    UserWorkout[]
 
   @@map("users")
 }
@@ -30,54 +27,4 @@ model PasswordResetToken {
 
   @@id([user_id, token])
   @@map("password_reset_tokens")
-}
-
-model Workout {
-  id           String        @id @default(uuid())
-  name         String
-  description  String?
-  creator_id   String
-  duration     Int?
-  isPublic     Boolean       @default(false)
-  type         WorkoutType
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @default(now())
-  Segments     Segment[]
-  creator      User          @relation(fields: [creator_id], references: [id])
-  UserWorkouts UserWorkout[]
-
-  @@map("workouts")
-}
-
-model UserWorkout {
-  user_id    String
-  User       User     @relation(fields: [user_id], references: [id])
-  workout_id String
-  Workout    Workout  @relation(fields: [workout_id], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-
-  @@id([user_id, workout_id])
-  @@map("users_workouts")
-}
-
-model Segment {
-  id         String   @id @default(uuid())
-  workout_id String
-  duration   Int
-  repeat     Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  workout    Workout  @relation(fields: [workout_id], references: [id])
-
-  @@map("segments")
-}
-
-enum WorkoutType {
-  easy
-  tempo
-  threshold
-  fartlek
-  sprint
-  long
 }
