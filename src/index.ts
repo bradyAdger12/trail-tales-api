@@ -52,6 +52,7 @@ fastify.addSchema({
   properties: {
     id: { type: 'string' },
     name: { type: 'string' },
+    members: { type: 'array' },
     description: { type: 'string' },
     created_at: { type: 'string' },
     updated_at: { type: 'string' },
@@ -64,6 +65,7 @@ fastify.addSchema({
   properties: {
     id: { type: 'string' },
     name: { type: 'string' },
+    members: { type: 'array' },
     description: { type: 'string' },
     created_at: { type: 'string' },
     updated_at: { type: 'string' },

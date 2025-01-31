@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 import _ from "lodash";
 
 const userRoutes: FastifyPluginAsync = async (fastify) => {
-    fastify.put('/', {
+    fastify.put('/me', {
         preHandler: authenticate,
         schema: {
             security: [{ bearerAuth: [] }],
