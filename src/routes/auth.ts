@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { prisma } from '..';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SAFE_USER_RETURN } from '../helper/safe_return_data';
+import { SAFE_USER_RETURN } from '../lib/safe_return_data';
 import { authenticate } from '../middleware/authentication';
 import * as crypto from "node:crypto";
 import { sendEmail } from '../resend/send_email';
@@ -11,17 +11,29 @@ import { sendEmail } from '../resend/send_email';
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 
     // Register
-    fastify.post('/register', async (request, reply) => {
-        const body = request.body
-        if (!_.has(body, 'email')) {
-            return reply.status(500).send('Email is required')
+    fastify.post('/register', {
+        schema: {
+            tags: ['auth'],
+            body: {
+                type: 'object',
+                properties: {
+                    email: { type: 'string' },
+                    password: { type: 'string' },
+                    display_name: { type: 'string' }
+                },
+                required: ['email', 'password', 'display_name']
+            },
+            response: {
+                200: {
+                    type: 'object',
+                    properties: {
+                        success: { type: 'boolean' }
+                    }
+                }
+            }
         }
-        if (!_.has(body, 'password')) {
-            return reply.status(500).send('Password is required')
-        }
-        if (!_.has(body, 'display_name')) {
-            return reply.status(500).send('Display name is required')
-        }
+    }, async (request, reply) => {
+        const body = request.body as { email: string, password: string, display_name: string }
         const email = body.email
         const password = body.password as string
         const displayName = body.display_name as string
@@ -54,7 +66,22 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     });
 
     // Login
-    fastify.post('/login', async (request, reply) => {
+    fastify.post('/login', {
+        schema: {
+            tags: ['auth'],
+            body: {
+                type: 'object',
+                properties: {
+                    email: { type: 'string' },
+                    password: { type: 'string' }
+                },
+                required: ['email', 'password']
+            },
+            response: {
+                200: { properties: { token: { type: 'string' }, user: { $ref: 'user_return#' } } }
+            }
+        }
+    }, async (request, reply) => {
         const body = request.body
         if (!_.has(body, 'email')) {
             return reply.status(500).send('Email is required')
@@ -89,6 +116,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 updated_at: user.updated_at
             }
         }
+        console.log(user)
         return reply.status(200).send({
             token,
             ...user_without_password
@@ -96,7 +124,21 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     });
 
     // Password Reset Email
-    fastify.post('/send_password_reset', async (request, reply) => {
+    fastify.post('/send_password_reset', {
+        schema: {
+            tags: ['auth'],
+            body: {
+                type: 'object',
+                properties: {
+                    email: { type: 'string' }
+                },
+                required: ['email']
+            },
+            response: {
+                200: { properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
         const body = request.body
         if (!_.has(body, 'email')) {
             return reply.status(500).send('Email is required')
@@ -133,7 +175,22 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     })
 
     // Reset Password
-    fastify.put('/reset_password', async (request, reply) => {
+    fastify.put('/reset_password', {
+        schema: {
+            tags: ['user'],
+            body: {
+                type: 'object',
+                properties: {
+                    token: { type: 'string' },
+                    password: { type: 'string' }
+                },
+                required: ['email', 'password']
+            },
+            response: {
+                200: { properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
         const body = request.body
         if (!_.has(body, 'password')) {
             return reply.status(500).send('Password is required')

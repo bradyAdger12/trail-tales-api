@@ -3,6 +3,8 @@
     "dev": "ts-node-dev --respawn src/index.ts"
   },
   "dependencies": {
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/swagger-ui": "^5.2.1",
     "@prisma/client": "^6.1.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",

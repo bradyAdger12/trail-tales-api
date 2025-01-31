@@ -12,10 +12,37 @@ model User {
   email           String        @unique
   display_name    String?       @unique
   hashed_password String
+  avatar_file_key String?
   created_at      DateTime      @default(now())
   updated_at      DateTime      @default(now())
+  SquadMember     SquadMember[]
 
   @@map("users")
+}
+
+model Squad {
+  id          String        @id @default(uuid())
+  owner_id    String
+  name        String
+  is_public   Boolean       @default(false)
+  description String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @default(now())
+  members     SquadMember[]
+
+  @@map("squads")
+}
+
+model SquadMember {
+  user_id     String
+  squad_id    String
+  Squad       Squad    @relation(fields: [squad_id], references: [id])
+  User        User     @relation(fields: [user_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  @@id([user_id, squad_id])
+  @@map("squad_members")
 }
 
 model PasswordResetToken {
