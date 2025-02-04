@@ -1,8 +1,8 @@
 import { FastifyPluginAsync } from "fastify";
-import { authenticate } from "../middleware/authentication";
-import { prisma } from "..";
-import { Squad } from "@prisma/client";
+import { authenticate } from "../../middleware/authentication";
+import { prisma } from '../../server';import { Squad } from "@prisma/client";
 import _ from "lodash";
+import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
 
 const squadRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.post('/create', {
@@ -14,13 +14,13 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 type: 'object',
                 properties: {
                     is_public: { type: 'boolean', default: false },
-                    name: { type: 'string', default: '' },
-                    description: { type: 'string', default: '' }
+                    name: { type: 'string' },
+                    description: { type: 'string' }
                 },
                 required: ['name', 'description']
             },
             response: {
-                200: { $ref: 'squad_return#' }
+                201: SCHEMA_SQUAD_RETURN
             }
         }
     }, async (request, reply) => {
@@ -38,7 +38,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     is_public: isPublic
                 }
             })
-            return squad
+            return reply.status(201).send(squad)
         } catch (e) {
             return reply.status(500).send(e as string)
         }
@@ -50,7 +50,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             security: [{ bearerAuth: [] }],
             tags: ['squad'],
             response: {
-                200: { $ref: 'squads_return#' }
+                200: SCHEMA_SQUADS_RETURN
             }
         }
     }, async (request, reply) => {
@@ -80,7 +80,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             security: [{ bearerAuth: [] }],
             tags: ['squad'],
             response: {
-                200: { $ref: 'squads_return#' }
+                200: SCHEMA_SQUADS_RETURN
             }
         }
     }, async (request, reply) => {
@@ -119,15 +119,15 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             body: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string', default: '' },
-                    description: { type: 'string', default: '' }
+                    name: { type: 'string' },
+                    description: { type: 'string' }
                 },
                 required: ['name', 'description']
             },
             security: [{ bearerAuth: [] }],
             tags: ['squad'],
             response: {
-                200: { $ref: 'squad_return#' }
+                200: SCHEMA_SQUAD_RETURN
             }
         }
     }, async (request, reply) => {

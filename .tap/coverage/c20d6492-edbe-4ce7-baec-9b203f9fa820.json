@@ -1,0 +1,1790 @@
+{
+  "result": [
+    {
+      "scriptId": "644",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/server.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 9610,
+              "count": 1
+            },
+            {
+              "startOffset": 407,
+              "endOffset": 488,
+              "count": 0
+            },
+            {
+              "startOffset": 664,
+              "endOffset": 706,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 88,
+              "endOffset": 405,
+              "count": 12
+            },
+            {
+              "startOffset": 232,
+              "endOffset": 247,
+              "count": 0
+            },
+            {
+              "startOffset": 264,
+              "endOffset": 284,
+              "count": 8
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "get",
+          "ranges": [
+            {
+              "startOffset": 327,
+              "endOffset": 354,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 410,
+              "endOffset": 487,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 571,
+              "endOffset": 662,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__setModuleDefault",
+          "ranges": [
+            {
+              "startOffset": 666,
+              "endOffset": 706,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 760,
+              "endOffset": 1368,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "ownKeys",
+          "ranges": [
+            {
+              "startOffset": 792,
+              "endOffset": 1056,
+              "count": 1
+            },
+            {
+              "startOffset": 851,
+              "endOffset": 1022,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "ownKeys",
+          "ranges": [
+            {
+              "startOffset": 854,
+              "endOffset": 1022,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "__importStar",
+          "ranges": [
+            {
+              "startOffset": 1069,
+              "endOffset": 1365,
+              "count": 4
+            },
+            {
+              "startOffset": 1121,
+              "endOffset": 1132,
+              "count": 0
+            },
+            {
+              "startOffset": 1236,
+              "endOffset": 1295,
+              "count": 16
+            },
+            {
+              "startOffset": 1260,
+              "endOffset": 1295,
+              "count": 12
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__importDefault",
+          "ranges": [
+            {
+              "startOffset": 1429,
+              "endOffset": 1510,
+              "count": 4
+            },
+            {
+              "startOffset": 1481,
+              "endOffset": 1486,
+              "count": 3
+            },
+            {
+              "startOffset": 1487,
+              "endOffset": 1507,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "buildServer",
+          "ranges": [
+            {
+              "startOffset": 2043,
+              "endOffset": 3727,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 3222,
+              "endOffset": 3272,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 3643,
+              "endOffset": 3703,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        }
+      ]
+    },
+    {
+      "scriptId": "904",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/auth/auth.routes.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 28390,
+              "count": 1
+            },
+            {
+              "startOffset": 407,
+              "endOffset": 488,
+              "count": 0
+            },
+            {
+              "startOffset": 664,
+              "endOffset": 706,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 88,
+              "endOffset": 405,
+              "count": 71
+            },
+            {
+              "startOffset": 232,
+              "endOffset": 247,
+              "count": 7
+            },
+            {
+              "startOffset": 248,
+              "endOffset": 284,
+              "count": 64
+            },
+            {
+              "startOffset": 264,
+              "endOffset": 284,
+              "count": 1
+            },
+            {
+              "startOffset": 287,
+              "endOffset": 363,
+              "count": 70
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "get",
+          "ranges": [
+            {
+              "startOffset": 327,
+              "endOffset": 354,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 410,
+              "endOffset": 487,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 571,
+              "endOffset": 662,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__setModuleDefault",
+          "ranges": [
+            {
+              "startOffset": 666,
+              "endOffset": 706,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 760,
+              "endOffset": 1368,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "ownKeys",
+          "ranges": [
+            {
+              "startOffset": 792,
+              "endOffset": 1056,
+              "count": 1
+            },
+            {
+              "startOffset": 851,
+              "endOffset": 1022,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "ownKeys",
+          "ranges": [
+            {
+              "startOffset": 854,
+              "endOffset": 1022,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "__importStar",
+          "ranges": [
+            {
+              "startOffset": 1069,
+              "endOffset": 1365,
+              "count": 1
+            },
+            {
+              "startOffset": 1121,
+              "endOffset": 1132,
+              "count": 0
+            },
+            {
+              "startOffset": 1236,
+              "endOffset": 1295,
+              "count": 71
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__importDefault",
+          "ranges": [
+            {
+              "startOffset": 1429,
+              "endOffset": 1510,
+              "count": 2
+            },
+            {
+              "startOffset": 1481,
+              "endOffset": 1486,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "authRoutes",
+          "ranges": [
+            {
+              "startOffset": 1984,
+              "endOffset": 8934,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 2670,
+              "endOffset": 3817,
+              "count": 5
+            },
+            {
+              "startOffset": 2887,
+              "endOffset": 3001,
+              "count": 0
+            },
+            {
+              "startOffset": 3416,
+              "endOffset": 3514,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 4330,
+              "endOffset": 5544,
+              "count": 5
+            },
+            {
+              "startOffset": 4670,
+              "endOffset": 4774,
+              "count": 0
+            },
+            {
+              "startOffset": 4905,
+              "endOffset": 5009,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 5987,
+              "endOffset": 7272,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 7765,
+              "endOffset": 8930,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        }
+      ]
+    },
+    {
+      "scriptId": "993",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/safe_return_data.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 1113,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "994",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/resend/send_email.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 5638,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__importDefault",
+          "ranges": [
+            {
+              "startOffset": 70,
+              "endOffset": 151,
+              "count": 3
+            },
+            {
+              "startOffset": 122,
+              "endOffset": 127,
+              "count": 1
+            },
+            {
+              "startOffset": 128,
+              "endOffset": 148,
+              "count": 2
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "sendEmail",
+          "ranges": [
+            {
+              "startOffset": 517,
+              "endOffset": 1713,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        }
+      ]
+    },
+    {
+      "scriptId": "1050",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.schema.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 1710,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1057",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.routes.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 10258,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__importDefault",
+          "ranges": [
+            {
+              "startOffset": 70,
+              "endOffset": 151,
+              "count": 1
+            },
+            {
+              "startOffset": 122,
+              "endOffset": 127,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "userRoutes",
+          "ranges": [
+            {
+              "startOffset": 513,
+              "endOffset": 3026,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 1144,
+              "endOffset": 2147,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 2467,
+              "endOffset": 3022,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        }
+      ]
+    },
+    {
+      "scriptId": "1058",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/middleware/authentication.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 3453,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "__importDefault",
+          "ranges": [
+            {
+              "startOffset": 70,
+              "endOffset": 151,
+              "count": 1
+            },
+            {
+              "startOffset": 122,
+              "endOffset": 127,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "authenticate",
+          "ranges": [
+            {
+              "startOffset": 333,
+              "endOffset": 970,
+              "count": 7
+            },
+            {
+              "startOffset": 439,
+              "endOffset": 545,
+              "count": 0
+            },
+            {
+              "startOffset": 623,
+              "endOffset": 631,
+              "count": 0
+            },
+            {
+              "startOffset": 840,
+              "endOffset": 956,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1060",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.routes.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 22106,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "squadRoutes",
+          "ranges": [
+            {
+              "startOffset": 258,
+              "endOffset": 6289,
+              "count": 4
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 941,
+              "endOffset": 1687,
+              "count": 5
+            },
+            {
+              "startOffset": 1147,
+              "endOffset": 1155,
+              "count": 0
+            },
+            {
+              "startOffset": 1259,
+              "endOffset": 1267,
+              "count": 0
+            },
+            {
+              "startOffset": 1614,
+              "endOffset": 1681,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 2014,
+              "endOffset": 2571,
+              "count": 1
+            },
+            {
+              "startOffset": 2498,
+              "endOffset": 2565,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 2898,
+              "endOffset": 3621,
+              "count": 1
+            },
+            {
+              "startOffset": 3157,
+              "endOffset": 3165,
+              "count": 0
+            },
+            {
+              "startOffset": 3548,
+              "endOffset": 3615,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 4362,
+              "endOffset": 5330,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 5834,
+              "endOffset": 6285,
+              "count": 0
+            }
+          ],
+          "isBlockCoverage": false
+        }
+      ]
+    },
+    {
+      "scriptId": "1061",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.schema.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 2910,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1062",
+      "url": "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/helper.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [
+            {
+              "startOffset": 0,
+              "endOffset": 2618,
+              "count": 1
+            }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "registerAndLoginUser",
+          "ranges": [
+            {
+              "startOffset": 174,
+              "endOffset": 641,
+              "count": 5
+            }
+          ],
+          "isBlockCoverage": true
+        }
+      ]
+    }
+  ],
+  "timestamp": 1702012.104591,
+  "source-map-cache": {
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/server.ts": {
+      "lineLengths": [
+        13,
+        97,
+        33,
+        53,
+        88,
+        68,
+        5,
+        39,
+        29,
+        33,
+        17,
+        4,
+        96,
+        72,
+        21,
+        21,
+        3,
+        64,
+        31,
+        62,
+        24,
+        95,
+        22,
+        10,
+        26,
+        6,
+        27,
+        46,
+        24,
+        137,
+        40,
+        22,
+        6,
+        5,
+        72,
+        62,
+        2,
+        62,
+        24,
+        54,
+        25,
+        76,
+        43,
+        76,
+        79,
+        21,
+        45,
+        15,
+        24,
+        20,
+        44,
+        21,
+        7,
+        51,
+        18,
+        29,
+        19,
+        35,
+        65,
+        32,
+        14,
+        22,
+        17,
+        49,
+        53,
+        17,
+        14,
+        19,
+        89,
+        73,
+        74,
+        14,
+        25,
+        34,
+        33,
+        37,
+        41,
+        43,
+        21,
+        17,
+        13,
+        9,
+        7,
+        98,
+        29,
+        19,
+        33,
+        30,
+        9,
+        7,
+        26,
+        44,
+        65,
+        67,
+        48,
+        32,
+        7,
+        19,
+        1,
+        30,
+        26,
+        30,
+        10,
+        38,
+        54,
+        20,
+        30,
+        23,
+        6,
+        5,
+        10,
+        5588
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/server.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/server.ts"
+        ],
+        "names": [],
+        "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,sDAA8B;AAC9B,yBAAsB;AAEtB,4EAAmD;AACnD,2CAA8C;AAC9C,4EAAmD;AAEnD,+EAAsD;AAEtD,qBAAqB;AACR,QAAA,MAAM,GAAG,IAAI,qBAAY,EAAE,CAAA;AASxC,eAAe;AACf,SAAS,WAAW;IAElB,gBAAgB;IAChB,MAAM,OAAO,GAAG,IAAA,iBAAO,EAAC;QACtB,MAAM,EAAE,KAAK;KACd,CAAC,CAAC;IAEH,OAAO,CAAC,QAAQ,CAAC,OAAO,CAAC,kBAAkB,CAAC,EAAE;QAC5C,OAAO,EAAE;YACP,OAAO,EAAE,OAAO;YAChB,IAAI,EAAE;gBACJ,KAAK,EAAE,WAAW;gBAClB,WAAW,EAAE,mCAAmC;gBAChD,OAAO,EAAE,OAAO;aACjB;YACD,OAAO,EAAE;gBACP;oBACE,GAAG,EAAE,uBAAuB;oBAC5B,WAAW,EAAE,oBAAoB;iBAClC;aACF;YACD,IAAI,EAAE;gBACJ,EAAE,IAAI,EAAE,MAAM,EAAE,WAAW,EAAE,yCAAyC,EAAE;gBACxE,EAAE,IAAI,EAAE,MAAM,EAAE,WAAW,EAAE,yBAAyB,EAAE;gBACxD,EAAE,IAAI,EAAE,OAAO,EAAE,WAAW,EAAE,0BAA0B,EAAE;aAC3D;YACD,UAAU,EAAE;gBACV,eAAe,EAAE;oBACf,UAAU,EAAE;wBACV,IAAI,EAAE,MAAM;wBACZ,MAAM,EAAE,QAAQ;wBAChB,YAAY,EAAE,KAAK;qBACpB;iBACF;aACF;SACF;KACF,CAAC,CAAA;IAEF,OAAO,CAAC,QAAQ,mDAAQ,qBAAqB,KAAG;QAC9C,WAAW,EAAE,OAAO;QACpB,QAAQ,EAAE;YACR,YAAY,EAAE,MAAM;YACpB,WAAW,EAAE,KAAK;SACnB;KACF,CAAC,CAAA;IAGF,sBAAsB;IACtB,OAAO,CAAC,QAAQ,CAAC,qBAAU,CAAC,CAAC;IAC7B,OAAO,CAAC,QAAQ,CAAC,qBAAU,EAAE,EAAE,MAAM,EAAE,OAAO,EAAE,CAAC,CAAA;IACjD,OAAO,CAAC,QAAQ,CAAC,sBAAW,EAAE,EAAE,MAAM,EAAE,QAAQ,EAAE,CAAC,CAAA;IAEnD,OAAO,CAAC,GAAG,CAAC,SAAS,EAAE,CAAC,OAAO,EAAE,KAAK,EAAE,EAAE;QACxC,OAAO,EAAE,MAAM,EAAE,IAAI,EAAE,CAAA;IACzB,CAAC,CAAC,CAAA;IAEF,OAAO,OAAO,CAAA;AAChB,CAAC;AAED,kBAAe,WAAW,CAAA;AAG1B,0BAA0B;AAC1B,8BAA8B;AAC9B,UAAU;AACV,sCAAsC;AACtC,sDAAsD;AACtD,oBAAoB;AACpB,8BAA8B;AAC9B,uBAAuB;AACvB,MAAM;AACN,KAAK;AAEL,UAAU",
+        "sourcesContent": [
+          "import Fastify from \"fastify\";\r\nimport 'dotenv/config'\r\nimport _ from 'lodash'\r\nimport authRoutes from \"./routes/auth/auth.routes\";\r\nimport { PrismaClient } from \"@prisma/client\";\r\nimport userRoutes from \"./routes/user/user.routes\";\r\nimport type { User } from '@prisma/client'\r\nimport squadRoutes from \"./routes/squad/squad.routes\";\r\n\r\n// Init Prisma client\r\nexport const prisma = new PrismaClient()\r\n\r\n// Fastify request extension\r\ndeclare module 'fastify' {\r\n  interface FastifyRequest {\r\n    user?: User\r\n  }\r\n}\r\n\r\n// Build Server\r\nfunction buildServer() {\r\n\r\n  // Define server\r\n  const fastify = Fastify({\r\n    logger: false\r\n  });\r\n\r\n  fastify.register(require('@fastify/swagger'), {\r\n    openapi: {\r\n      openapi: '3.0.0',\r\n      info: {\r\n        title: 'Run Squad',\r\n        description: 'Testing the Run Squad swagger API',\r\n        version: '0.1.0'\r\n      },\r\n      servers: [\r\n        {\r\n          url: 'http://localhost:8080',\r\n          description: 'Development server'\r\n        }\r\n      ],\r\n      tags: [\r\n        { name: 'auth', description: 'Unauthenticated User related end-points' },\r\n        { name: 'user', description: 'User related end-points' },\r\n        { name: 'squad', description: 'Squad related end-points' }\r\n      ],\r\n      components: {\r\n        securitySchemes: {\r\n          bearerAuth: {\r\n            type: 'http',\r\n            scheme: 'bearer',\r\n            bearerFormat: 'JWT'\r\n          }\r\n        }\r\n      }\r\n    }\r\n  })\r\n\r\n  fastify.register(import('@fastify/swagger-ui'), {\r\n    routePrefix: '/docs',\r\n    uiConfig: {\r\n      docExpansion: 'full',\r\n      deepLinking: false\r\n    }\r\n  })\r\n\r\n\r\n  // Register components\r\n  fastify.register(authRoutes);\r\n  fastify.register(userRoutes, { prefix: '/user' })\r\n  fastify.register(squadRoutes, { prefix: '/squad' })\r\n\r\n  fastify.get('/health', (request, reply) => {\r\n    return { status: 'ok' }\r\n  })\r\n\r\n  return fastify\r\n}\r\n\r\nexport default buildServer\r\n\r\n\r\n// // Start Fastify server\r\n// const start = async () => {\r\n//   try {\r\n//     await fastify.listen({ port });\r\n//     console.log(`Server listening on port ${port}`)\r\n//   } catch (err) {\r\n//     fastify.log.error(err);\r\n//     process.exit(1);\r\n//   }\r\n// };\r\n\r\n// start()"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/auth/auth.routes.ts": {
+      "lineLengths": [
+        13,
+        97,
+        33,
+        53,
+        88,
+        68,
+        5,
+        39,
+        29,
+        33,
+        17,
+        4,
+        96,
+        72,
+        21,
+        21,
+        3,
+        64,
+        31,
+        62,
+        24,
+        95,
+        22,
+        10,
+        26,
+        6,
+        27,
+        46,
+        24,
+        137,
+        40,
+        22,
+        6,
+        5,
+        72,
+        62,
+        2,
+        62,
+        41,
+        52,
+        64,
+        65,
+        52,
+        56,
+        53,
+        39,
+        15,
+        31,
+        17,
+        27,
+        19,
+        31,
+        29,
+        46,
+        49,
+        52,
+        18,
+        63,
+        14,
+        23,
+        22,
+        35,
+        33,
+        52,
+        21,
+        17,
+        13,
+        9,
+        34,
+        34,
+        33,
+        39,
+        46,
+        34,
+        102,
+        9,
+        56,
+        65,
+        75,
+        56,
+        20,
+        24,
+        33,
+        17,
+        13,
+        11,
+        35,
+        86,
+        9,
+        43,
+        56,
+        19,
+        34,
+        38,
+        41,
+        13,
+        11,
+        33,
+        7,
+        12,
+        28,
+        17,
+        27,
+        19,
+        31,
+        29,
+        46,
+        48,
+        18,
+        47,
+        14,
+        23,
+        106,
+        13,
+        9,
+        34,
+        34,
+        33,
+        39,
+        59,
+        20,
+        24,
+        33,
+        17,
+        13,
+        11,
+        20,
+        92,
+        9,
+        97,
+        33,
+        92,
+        9,
+        133,
+        39,
+        19,
+        28,
+        34,
+        48,
+        44,
+        43,
+        13,
+        10,
+        39,
+        18,
+        36,
+        11,
+        7,
+        27,
+        42,
+        17,
+        27,
+        19,
+        31,
+        29,
+        45,
+        18,
+        35,
+        14,
+        23,
+        69,
+        13,
+        9,
+        34,
+        34,
+        33,
+        61,
+        56,
+        70,
+        39,
+        108,
+        40,
+        59,
+        20,
+        24,
+        33,
+        17,
+        13,
+        11,
+        19,
+        17,
+        65,
+        27,
+        41,
+        44,
+        35,
+        21,
+        19,
+        155,
+        13,
+        23,
+        69,
+        13,
+        9,
+        33,
+        7,
+        21,
+        36,
+        17,
+        27,
+        19,
+        31,
+        29,
+        46,
+        48,
+        18,
+        47,
+        14,
+        23,
+        69,
+        13,
+        9,
+        34,
+        34,
+        39,
+        34,
+        102,
+        9,
+        33,
+        89,
+        20,
+        24,
+        33,
+        17,
+        13,
+        11,
+        36,
+        82,
+        9,
+        60,
+        63,
+        9,
+        56,
+        76,
+        64,
+        19,
+        31,
+        14,
+        20,
+        48,
+        13,
+        11,
+        33,
+        7,
+        2,
+        29,
+        19424
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/auth/auth.routes.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/auth/auth.routes.ts"
+        ],
+        "names": [],
+        "mappings": "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",
+        "sourcesContent": [
+          "import { FastifyPluginAsync } from 'fastify';\r\nimport _ from 'lodash'\r\nimport { prisma } from '../../server';\r\nimport bcrypt from 'bcrypt'\r\nimport jwt from 'jsonwebtoken'\r\nimport { SAFE_USER_RETURN } from '../../lib/safe_return_data';\r\nimport { authenticate } from '../../middleware/authentication';\r\nimport * as crypto from \"node:crypto\";\r\nimport { sendEmail } from '../../resend/send_email';\r\nimport { SCHEMA_USER_RETURN } from '../user/user.schema';\r\n\r\nconst authRoutes: FastifyPluginAsync = async (fastify) => {\r\n\r\n    // Register\r\n    fastify.post('/register', {\r\n        schema: {\r\n            tags: ['auth'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    email: { type: 'string' },\r\n                    password: { type: 'string' },\r\n                    display_name: { type: 'string' }\r\n                },\r\n                required: ['email', 'password', 'display_name']\r\n            },\r\n            response: {\r\n                201: {\r\n                    type: 'object',\r\n                    properties: {\r\n                        success: { type: 'boolean' }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const body = request.body as { email: string, password: string, display_name: string }\r\n        const email = body.email\r\n        const password = body.password as string\r\n        const displayName = body.display_name as string\r\n\r\n        if (password.length < 8) {\r\n            return reply.status(400).send({ message: 'Password must be at least 8 characters long' })\r\n        }\r\n        const salt = await bcrypt.genSalt(10);\r\n        const hash = await bcrypt.hash(password, salt);\r\n        const user_with_same_email = await prisma.user.findFirst({\r\n            select: SAFE_USER_RETURN,\r\n            where: {\r\n                email: {\r\n                    equals: email\r\n                }\r\n            }\r\n        })\r\n        if (user_with_same_email) {\r\n            return reply.status(500).send({ message: 'User with same email exists' })\r\n        }\r\n        await prisma.user.create({\r\n            select: SAFE_USER_RETURN,\r\n            data: {\r\n                email: body.email,\r\n                hashed_password: hash,\r\n                display_name: displayName\r\n            }\r\n        })\r\n        return { success: true }\r\n    });\r\n\r\n    // Login\r\n    fastify.post('/login', {\r\n        schema: {\r\n            tags: ['auth'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    email: { type: 'string' },\r\n                    password: { type: 'string' }\r\n                },\r\n                required: ['email', 'password']\r\n            },\r\n            response: {\r\n                200: { properties: { token: { type: 'string' }, user: SCHEMA_USER_RETURN } }\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const body = request.body as { email: string, password: string }\r\n        const email = body.email\r\n        const password = body.password as string\r\n        const user = await prisma.user.findFirst({\r\n            where: {\r\n                email: {\r\n                    equals: email\r\n                }\r\n            }\r\n        })\r\n        if (!user) {\r\n            return reply.status(401).send({ message: 'Username or password is incorrect' })\r\n        }\r\n        const isCorrectPassword = await bcrypt.compare(password, user.hashed_password)\r\n        if (!isCorrectPassword) {\r\n            return reply.status(401).send({ message: 'Username or password is incorrect' })\r\n        }\r\n\r\n        var token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string);\r\n        const user_without_password = {\r\n            user: {\r\n                id: user.id,\r\n                email: user.email,\r\n                display_name: user.display_name,\r\n                created_at: user.created_at,\r\n                updated_at: user.updated_at\r\n            }\r\n        }\r\n        return reply.status(200).send({\r\n            token,\r\n            ...user_without_password\r\n        })\r\n    });\r\n\r\n    // Password Reset Email\r\n    fastify.post('/send_password_reset', {\r\n        schema: {\r\n            tags: ['auth'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    email: { type: 'string' }\r\n                },\r\n                required: ['email']\r\n            },\r\n            response: {\r\n                200: { properties: { success: { type: 'boolean' } } }\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const body = request.body as { email: string }\r\n        const email = body.email\r\n        const token = crypto.randomBytes(64).toString('hex');\r\n        const salt = await bcrypt.genSalt(10)\r\n        const hashed_token = await bcrypt.hash(token, salt)\r\n        const expiry_date = new Date()\r\n        expiry_date.setDate(expiry_date.getDate() + 1) // set 24 hour expiry time for password reset tokens\r\n        const expiry_time = expiry_date\r\n        const user = await prisma.user.findFirst({\r\n            where: {\r\n                email: {\r\n                    equals: email\r\n                }\r\n            }\r\n        })\r\n        if (user) {\r\n            try {\r\n                await prisma.passwordResetToken.create({\r\n                    data: {\r\n                        user_id: user.id,\r\n                        token: hashed_token,\r\n                        expiry_time\r\n                    }\r\n                })\r\n                await sendEmail('password_reset.html', { url: `${process.env.WEB_BASE_URL}/auth/reset-password?token=${hashed_token}` })\r\n            } catch (e) {\r\n                return reply.status(500).send('Error sending email')\r\n            }\r\n        }\r\n        return { success: true }\r\n    })\r\n\r\n    // Reset Password\r\n    fastify.put('/reset_password', {\r\n        schema: {\r\n            tags: ['user'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    token: { type: 'string' },\r\n                    password: { type: 'string' }\r\n                },\r\n                required: ['email', 'password']\r\n            },\r\n            response: {\r\n                200: { properties: { success: { type: 'boolean' } } }\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const body = request.body as { password: string, token: string }\r\n        const password = body.password as string\r\n        if (password.length < 8) {\r\n            return reply.status(400).send({ message: 'Password must be at least 8 characters long' })\r\n        }\r\n        const token = body.token as string\r\n        const password_reset_token = await prisma.passwordResetToken.findFirst({\r\n            where: {\r\n                token: {\r\n                    equals: token\r\n                }\r\n            }\r\n        })\r\n        if (!password_reset_token) {\r\n            return reply.status(404).send('Password reset request was not found')\r\n        }\r\n        if (new Date() > password_reset_token.expiry_time) {\r\n            return reply.status(500).send('Token has expired')\r\n        }\r\n\r\n        const salt = await bcrypt.genSalt(10)\r\n        const hashed_password = await bcrypt.hash(password, salt)\r\n        const updated_user = await prisma.user.update({\r\n            data: {\r\n                hashed_password\r\n            },\r\n            where: {\r\n                id: password_reset_token.user_id\r\n            }\r\n        })\r\n        return { success: true }\r\n    })\r\n\r\n};\r\n\r\nexport default authRoutes"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/safe_return_data.ts": {
+      "lineLengths": [
+        13,
+        62,
+        34,
+        28,
+        13,
+        16,
+        23,
+        26,
+        21,
+        20,
+        2,
+        844
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/safe_return_data.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/safe_return_data.ts"
+        ],
+        "names": [],
+        "mappings": ";;;AAAa,QAAA,gBAAgB,GAAG;IAC5B,EAAE,EAAE,IAAI;IACR,KAAK,EAAE,IAAI;IACX,YAAY,EAAE,IAAI;IAClB,eAAe,EAAE,IAAI;IACrB,UAAU,EAAE,IAAI;IAChB,UAAU,EAAE,IAAI;CACnB,CAAA",
+        "sourcesContent": [
+          "export const SAFE_USER_RETURN = {\r\n    id: true,\r\n    email: true,\r\n    display_name: true,\r\n    avatar_file_key: true,\r\n    created_at: true,\r\n    updated_at: true\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/resend/send_email.ts": {
+      "lineLengths": [
+        13,
+        72,
+        62,
+        2,
+        62,
+        27,
+        35,
+        60,
+        48,
+        44,
+        63,
+        59,
+        33,
+        83,
+        9,
+        48,
+        37,
+        89,
+        21,
+        30,
+        79,
+        31,
+        21,
+        83,
+        58,
+        70,
+        61,
+        53,
+        55,
+        36,
+        23,
+        34,
+        17,
+        27,
+        30,
+        17,
+        15,
+        11,
+        5,
+        15,
+        27,
+        5,
+        2,
+        30,
+        3892
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/resend/send_email.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/resend/send_email.ts"
+        ],
+        "names": [],
+        "mappings": ";;;;;;AAAA,mCAAgC;AAEhC,4DAAoC;AACpC,gDAAwB;AACxB,4CAAmB;AACnB,MAAM,MAAM,GAAG,IAAI,eAAM,CAAC,OAAO,CAAC,GAAG,CAAC,cAAc,CAAC,CAAC;AAE/C,MAAM,SAAS,GAAG,KAAK,WAAW,QAAgB,EAAE,YAAiB;IACxE,6BAA6B;IAC7B,MAAM,YAAY,GAAG,cAAI,CAAC,IAAI,CAAC,SAAS,EAAE,eAAe,QAAQ,EAAE,CAAC,CAAC;IAErE,IAAI,CAAC;QACD,MAAM,IAAI,OAAO,CAAC,CAAC,OAAO,EAAE,MAAM,EAAE,EAAE;YAClC,yBAAyB;YACzB,YAAE,CAAC,QAAQ,CAAC,YAAY,EAAE,MAAM,EAAE,KAAK,EAAE,GAAQ,EAAE,eAAoB,EAAE,EAAE;gBACvE,IAAI,CAAC;oBACD,IAAI,GAAG,EAAE,CAAC;wBACN,OAAO,CAAC,KAAK,CAAC,kCAAkC,EAAE,GAAG,CAAC,CAAC;wBACvD,OAAO;oBACX,CAAC;oBACD,MAAM,QAAQ,GAAG,oBAAU,CAAC,OAAO,CAAC,eAAe,CAAC,CAAC;oBACrD,MAAM,MAAM,GAAG,QAAQ,CAAC,YAAY,CAAC,CAAC;oBAEtC,MAAM,EAAE,IAAI,EAAE,KAAK,EAAE,GAAG,MAAM,MAAM,CAAC,MAAM,CAAC,IAAI,CAAC;wBAC7C,IAAI,EAAE,8BAA8B;wBACpC,EAAE,EAAE,CAAC,sBAAsB,CAAC;wBAC5B,OAAO,EAAE,qBAAqB;wBAC9B,IAAI,EAAE,MAAM;qBACf,CAAC,CAAC;oBACH,OAAO,CAAC,IAAI,CAAC,CAAA;gBACjB,CAAC;gBAAC,OAAO,CAAC,EAAE,CAAC;oBACT,MAAM,CAAC,CAAC,CAAC,CAAA;gBACb,CAAC;YACL,CAAC,CAAC,CAAC;QACP,CAAC,CAAC,CAAA;IACN,CAAC;IAAC,OAAO,CAAC,EAAE,CAAC;QACT,MAAM,IAAI,KAAK,CAAC,CAAW,CAAC,CAAA;IAChC,CAAC;AACL,CAAC,CAAA;AA/BY,QAAA,SAAS,aA+BrB",
+        "sourcesContent": [
+          "import { Resend } from 'resend';\r\nimport pug from 'pug'\r\nimport Handlebars from 'handlebars';\r\nimport path from 'path';\r\nimport fs from 'fs'\r\nconst resend = new Resend(process.env.RESEND_API_KEY);\r\n\r\nexport const sendEmail = async function (template: string, templateData: any) {\r\n    // Path to your HTML template\r\n    const templatePath = path.join(__dirname, `./templates/${template}`);\r\n\r\n    try {\r\n        await new Promise((resolve, reject) => {\r\n            // Read the template file\r\n            fs.readFile(templatePath, 'utf8', async (err: any, templateContent: any) => {\r\n                try {\r\n                    if (err) {\r\n                        console.error('Error reading the template file:', err);\r\n                        return;\r\n                    }\r\n                    const template = Handlebars.compile(templateContent);\r\n                    const result = template(templateData);\r\n\r\n                    const { data, error } = await resend.emails.send({\r\n                        from: 'Acme <onboarding@resend.dev>',\r\n                        to: ['delivered@resend.dev'],\r\n                        subject: 'Reset Your Password',\r\n                        html: result\r\n                    });\r\n                    resolve(data)\r\n                } catch (e) {\r\n                    reject(e)\r\n                }\r\n            });\r\n        })\r\n    } catch (e) {\r\n        throw new Error(e as string)\r\n    }\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.schema.ts": {
+      "lineLengths": [
+        13,
+        62,
+        36,
+        30,
+        19,
+        17,
+        31,
+        34,
+        41,
+        44,
+        39,
+        39,
+        5,
+        2,
+        1284
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.schema.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.schema.ts"
+        ],
+        "names": [],
+        "mappings": ";;;AAAa,QAAA,kBAAkB,GAAG;IAC9B,IAAI,EAAE,QAAQ;IACd,UAAU,EAAE;QACR,EAAE,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACtB,KAAK,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACzB,YAAY,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAChC,eAAe,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACnC,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAC9B,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;KACjC;CACJ,CAAA",
+        "sourcesContent": [
+          "export const SCHEMA_USER_RETURN = {\r\n    type: 'object',\r\n    properties: {\r\n        id: { type: 'string' },\r\n        email: { type: 'string' },\r\n        display_name: { type: 'string' },\r\n        avatar_file_key: { type: 'string' },\r\n        created_at: { type: 'string' },\r\n        updated_at: { type: 'string' },\r\n    }\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.routes.ts": {
+      "lineLengths": [
+        13,
+        72,
+        62,
+        2,
+        62,
+        68,
+        41,
+        65,
+        52,
+        47,
+        39,
+        24,
+        50,
+        17,
+        43,
+        39,
+        27,
+        19,
+        31,
+        29,
+        69,
+        65,
+        18,
+        42,
+        14,
+        23,
+        53,
+        13,
+        9,
+        34,
+        15,
+        13,
+        38,
+        51,
+        65,
+        31,
+        31,
+        52,
+        13,
+        64,
+        58,
+        13,
+        60,
+        60,
+        30,
+        24,
+        86,
+        17,
+        15,
+        24,
+        64,
+        13,
+        24,
+        9,
+        19,
+        45,
+        9,
+        7,
+        24,
+        50,
+        17,
+        43,
+        41,
+        27,
+        23,
+        53,
+        13,
+        9,
+        34,
+        15,
+        13,
+        63,
+        60,
+        24,
+        92,
+        17,
+        15,
+        24,
+        64,
+        13,
+        24,
+        9,
+        19,
+        45,
+        9,
+        7,
+        2,
+        29,
+        7200
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.routes.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/user/user.routes.ts"
+        ],
+        "names": [],
+        "mappings": "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",
+        "sourcesContent": [
+          "import { FastifyPluginAsync } from \"fastify\";\r\nimport { authenticate } from \"../../middleware/authentication\";\r\nimport { prisma } from '../../server';\r\nimport { SAFE_USER_RETURN } from \"../../lib/safe_return_data\";\r\nimport { User } from \"@prisma/client\";\r\nimport _ from \"lodash\";\r\nimport { SCHEMA_USER_RETURN } from \"./user.schema\";\r\n\r\nconst userRoutes: FastifyPluginAsync = async (fastify) => {\r\n    fastify.put('/me', {\r\n        preHandler: authenticate,\r\n        schema: {\r\n            security: [{ bearerAuth: [] }],\r\n            description: 'Update user',\r\n            tags: ['user'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    avatar_file_key: { type: 'string', default: '' },\r\n                    display_name: { type: 'string', default: '' }\r\n                },\r\n                required: ['display_name']\r\n            },\r\n            response: {\r\n                200: SCHEMA_USER_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        try {\r\n            const body = request.body as Partial<User>\r\n            const display_name = body.display_name\r\n            const avatar_file_key = body.avatar_file_key || null\r\n            const payload = {} as User\r\n            if (display_name) {\r\n                payload.display_name = display_name\r\n            }\r\n            if (_.has(body, 'avatar_file_key')) {\r\n                payload.avatar_file_key = avatar_file_key\r\n            }\r\n            const user = await prisma.user.update({\r\n                select: SAFE_USER_RETURN,\r\n                data: payload,\r\n                where: {\r\n                    id: request.user?.id\r\n                }\r\n            })\r\n            if (!user) {\r\n                return reply.status(404).send('User not found')\r\n            }\r\n            return user\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n    fastify.get('/me', {\r\n        preHandler: authenticate,\r\n        schema: {\r\n            security: [{ bearerAuth: [] }],\r\n            description: 'Fetch me data',\r\n            tags: ['user'],\r\n            response: {\r\n                200: SCHEMA_USER_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        try {\r\n            const user = await prisma.user.findFirst({\r\n                select: SAFE_USER_RETURN,\r\n                where: {\r\n                    email: request.user?.email\r\n                }\r\n            })\r\n            if (!user) {\r\n                return reply.status(404).send('User not found')\r\n            }\r\n            return user\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n}\r\n\r\nexport default userRoutes"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/middleware/authentication.ts": {
+      "lineLengths": [
+        13,
+        72,
+        62,
+        2,
+        62,
+        30,
+        64,
+        48,
+        56,
+        22,
+        98,
+        5,
+        9,
+        103,
+        90,
+        27,
+        40,
+        9,
+        5,
+        15,
+        98,
+        5,
+        11,
+        2,
+        36,
+        2444
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/middleware/authentication.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/middleware/authentication.ts"
+        ],
+        "names": [],
+        "mappings": ";;;;;;AAEA,gEAA8B;AACvB,MAAM,YAAY,GAAG,CAAC,OAAuB,EAAE,KAAmB,EAAE,IAA2B,EAAE,EAAE;IACtG,MAAM,UAAU,GAAG,OAAO,CAAC,OAAO,CAAC,eAAe,CAAC,CAAA;IACnD,IAAI,CAAC,UAAU,EAAE,CAAC;QACd,OAAO,KAAK,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,0DAA0D,CAAC,CAAA;IAC7F,CAAC;IACD,IAAI,CAAC;QACD,MAAM,KAAK,GAAW,UAAU,aAAV,UAAU,uBAAV,UAAU,CAAE,KAAK,CAAC,GAAG,EAAE,CAAC,CAAE,CAAA;QAChD,MAAM,YAAY,GAAG,sBAAG,CAAC,MAAM,CAAC,KAAK,EAAE,OAAO,CAAC,GAAG,CAAC,UAAoB,CAAC,CAAA;QACxE,IAAI,YAAY,EAAE,CAAC;YACf,OAAO,CAAC,IAAI,GAAG,YAAoB,CAAA;QACvC,CAAC;IACL,CAAC;IAAC,OAAO,CAAC,EAAE,CAAC;QACT,OAAO,KAAK,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,0DAA0D,CAAC,CAAA;IAC7F,CAAC;IACD,IAAI,EAAE,CAAA;AACV,CAAC,CAAA;AAfY,QAAA,YAAY,gBAexB",
+        "sourcesContent": [
+          "import { User } from \"@prisma/client\";\r\nimport { FastifyReply, FastifyRequest } from \"fastify\";\r\nimport jwt from 'jsonwebtoken'\r\nexport const authenticate = (request: FastifyRequest, reply: FastifyReply, done: (err?: Error) => void) => {\r\n    const authHeader = request.headers['authorization']\r\n    if (!authHeader) {\r\n        return reply.status(403).send('You do have not have permissions to access this resource')\r\n    }\r\n    try {\r\n        const token: string = authHeader?.split(' ')[1]!\r\n        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string)\r\n        if (decodedToken) {\r\n            request.user = decodedToken as User\r\n        }\r\n    } catch (e) {\r\n        return reply.status(401).send('You do have not have permissions to access this resource')\r\n    }\r\n    done()\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.routes.ts": {
+      "lineLengths": [
+        13,
+        62,
+        68,
+        41,
+        49,
+        40,
+        29,
+        60,
+        54,
+        43,
+        28,
+        19,
+        31,
+        29,
+        67,
+        45,
+        51,
+        18,
+        49,
+        14,
+        23,
+        55,
+        13,
+        9,
+        34,
+        15,
+        13,
+        38,
+        35,
+        90,
+        49,
+        53,
+        62,
+        23,
+        31,
+        37,
+        45,
+        39,
+        17,
+        15,
+        49,
+        9,
+        19,
+        45,
+        9,
+        7,
+        25,
+        60,
+        51,
+        43,
+        28,
+        23,
+        56,
+        13,
+        9,
+        34,
+        13,
+        65,
+        24,
+        32,
+        36,
+        21,
+        18,
+        25,
+        29,
+        31,
+        34,
+        37,
+        17,
+        15,
+        26,
+        9,
+        19,
+        45,
+        9,
+        7,
+        24,
+        60,
+        52,
+        43,
+        28,
+        23,
+        56,
+        13,
+        9,
+        34,
+        15,
+        13,
+        65,
+        24,
+        31,
+        94,
+        22,
+        32,
+        36,
+        21,
+        18,
+        25,
+        29,
+        31,
+        34,
+        37,
+        17,
+        15,
+        26,
+        9,
+        19,
+        45,
+        9,
+        7,
+        25,
+        60,
+        42,
+        21,
+        31,
+        29,
+        42,
+        17,
+        14,
+        19,
+        31,
+        29,
+        45,
+        51,
+        18,
+        49,
+        14,
+        43,
+        28,
+        23,
+        55,
+        13,
+        9,
+        34,
+        15,
+        38,
+        51,
+        27,
+        19,
+        32,
+        9,
+        26,
+        46,
+        9,
+        13,
+        62,
+        30,
+        24,
+        23,
+        92,
+        18,
+        25,
+        29,
+        31,
+        34,
+        38,
+        37,
+        37,
+        17,
+        15,
+        25,
+        9,
+        19,
+        45,
+        9,
+        7,
+        28,
+        60,
+        52,
+        21,
+        31,
+        29,
+        42,
+        17,
+        14,
+        43,
+        28,
+        23,
+        69,
+        13,
+        9,
+        34,
+        15,
+        38,
+        13,
+        48,
+        24,
+        93,
+        22,
+        17,
+        15,
+        37,
+        9,
+        19,
+        45,
+        9,
+        7,
+        2,
+        30,
+        15784
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.routes.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.routes.ts"
+        ],
+        "names": [],
+        "mappings": "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",
+        "sourcesContent": [
+          "import { FastifyPluginAsync } from \"fastify\";\r\nimport { authenticate } from \"../../middleware/authentication\";\r\nimport { prisma } from '../../server';import { Squad } from \"@prisma/client\";\r\nimport _ from \"lodash\";\r\nimport { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_RETURN } from \"./squad.schema\";\r\n\r\nconst squadRoutes: FastifyPluginAsync = async (fastify) => {\r\n    fastify.post('/create', {\r\n        preHandler: authenticate, schema: {\r\n            description: 'Create a new running squad',\r\n            security: [{ bearerAuth: [] }],\r\n            tags: ['squad'],\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    is_public: { type: 'boolean', default: false },\r\n                    name: { type: 'string' },\r\n                    description: { type: 'string' }\r\n                },\r\n                required: ['name', 'description']\r\n            },\r\n            response: {\r\n                201: SCHEMA_SQUAD_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        try {\r\n            const body = request.body as Partial<Squad>\r\n            const name = body.name\r\n            const userId = request.user?.id\r\n            const description = body.description\r\n            const isPublic = body.is_public || false\r\n            const squad = await prisma.squad.create({\r\n                data: {\r\n                    name: name!,\r\n                    owner_id: userId!,\r\n                    description: description!,\r\n                    is_public: isPublic\r\n                }\r\n            })\r\n            return reply.status(201).send(squad)\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n\r\n    fastify.get('/all', {\r\n        preHandler: authenticate, schema: {\r\n            description: 'Fetch all public squads',\r\n            security: [{ bearerAuth: [] }],\r\n            tags: ['squad'],\r\n            response: {\r\n                200: SCHEMA_SQUADS_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        try {\r\n            const squads = await prisma.squad.findMany({\r\n                where: {\r\n                    is_public: {\r\n                        equals: true\r\n                    }\r\n                },\r\n                select: {\r\n                    id: true,\r\n                    name: true,\r\n                    members: true,\r\n                    description: true\r\n                }\r\n            })\r\n            return squads\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n\r\n    fastify.get('/me', {\r\n        preHandler: authenticate, schema: {\r\n            description: 'Fetch all squads you own',\r\n            security: [{ bearerAuth: [] }],\r\n            tags: ['squad'],\r\n            response: {\r\n                200: SCHEMA_SQUADS_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        try {\r\n            const squads = await prisma.squad.findMany({\r\n                where: {\r\n                    owner_id: {\r\n                        equals: request.user?.id\r\n                    },\r\n                    is_public: {\r\n                        equals: true\r\n                    }\r\n                },\r\n                select: {\r\n                    id: true,\r\n                    name: true,\r\n                    members: true,\r\n                    description: true\r\n                }\r\n            })\r\n            return squads\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n\r\n    fastify.put('/:id', {\r\n        preHandler: authenticate, schema: {\r\n            description: 'Update a squad',\r\n            params: {\r\n                type: 'object',\r\n                properties: {\r\n                    id: { type: 'string' }\r\n                }\r\n            },\r\n            body: {\r\n                type: 'object',\r\n                properties: {\r\n                    name: { type: 'string' },\r\n                    description: { type: 'string' }\r\n                },\r\n                required: ['name', 'description']\r\n            },\r\n            security: [{ bearerAuth: [] }],\r\n            tags: ['squad'],\r\n            response: {\r\n                200: SCHEMA_SQUAD_RETURN\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const { id } = request.params as { id: string }\r\n        const { name, description } = request.body as { name?: string, description?: string }\r\n        const payload: Partial<Squad> = {}\r\n        if (name) {\r\n            payload.name = name\r\n        }\r\n        if (description) {\r\n            payload.description = description\r\n        }\r\n        try {\r\n            const squad = await prisma.squad.update({\r\n                data: payload,\r\n                where: {\r\n                    id,\r\n                    owner_id: request.user?.id\r\n                },\r\n                select: {\r\n                    id: true,\r\n                    name: true,\r\n                    members: true,\r\n                    description: true,\r\n                    created_at: true,\r\n                    updated_at: true,\r\n                }\r\n            })\r\n            return squad\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n\r\n    fastify.delete('/:id', {\r\n        preHandler: authenticate, schema: {\r\n            description: 'Fetch all squads you own',\r\n            params: {\r\n                type: 'object',\r\n                properties: {\r\n                    id: { type: 'string' }\r\n                }\r\n            },\r\n            security: [{ bearerAuth: [] }],\r\n            tags: ['squad'],\r\n            response: {\r\n                200: { properties: { success: { type: 'boolean' } } }\r\n            }\r\n        }\r\n    }, async (request, reply) => {\r\n        const { id } = request.params as { id: string }\r\n        try {\r\n            await prisma.squad.delete({\r\n                where: {\r\n                    owner_id: request.user?.id,\r\n                    id\r\n                }\r\n            })\r\n            return { success: true }\r\n        } catch (e) {\r\n            return reply.status(500).send(e as string)\r\n        }\r\n    })\r\n}\r\n\r\nexport default squadRoutes"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.schema.ts": {
+      "lineLengths": [
+        13,
+        62,
+        68,
+        31,
+        19,
+        17,
+        31,
+        33,
+        35,
+        40,
+        39,
+        39,
+        5,
+        2,
+        32,
+        18,
+        17,
+        31,
+        33,
+        35,
+        40,
+        39,
+        39,
+        5,
+        2,
+        2160
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.schema.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/routes/squad/squad.schema.ts"
+        ],
+        "names": [],
+        "mappings": ";;;AAAa,QAAA,mBAAmB,GAAG;IAC/B,IAAI,EAAE,QAAQ;IACd,UAAU,EAAE;QACR,EAAE,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACtB,IAAI,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACxB,OAAO,EAAE,EAAE,IAAI,EAAE,OAAO,EAAE;QAC1B,WAAW,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAC/B,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAC9B,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;KACjC;CACJ,CAAA;AAEY,QAAA,oBAAoB,GAAG;IAChC,IAAI,EAAE,OAAO;IACb,UAAU,EAAE;QACR,EAAE,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACtB,IAAI,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QACxB,OAAO,EAAE,EAAE,IAAI,EAAE,OAAO,EAAE;QAC1B,WAAW,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAC/B,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;QAC9B,UAAU,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;KACjC;CACJ,CAAA",
+        "sourcesContent": [
+          "export const SCHEMA_SQUAD_RETURN = {\r\n    type: 'object',\r\n    properties: {\r\n        id: { type: 'string' },\r\n        name: { type: 'string' },\r\n        members: { type: 'array' },\r\n        description: { type: 'string' },\r\n        created_at: { type: 'string' },\r\n        updated_at: { type: 'string' },\r\n    }\r\n}\r\n\r\nexport const SCHEMA_SQUADS_RETURN = {\r\n    type: 'array',\r\n    properties: {\r\n        id: { type: 'string' },\r\n        name: { type: 'string' },\r\n        members: { type: 'array' },\r\n        description: { type: 'string' },\r\n        created_at: { type: 'string' },\r\n        updated_at: { type: 'string' },\r\n    }\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    },
+    "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/helper.ts": {
+      "lineLengths": [
+        13,
+        62,
+        52,
+        43,
+        46,
+        58,
+        49,
+        55,
+        107,
+        112,
+        32,
+        1,
+        1976
+      ],
+      "data": {
+        "version": 3,
+        "file": "C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/helper.ts",
+        "sources": [
+          "file:///C:/Users/brady/Projects/api_fastify_primsa_template/src/lib/helper.ts"
+        ],
+        "names": [],
+        "mappings": ";;AAIA,oDAOC;AAXD,2CAAuC;AAIhC,KAAK,UAAU,oBAAoB,CAAC,OAAwB;IAC/D,MAAM,YAAY,GAAG,aAAK,CAAC,MAAM,CAAC,SAAS,EAAE,CAAA;IAC7C,MAAM,KAAK,GAAG,aAAK,CAAC,QAAQ,CAAC,KAAK,EAAE,CAAA;IACpC,MAAM,QAAQ,GAAG,aAAK,CAAC,QAAQ,CAAC,QAAQ,EAAE,CAAA;IAC1C,MAAM,OAAO,CAAC,MAAM,CAAC,EAAE,MAAM,EAAE,MAAM,EAAE,GAAG,EAAE,WAAW,EAAE,OAAO,EAAE,EAAE,KAAK,EAAE,QAAQ,EAAE,YAAY,EAAE,EAAE,CAAC,CAAA;IACtG,MAAM,aAAa,GAAG,MAAM,OAAO,CAAC,MAAM,CAAC,EAAE,MAAM,EAAE,MAAM,EAAE,GAAG,EAAE,QAAQ,EAAE,OAAO,EAAE,EAAE,KAAK,EAAE,QAAQ,EAAE,EAAE,CAAC,CAAA;IAC3G,OAAO,aAAa,CAAC,IAAI,EAAE,CAAA;AAC/B,CAAC",
+        "sourcesContent": [
+          "import { faker } from \"@faker-js/faker\"\r\nimport { FastifyInstance } from \"fastify\"\r\nimport { User } from \"@prisma/client\"\r\n\r\nexport async function registerAndLoginUser(fastify: FastifyInstance): Promise<{ token: string, user: User}> {\r\n    const display_name = faker.person.firstName()\r\n    const email = faker.internet.email()\r\n    const password = faker.internet.password()\r\n    await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name } })\r\n    const loginResponse = await fastify.inject({ method: 'POST', url: '/login', payload: { email, password } })\r\n    return loginResponse.json()\r\n}"
+        ],
+        "sourceRoot": ""
+      }
+    }
+  }
+}

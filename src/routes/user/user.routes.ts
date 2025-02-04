@@ -1,9 +1,10 @@
 import { FastifyPluginAsync } from "fastify";
-import { authenticate } from "../middleware/authentication";
-import { prisma } from "..";
-import { SAFE_USER_RETURN } from "../lib/safe_return_data";
+import { authenticate } from "../../middleware/authentication";
+import { prisma } from '../../server';
+import { SAFE_USER_RETURN } from "../../lib/safe_return_data";
 import { User } from "@prisma/client";
 import _ from "lodash";
+import { SCHEMA_USER_RETURN } from "./user.schema";
 
 const userRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.put('/me', {
@@ -21,10 +22,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['display_name']
             },
             response: {
-                200: {
-                    type: 'object',
-                    $ref: 'user_return#'
-                }
+                200: SCHEMA_USER_RETURN
             }
         }
     }, async (request, reply) => {
@@ -61,10 +59,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             description: 'Fetch me data',
             tags: ['user'],
             response: {
-                200: {
-                    type: 'object',
-                    $ref: 'user_return#'
-                }
+                200: SCHEMA_USER_RETURN
             }
         }
     }, async (request, reply) => {

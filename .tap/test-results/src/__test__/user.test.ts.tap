@@ -1,0 +1,41 @@
+TAP version 14
+# Subtest: GET /health
+    ok 1 - should be equivalent
+    1..1
+ok 1 - GET /health # time=127.605ms
+
+# Subtest: POST /login - user cannot login without email
+    ok 1 - should be equal
+    ok 2 - should be equal
+    1..2
+ok 2 - POST /login - user cannot login without email # time=49.264ms
+
+# Subtest: POST /login - user cannot login without password
+    ok 1 - should be equal
+    ok 2 - should be equal
+    1..2
+ok 3 - POST /login - user cannot login without password # time=35.624ms
+
+# Subtest: POST /login - invalid credentials
+    ok 1 - should be equal
+    ok 2 - should be equal
+    1..2
+ok 4 - POST /login - invalid credentials # time=42.616ms
+
+# Subtest: POST /register - password must be 8 characters
+    ok 1 - should be equal
+    ok 2 - should be equal
+    1..2
+ok 5 - POST /register - password must be 8 characters # time=26.113ms
+
+# Subtest: POST /register - success
+    ok 1 - should be equivalent
+    1..1
+ok 6 - POST /register - success # time=87.762ms
+
+# Subtest: POST /login - success
+    ok 1 - should have all specified properties
+    1..1
+ok 7 - POST /login - success # time=87.112ms
+
+1..7

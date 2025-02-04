@@ -1,0 +1,23 @@
+TAP version 14
+# Subtest: POST /squad/create - name and description required to create a squad
+    ok 1 - should be equal
+    1..1
+ok 1 - POST /squad/create - name and description required to create a squad # time=255.514ms
+
+# Subtest: POST /squad/create - successfully create a squad
+    ok 1 - should have all specified properties
+    ok 2 - should be equal
+    1..2
+ok 2 - POST /squad/create - successfully create a squad # time=137.134ms
+
+# Subtest: GET /squad/all - fetch all squads
+    ok 1 - should be equal
+    1..1
+ok 3 - GET /squad/all - fetch all squads # time=142.729ms
+
+# Subtest: GET /squad/me - fetch squads belonging to me
+    ok 1 - should be equal
+    1..1
+ok 4 - GET /squad/me - fetch squads belonging to me # time=241.027ms
+
+1..4

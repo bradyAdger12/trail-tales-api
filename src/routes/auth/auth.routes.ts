@@ -1,12 +1,13 @@
 import { FastifyPluginAsync } from 'fastify';
 import _ from 'lodash'
-import { prisma } from '..';
+import { prisma } from '../../server';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SAFE_USER_RETURN } from '../lib/safe_return_data';
-import { authenticate } from '../middleware/authentication';
+import { SAFE_USER_RETURN } from '../../lib/safe_return_data';
+import { authenticate } from '../../middleware/authentication';
 import * as crypto from "node:crypto";
-import { sendEmail } from '../resend/send_email';
+import { sendEmail } from '../../resend/send_email';
+import { SCHEMA_USER_RETURN } from '../user/user.schema';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 
@@ -24,7 +25,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['email', 'password', 'display_name']
             },
             response: {
-                200: {
+                201: {
                     type: 'object',
                     properties: {
                         success: { type: 'boolean' }
@@ -39,7 +40,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
         const displayName = body.display_name as string
 
         if (password.length < 8) {
-            return reply.status(500).send('Password must be at least 8 characters long')
+            return reply.status(400).send({ message: 'Password must be at least 8 characters long' })
         }
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
@@ -52,7 +53,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         })
         if (user_with_same_email) {
-            return reply.status(500).send('User with same email exists')
+            return reply.status(500).send({ message: 'User with same email exists' })
         }
         await prisma.user.create({
             select: SAFE_USER_RETURN,
@@ -78,17 +79,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['email', 'password']
             },
             response: {
-                200: { properties: { token: { type: 'string' }, user: { $ref: 'user_return#' } } }
+                200: { properties: { token: { type: 'string' }, user: SCHEMA_USER_RETURN } }
             }
         }
     }, async (request, reply) => {
-        const body = request.body
-        if (!_.has(body, 'email')) {
-            return reply.status(500).send('Email is required')
-        }
-        if (!_.has(body, 'password')) {
-            return reply.status(500).send('Password is required')
-        }
+        const body = request.body as { email: string, password: string }
         const email = body.email
         const password = body.password as string
         const user = await prisma.user.findFirst({
@@ -99,11 +94,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         })
         if (!user) {
-            return reply.status(500).send('Username or password is incorrect')
+            return reply.status(401).send({ message: 'Username or password is incorrect' })
         }
         const isCorrectPassword = await bcrypt.compare(password, user.hashed_password)
         if (!isCorrectPassword) {
-            return reply.status(500).send('Username or password is incorrect')
+            return reply.status(401).send({ message: 'Username or password is incorrect' })
         }
 
         var token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string);
@@ -116,7 +111,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 updated_at: user.updated_at
             }
         }
-        console.log(user)
         return reply.status(200).send({
             token,
             ...user_without_password
@@ -139,10 +133,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         }
     }, async (request, reply) => {
-        const body = request.body
-        if (!_.has(body, 'email')) {
-            return reply.status(500).send('Email is required')
-        }
+        const body = request.body as { email: string }
         const email = body.email
         const token = crypto.randomBytes(64).toString('hex');
         const salt = await bcrypt.genSalt(10)
@@ -191,16 +182,10 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         }
     }, async (request, reply) => {
-        const body = request.body
-        if (!_.has(body, 'password')) {
-            return reply.status(500).send('Password is required')
-        }
-        if (!_.has(body, 'token')) {
-            return reply.status(500).send('Token is required')
-        }
+        const body = request.body as { password: string, token: string }
         const password = body.password as string
         if (password.length < 8) {
-            return reply.status(500).send('Password must be at least 8 characters long')
+            return reply.status(400).send({ message: 'Password must be at least 8 characters long' })
         }
         const token = body.token as string
         const password_reset_token = await prisma.passwordResetToken.findFirst({
