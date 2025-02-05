@@ -1,8 +1,9 @@
 import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
-import { prisma } from '../../server';import { Squad } from "@prisma/client";
+import { prisma } from '../../server'; import { Squad } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
+import { randomUUID } from "node:crypto";
 
 const squadRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.post('/create', {
@@ -14,8 +15,8 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 type: 'object',
                 properties: {
                     is_public: { type: 'boolean', default: false },
-                    name: { type: 'string' },
-                    description: { type: 'string' }
+                    name: { type: 'string', minLength: 1 },
+                    description: { type: 'string', minLength: 1 }
                 },
                 required: ['name', 'description']
             },
@@ -30,14 +31,24 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             const userId = request.user?.id
             const description = body.description
             const isPublic = body.is_public || false
-            const squad = await prisma.squad.create({
-                data: {
-                    name: name!,
-                    owner_id: userId!,
-                    description: description!,
-                    is_public: isPublic
-                }
-            })
+            const squadId = randomUUID()
+            const [squad, squadMember] = await prisma.$transaction([
+                prisma.squad.create({
+                    data: {
+                        id: squadId,
+                        name: name!,
+                        owner_id: userId!,
+                        description: description!,
+                        is_public: isPublic
+                    }
+                }),
+                prisma.squadMember.create({
+                    data: {
+                        squad_id: squadId,
+                        user_id: userId!,
+                    }
+                })
+            ])
             return reply.status(201).send(squad)
         } catch (e) {
             return reply.status(500).send(e as string)
@@ -54,6 +65,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             }
         }
     }, async (request, reply) => {
+        const { limit, offset } = request.query as { limit?: number, offset?: number }
         try {
             const squads = await prisma.squad.findMany({
                 where: {
@@ -61,10 +73,23 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                         equals: true
                     }
                 },
+                take: limit || 10,
+                skip: offset || 0,
                 select: {
+                    _count: true,
                     id: true,
                     name: true,
-                    members: true,
+                    owner_id: true,
+                    members: {
+                        select: {
+                            User: {
+                                select: {
+                                    id: true,
+                                    display_name: true
+                                }
+                            }
+                        }
+                    },
                     description: true
                 }
             })

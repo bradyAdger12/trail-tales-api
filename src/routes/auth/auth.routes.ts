@@ -108,6 +108,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 email: user.email,
                 display_name: user.display_name,
                 created_at: user.created_at,
+                avatar_file_key: user.avatar_file_key,
                 updated_at: user.updated_at
             }
         }
