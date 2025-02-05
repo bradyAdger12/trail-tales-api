@@ -5,7 +5,7 @@ import path from 'path';
 import fs from 'fs'
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendEmail = async function (template: string, templateData: any) {
+export const sendEmail = async function (template: string, templateData: any, subject: string) {
     // Path to your HTML template
     const templatePath = path.join(__dirname, `./templates/${template}`);
 
@@ -24,7 +24,7 @@ export const sendEmail = async function (template: string, templateData: any) {
                     const { data, error } = await resend.emails.send({
                         from: 'Acme <onboarding@resend.dev>',
                         to: ['delivered@resend.dev'],
-                        subject: 'Reset Your Password',
+                        subject,
                         html: result
                     });
                     resolve(data)

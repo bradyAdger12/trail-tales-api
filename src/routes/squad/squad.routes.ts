@@ -16,7 +16,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 type: 'object',
                 properties: {
                     is_public: { type: 'boolean', default: false },
-                    name: { type: 'string', minLength: 1 },
+                    name: { type: 'string', minLength: 1, maxLength: 100 },
                     description: { type: 'string', minLength: 1 }
                 },
                 required: ['name', 'description']
@@ -33,6 +33,26 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             const description = body.description
             const isPublic = body.is_public || false
             const squadId = randomUUID()
+            const ownsSquad = await prisma.squad.findFirst({
+                where: {
+                    owner_id: userId
+                }
+            })
+            if (!!ownsSquad) {
+                return reply.status(500).send({ message: 'You may only create one squad' })
+            }
+            const squadNameExists = await prisma.squad.findFirst({
+                where: {
+                    name
+                },
+                select: {
+                    name: true
+                }
+            })
+            console.log(squadNameExists?.name)
+            if (squadNameExists && squadNameExists.name.toLowerCase() === name?.toLowerCase()) {
+                return reply.status(500).send({ message: `Squad with name '${name}' already exists` })
+            }
             const [squad, squadMember] = await prisma.$transaction([
                 prisma.squad.create({
                     data: {
@@ -94,7 +114,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     description: true
                 }
             })
-            return squads[0]
+            return squads
         } catch (e) {
             return reply.status(500).send(e as string)
         }
@@ -102,32 +122,41 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
 
     fastify.get('/me', {
         preHandler: authenticate, schema: {
-            description: 'Fetch all squads you own',
+            description: 'Fetch your squad',
             security: [{ bearerAuth: [] }],
             tags: ['squad'],
             response: {
-                200: SCHEMA_SQUADS_RETURN
+                200: SCHEMA_SQUAD_RETURN
             }
         }
     }, async (request, reply) => {
         try {
-            const squads = await prisma.squad.findMany({
+            const squad = await prisma.squad.findFirst({
                 where: {
-                    owner_id: {
-                        equals: request.user?.id
-                    },
-                    is_public: {
-                        equals: true
-                    }
+                    owner_id: request.user?.id
                 },
                 select: {
+                    _count: true,
                     id: true,
                     name: true,
-                    members: true,
-                    description: true
+                    owner_id: true,
+                    description: true,
+                    members: {
+                        select: {
+                            user: {
+                                select: {
+                                   
+                                    id: true,
+                                    display_name: true
+                                }
+                            }
+                        }
+                    },
+
                 }
             })
-            return squads
+            console.log(squad)
+            return squad
         } catch (e) {
             return reply.status(500).send(e as string)
         }
@@ -243,13 +272,34 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         const { id } = request.params as { id: string }
         const { user_id } = request.body as { user_id: string }
         try {
-            await prisma.squadJoinRequest.create({
+            const requestExists = await prisma.squadJoinRequest.findFirst({
+                where: {
+                    user_id,
+                    squad_id: id
+                }
+            })
+            if (requestExists) {
+                return reply.status(409).send({ message: 'Join request has already been sent to this squad' })
+            }
+            const squadRequest = await prisma.squadJoinRequest.create({
                 data: {
                     squad_id: id,
                     user_id
+                },
+                select: {
+                    squad: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    user: {
+                        select: {
+                            display_name: true
+                        }
+                    }
                 }
             })
-            await sendEmail('join_squad.html', { url: `${process.env.WEB_BASE_URL}/squad/${id}/join_requests` })
+            await sendEmail('join_squad.html', { url: `${process.env.WEB_BASE_URL}/squad/${id}/join_requests`, name: squadRequest.squad.name, display_name: squadRequest.user.display_name }, 'Join Squad Request')
             return reply.status(201).send({ success: true })
         } catch (e) {
             return reply.status(500).send(e as string)

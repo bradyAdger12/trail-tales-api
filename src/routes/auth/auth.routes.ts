@@ -158,7 +158,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                         expiry_time
                     }
                 })
-                await sendEmail('password_reset.html', { url: `${process.env.WEB_BASE_URL}/auth/reset-password?token=${hashed_token}` })
+                await sendEmail('password_reset.html', { url: `${process.env.WEB_BASE_URL}/auth/reset-password?token=${hashed_token}` }, 'Reset Your Password')
             } catch (e) {
                 return reply.status(500).send('Error sending email')
             }
