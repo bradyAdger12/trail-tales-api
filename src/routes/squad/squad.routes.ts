@@ -4,6 +4,7 @@ import { prisma } from '../../server'; import { Squad } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
 import { randomUUID } from "node:crypto";
+import { sendEmail } from "../../resend/send_email";
 
 const squadRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.post('/create', {
@@ -82,7 +83,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     owner_id: true,
                     members: {
                         select: {
-                            User: {
+                            user: {
                                 select: {
                                     id: true,
                                     display_name: true
@@ -93,7 +94,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     description: true
                 }
             })
-            return squads
+            return squads[0]
         } catch (e) {
             return reply.status(500).send(e as string)
         }
@@ -212,6 +213,44 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             })
             return { success: true }
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.post('/:id/join', {
+        preHandler: authenticate, schema: {
+            description: 'Send a request to join a squad',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            body: {
+                type: 'object',
+                properties: {
+                    user_id: { type: 'string' }
+                }
+            },
+            security: [{ bearerAuth: [] }],
+            tags: ['squad'],
+            response: {
+                201: { properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
+        const { id } = request.params as { id: string }
+        const { user_id } = request.body as { user_id: string }
+        try {
+            await prisma.squadJoinRequest.create({
+                data: {
+                    squad_id: id,
+                    user_id
+                }
+            })
+            await sendEmail('join_squad.html', { url: `${process.env.WEB_BASE_URL}/squad/${id}/join_requests` })
+            return reply.status(201).send({ success: true })
         } catch (e) {
             return reply.status(500).send(e as string)
         }

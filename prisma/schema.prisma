@@ -15,7 +15,8 @@ model User {
   avatar_file_key String?
   created_at      DateTime      @default(now())
   updated_at      DateTime      @default(now())
-  SquadMember     SquadMember[]
+  members     SquadMember[]
+  squad_join_requests SquadJoinRequest[]
 
   @@map("users")
 }
@@ -29,6 +30,7 @@ model Squad {
   created_at  DateTime      @default(now())
   updated_at  DateTime      @default(now())
   members     SquadMember[]
+  squad_join_requests SquadJoinRequest[]
 
   @@map("squads")
 }
@@ -36,13 +38,23 @@ model Squad {
 model SquadMember {
   user_id     String
   squad_id    String
-  Squad       Squad    @relation(fields: [squad_id], references: [id])
-  User        User     @relation(fields: [user_id], references: [id])
+  squad       Squad    @relation(fields: [squad_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id])
   created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
 
   @@id([user_id, squad_id])
   @@map("squad_members")
+}
+
+model SquadJoinRequest {
+  user_id     String
+  squad_id    String
+  squad       Squad    @relation(fields: [squad_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id])
+  created_at  DateTime @default(now())
+
+  @@id([user_id, squad_id])
+  @@map("squad_join_requests")
 }
 
 model PasswordResetToken {
