@@ -2,9 +2,10 @@ import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
 import { prisma } from '../../server'; import { Squad } from "@prisma/client";
 import _ from "lodash";
-import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
+import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_REQUEST_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
 import { randomUUID } from "node:crypto";
 import { sendEmail } from "../../resend/send_email";
+import { squadAuthorization } from "../../middleware/authorize_squad";
 
 const squadRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.post('/create', {
@@ -39,7 +40,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             })
             if (!!ownsSquad) {
-                return reply.status(500).send({ message: 'You may only create one squad' })
+                return reply.status(500).send({ message: 'You may only be a member of one squad' })
             }
             const squadNameExists = await prisma.squad.findFirst({
                 where: {
@@ -49,7 +50,6 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     name: true
                 }
             })
-            console.log(squadNameExists?.name)
             if (squadNameExists && squadNameExists.name.toLowerCase() === name?.toLowerCase()) {
                 return reply.status(500).send({ message: `Squad with name '${name}' already exists` })
             }
@@ -143,9 +143,10 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     description: true,
                     members: {
                         select: {
+                            created_at: true,
                             user: {
                                 select: {
-                                   
+                                    avatar_file_key: true,
                                     id: true,
                                     display_name: true
                                 }
@@ -155,7 +156,6 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
 
                 }
             })
-            console.log(squad)
             return squad
         } catch (e) {
             return reply.status(500).send(e as string)
@@ -247,7 +247,102 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
-    fastify.post('/:id/join', {
+    fastify.post('/:id/accept_request', {
+        preHandler: [authenticate, squadAuthorization], schema: {
+            description: 'Accept a request to join a squad',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            body: {
+                type: 'object',
+                properties: {
+                    user_id: { type: 'string' }
+                }
+            },
+            security: [{ bearerAuth: [] }],
+            tags: ['squad'],
+            response: {
+                201: { properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
+        const { id } = request.params as { id: string }
+        const { user_id } = request.body as { user_id: string }
+        try {
+            const requestExists = await prisma.squadJoinRequest.findFirst({
+                where: {
+                    user_id,
+                    squad_id: id
+                }
+            })
+            if (!requestExists) {
+                return reply.status(409).send({ message: 'This request does not exist' })
+            }
+            await prisma.$transaction([
+                prisma.squadMember.create({
+                    data: {
+                        squad_id: id,
+                        user_id: user_id
+                    }
+                }),
+                prisma.squadJoinRequest.delete({
+                    where: {
+                        user_id_squad_id: {
+                            squad_id: id,
+                            user_id
+                        }
+                    }
+                })
+            ])
+            return reply.status(200).send({ success: true })
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.get('/:id/requests', {
+        preHandler: [authenticate, squadAuthorization], schema: {
+            description: 'View requests to join a squad',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            security: [{ bearerAuth: [] }],
+            tags: ['squad'],
+            response: {
+                200: SCHEMA_SQUADS_REQUEST_RETURN
+            }
+        }
+    }, async (request, reply) => {
+        const { id } = request.params as { id: string }
+        try {
+            const requestExists = await prisma.squadJoinRequest.findMany({
+                where: {
+                    squad_id: id
+                },
+                select: {
+                    created_at: true,
+                    user: {
+                        select: {
+                            id: true,
+                            avatar_file_key: true,
+                            display_name: true
+                        }
+                    }
+                }
+            })
+            return requestExists
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.post('/:id/request', {
         preHandler: authenticate, schema: {
             description: 'Send a request to join a squad',
             params: {

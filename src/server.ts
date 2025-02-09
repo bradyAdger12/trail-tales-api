@@ -6,6 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import userRoutes from "./routes/user/user.routes";
 import type { User } from '@prisma/client'
 import squadRoutes from "./routes/squad/squad.routes";
+import memberRoutes from "./routes/member/member.routes";
 
 // Init Prisma client
 export const prisma = new PrismaClient()
@@ -69,6 +70,7 @@ function buildServer() {
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
   fastify.register(squadRoutes, { prefix: '/squad' })
+  fastify.register(memberRoutes, { prefix: '/member' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }

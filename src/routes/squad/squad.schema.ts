@@ -12,6 +12,15 @@ export const SCHEMA_SQUAD_RETURN = {
     }
 }
 
+export const SCHEMA_SQUADS_REQUEST_RETURN = {
+    type: 'array',
+    properties: { 
+        user_id: { type: 'string' },
+        squad_id: { type: 'string' }, 
+        created_at: { type: 'string' }
+    }
+}
+
 export const SCHEMA_SQUADS_RETURN = {
     type: 'array',
     properties: {
