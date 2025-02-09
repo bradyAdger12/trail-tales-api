@@ -120,21 +120,32 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
-    fastify.get('/me', {
+    fastify.get('/:id', {
         preHandler: authenticate, schema: {
-            description: 'Fetch your squad',
+            description: 'Fetch squad by ID',
             security: [{ bearerAuth: [] }],
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
             tags: ['squad'],
             response: {
                 200: SCHEMA_SQUAD_RETURN
             }
         }
     }, async (request, reply) => {
+        const { id } = request.params as { id: string }
         try {
+            const whereParam: any = {}
+            if (id === 'me') {
+                whereParam.owner_id = request.user?.id
+            } else {
+                whereParam.id = id
+            }
             const squad = await prisma.squad.findFirst({
-                where: {
-                    owner_id: request.user?.id
-                },
+                where: whereParam,
                 select: {
                     _count: true,
                     id: true,
@@ -217,36 +228,6 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
-    fastify.delete('/:id', {
-        preHandler: authenticate, schema: {
-            description: 'Fetch all squads you own',
-            params: {
-                type: 'object',
-                properties: {
-                    id: { type: 'string' }
-                }
-            },
-            security: [{ bearerAuth: [] }],
-            tags: ['squad'],
-            response: {
-                200: { properties: { success: { type: 'boolean' } } }
-            }
-        }
-    }, async (request, reply) => {
-        const { id } = request.params as { id: string }
-        try {
-            await prisma.squad.delete({
-                where: {
-                    owner_id: request.user?.id,
-                    id
-                }
-            })
-            return { success: true }
-        } catch (e) {
-            return reply.status(500).send(e as string)
-        }
-    })
-
     fastify.post('/:id/accept_request', {
         preHandler: [authenticate, squadAuthorization], schema: {
             description: 'Accept a request to join a squad',
@@ -298,6 +279,47 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 })
             ])
             return reply.status(200).send({ success: true })
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.delete('/:id', {
+        preHandler: [authenticate, squadAuthorization], schema: {
+            description: 'Delete your squad',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            security: [{ bearerAuth: [] }],
+            tags: ['squad'],
+            response: {
+                200: { properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
+        const { id } = request.params as { id: string }
+        try {
+            await prisma.$transaction([
+                prisma.squadMember.deleteMany({
+                    where: {
+                        squad_id: id
+                    }
+                }),
+                prisma.squadJoinRequest.deleteMany({
+                    where: {
+                        squad_id: id
+                    }
+                }),
+                prisma.squad.delete({
+                    where: {
+                        id
+                    }
+                })
+            ])
+            return { success: true }
         } catch (e) {
             return reply.status(500).send(e as string)
         }
@@ -367,6 +389,14 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         const { id } = request.params as { id: string }
         const { user_id } = request.body as { user_id: string }
         try {
+            const squadMember = await prisma.squadMember.findFirst({
+                where: {
+                    user_id
+                }
+            })
+            if (squadMember) {
+                return reply.status(500).send({ message: 'You can only be a member of one squad.' })
+            }
             const requestExists = await prisma.squadJoinRequest.findFirst({
                 where: {
                     user_id,
