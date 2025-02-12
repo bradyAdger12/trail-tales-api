@@ -16,10 +16,11 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             body: {
                 type: 'object',
                 properties: {
-                    avatar_file_key: { type: 'string', default: '' },
-                    display_name: { type: 'string', default: '' }
-                },
-                required: ['display_name']
+                    avatar_file_key: { type: 'string' },
+                    strava_access_token: { type: 'string' },
+                    strava_refresh_token: { type: 'string' },
+                    display_name: { type: 'string' }
+                }
             },
             response: {
                 200: SCHEMA_USER_RETURN
@@ -28,17 +29,21 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
     }, async (request, reply) => {
         try {
             const body = request.body as Partial<User>
-            const display_name = body.display_name
-            const avatar_file_key = body.avatar_file_key || null
             const payload = {} as User
-            if (display_name) {
-                payload.display_name = display_name
+            if (_.has(body, 'display_name')) {
+                payload.display_name = body.display_name as string
             }
             if (_.has(body, 'avatar_file_key')) {
+                const avatar_file_key = body.avatar_file_key || null
                 payload.avatar_file_key = avatar_file_key
             }
+            if (_.has(body, 'strava_access_token')) {
+                payload.strava_access_token = body.strava_access_token as string
+            }
+            if (_.has(body, 'strava_refresh_token')) {
+                payload.strava_refresh_token = body.strava_refresh_token as string
+            }
             const user = await prisma.user.update({
-                select: SAFE_USER_RETURN,
                 data: payload,
                 where: {
                     id: request.user?.id
@@ -65,9 +70,8 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
     }, async (request, reply) => {
         try {
             const user = await prisma.user.findFirst({
-                select: SAFE_USER_RETURN,
                 where: {
-                    email: request.user?.email
+                    id: request.user?.id
                 }
             })
             if (!user) {

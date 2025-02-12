@@ -8,50 +8,53 @@ datasource db {
 }
 
 model User {
-  id              String        @id @default(uuid())
-  email           String        @unique
-  display_name    String?       @unique
-  hashed_password String
-  avatar_file_key String?
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @default(now())
-  members     SquadMember[]
-  squad_join_requests SquadJoinRequest[]
+  id                   String             @id @default(uuid())
+  email                String             @unique
+  display_name         String?            @unique
+  hashed_password      String
+  avatar_file_key      String?
+  created_at           DateTime           @default(now())
+  updated_at           DateTime           @default(now())
+  strava_access_token  String?
+  strava_refresh_token String?
+  members              SquadMember[]
+  squad_join_requests  SquadJoinRequest[]
+  activity             Activity[]
 
   @@map("users")
 }
 
 model Squad {
-  id          String        @id @default(uuid())
-  owner_id    String
-  name        String        
-  is_public   Boolean       @default(true)
-  description String
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @default(now())
-  members     SquadMember[]
+  id                  String             @id @default(uuid())
+  owner_id            String
+  name                String
+  is_public           Boolean            @default(true)
+  description         String
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @default(now())
+  members             SquadMember[]
   squad_join_requests SquadJoinRequest[]
 
   @@map("squads")
 }
 
 model SquadMember {
-  user_id     String
-  squad_id    String
-  squad       Squad    @relation(fields: [squad_id], references: [id])
-  user        User     @relation(fields: [user_id], references: [id])
-  created_at  DateTime @default(now())
+  user_id    String
+  squad_id   String
+  squad      Squad    @relation(fields: [squad_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
 
   @@id([user_id, squad_id])
   @@map("squad_members")
 }
 
 model SquadJoinRequest {
-  user_id     String
-  squad_id    String
-  squad       Squad    @relation(fields: [squad_id], references: [id])
-  user        User     @relation(fields: [user_id], references: [id])
-  created_at  DateTime @default(now())
+  user_id    String
+  squad_id   String
+  squad      Squad    @relation(fields: [squad_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
 
   @@id([user_id, squad_id])
   @@map("squad_join_requests")
@@ -66,4 +69,21 @@ model PasswordResetToken {
 
   @@id([user_id, token])
   @@map("password_reset_tokens")
+}
+
+model Activity {
+  id                      String   @id @default(uuid())
+  user_id                 String
+  source                  String
+  source_id               String   @unique
+  polyline                String
+  name                    String
+  description             String?
+  distance_in_meters      Float
+  elapsed_time_in_seconds Float
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now())
+  user                    User     @relation(fields: [user_id], references: [id])
+
+  @@map("activities")
 }
