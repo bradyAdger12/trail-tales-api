@@ -8,6 +8,7 @@ import type { User } from '@prisma/client'
 import squadRoutes from "./routes/squad/squad.routes";
 import memberRoutes from "./routes/member/member.routes";
 import activityRoutes from "./routes/activity/activity.routes";
+import matchupRoutes from "./routes/matchup/matchup.routes";
 
 // Init Prisma client
 export const prisma = new PrismaClient()
@@ -44,7 +45,10 @@ function buildServer() {
       tags: [
         { name: 'auth', description: 'Unauthenticated User related end-points' },
         { name: 'user', description: 'User related end-points' },
-        { name: 'squad', description: 'Squad related end-points' }
+        { name: 'squad', description: 'Squad related end-points' },
+        { name: 'member', description: 'Member related end-points' },
+        { name: 'matchup', description: 'Matchup related end-points' },
+        { name: 'activity', description: 'Activity related end-points' }
       ],
       components: {
         securitySchemes: {
@@ -73,6 +77,7 @@ function buildServer() {
   fastify.register(squadRoutes, { prefix: '/squad' })
   fastify.register(memberRoutes, { prefix: '/member' })
   fastify.register(activityRoutes, { prefix: '/activity' })
+  fastify.register(matchupRoutes, { prefix: '/matchup' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }

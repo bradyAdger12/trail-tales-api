@@ -24,6 +24,17 @@ model User {
   @@map("users")
 }
 
+model SquadMember {
+  user_id    String
+  squad_id   String
+  squad      Squad    @relation(fields: [squad_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@id([user_id, squad_id])
+  @@map("squad_members")
+}
+
 model Squad {
   id                  String             @id @default(uuid())
   owner_id            String
@@ -34,19 +45,25 @@ model Squad {
   updated_at          DateTime           @default(now())
   members             SquadMember[]
   squad_join_requests SquadJoinRequest[]
+  matchup_one         Matchup?           @relation("squad_one")
+  matchup_two         Matchup?           @relation("squad_two")
 
   @@map("squads")
 }
 
-model SquadMember {
-  user_id    String
-  squad_id   String
-  squad      Squad    @relation(fields: [squad_id], references: [id])
-  user       User     @relation(fields: [user_id], references: [id])
-  created_at DateTime @default(now())
+model Matchup {
+  id           String    @id @default(uuid())
+  challenge_id String
+  squad_one_id String    @unique
+  squad_two_id String    @unique
+  squad_one    Squad     @relation("squad_one", fields: [squad_one_id], references: [id])
+  squad_two    Squad     @relation("squad_two", fields: [squad_two_id], references: [id])
+  challenge    Challenge @relation(fields: [challenge_id], references: [id])
+  starts_at    DateTime  @default(now())
+  ends_at      DateTime
+  created_at   DateTime  @default(now())
 
-  @@id([user_id, squad_id])
-  @@map("squad_members")
+  @@map("matchups")
 }
 
 model SquadJoinRequest {
@@ -86,4 +103,13 @@ model Activity {
   user                    User     @relation(fields: [user_id], references: [id])
 
   @@map("activities")
+}
+
+model Challenge {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  matchups    Matchup[]
+
+  @@map("challenges")
 }
