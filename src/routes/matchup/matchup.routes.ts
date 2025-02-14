@@ -44,16 +44,32 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                         include: {
                             members: {
                                 include: {
-                                    user: true
+                                    user: {
+                                        include: {
+                                            matchup_entries: {
+                                                select: {
+                                                    value: true
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     },
                     squad_two: {
                         include: {
-                            members: {
+                            members: { 
                                 include: {
-                                    user: true
+                                    user: {
+                                        include: {
+                                            matchup_entries: {
+                                                select: {
+                                                    value: true
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

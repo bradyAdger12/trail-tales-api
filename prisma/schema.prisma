@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id                   String             @id @default(uuid())
-  email                String             @unique
-  display_name         String?            @unique
+  id                   String               @id @default(uuid())
+  email                String               @unique
+  display_name         String?              @unique
   hashed_password      String
   avatar_file_key      String?
-  created_at           DateTime           @default(now())
-  updated_at           DateTime           @default(now())
+  created_at           DateTime             @default(now())
+  updated_at           DateTime             @default(now())
   strava_access_token  String?
   strava_refresh_token String?
   members              SquadMember[]
   squad_join_requests  SquadJoinRequest[]
   activity             Activity[]
+  matchup_entries      MatchupEntry[]
+  MatchupReportUsers   MatchupReportUsers[]
 
   @@map("users")
 }
@@ -27,8 +29,8 @@ model User {
 model SquadMember {
   user_id    String
   squad_id   String
-  squad      Squad    @relation(fields: [squad_id], references: [id])
-  user       User     @relation(fields: [user_id], references: [id])
+  squad      Squad    @relation(fields: [squad_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now())
 
   @@id([user_id, squad_id])
@@ -43,35 +45,75 @@ model Squad {
   description         String
   created_at          DateTime           @default(now())
   updated_at          DateTime           @default(now())
-  members             SquadMember[]
-  squad_join_requests SquadJoinRequest[]
   matchup_one         Matchup?           @relation("squad_one")
   matchup_two         Matchup?           @relation("squad_two")
+  members             SquadMember[]
+  squad_join_requests SquadJoinRequest[]
 
   @@map("squads")
 }
 
 model Matchup {
-  id           String    @id @default(uuid())
+  id           String         @id @default(uuid())
   challenge_id String
-  squad_one_id String    @unique
-  squad_two_id String    @unique
-  squad_one    Squad     @relation("squad_one", fields: [squad_one_id], references: [id])
-  squad_two    Squad     @relation("squad_two", fields: [squad_two_id], references: [id])
-  challenge    Challenge @relation(fields: [challenge_id], references: [id])
-  starts_at    DateTime  @default(now())
+  squad_one_id String         @unique
+  squad_two_id String         @unique
+  starts_at    DateTime       @default(now())
   ends_at      DateTime
-  created_at   DateTime  @default(now())
+  created_at   DateTime       @default(now())
+  squad_one    Squad          @relation("squad_one", fields: [squad_one_id], references: [id], onDelete: Cascade)
+  squad_two    Squad          @relation("squad_two", fields: [squad_two_id], references: [id], onDelete: Cascade)
+  challenge    Challenge      @relation(fields: [challenge_id], references: [id])
+  entries      MatchupEntry[]
 
   @@map("matchups")
+}
+
+model MatchupReport {
+  matchup_id           String               @id
+  challenge_id         String
+  squad_one_id         String
+  squad_two_id         String
+  squad_one_snapshot   Json
+  squad_two_snapshot   Json
+  challenge            Challenge            @relation(fields: [challenge_id], references: [id], onDelete: Cascade)
+  matchup_report_users MatchupReportUsers[]
+
+  @@map("matchup_reports")
+}
+
+model MatchupReportUsers {
+  user_id           String
+  matchup_report_id String
+  matchup_report    MatchupReport @relation(fields: [matchup_report_id], references: [matchup_id])
+  user              User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, matchup_report_id])
+  @@map("matchup_report_users")
+}
+
+model MatchupEntry {
+  id          String   @default(uuid())
+  matchup_id  String
+  activity_id String
+  user_id     String
+  type        String
+  value       Float
+  created_at  DateTime @default(now())
+  matchup     Matchup  @relation(fields: [matchup_id], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, matchup_id])
+  @@map("matchup_entries")
 }
 
 model SquadJoinRequest {
   user_id    String
   squad_id   String
+  created_at DateTime @default(now())
   squad      Squad    @relation(fields: [squad_id], references: [id])
   user       User     @relation(fields: [user_id], references: [id])
-  created_at DateTime @default(now())
 
   @@id([user_id, squad_id])
   @@map("squad_join_requests")
@@ -89,27 +131,32 @@ model PasswordResetToken {
 }
 
 model Activity {
-  id                      String   @id @default(uuid())
+  id                      String         @id @default(uuid())
   user_id                 String
   source                  String
-  source_id               String   @unique
+  source_id               String         @unique
   polyline                String
   name                    String
   description             String?
+  distance_series         Float[]
+  time_series             Int[]
   distance_in_meters      Float
   elapsed_time_in_seconds Float
-  created_at              DateTime @default(now())
-  updated_at              DateTime @default(now())
-  user                    User     @relation(fields: [user_id], references: [id])
+  created_at              DateTime       @default(now())
+  updated_at              DateTime       @default(now())
+  user                    User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  matchup_entries         MatchupEntry[]
 
   @@map("activities")
 }
 
 model Challenge {
-  id          String    @id @default(uuid())
-  name        String
-  description String
-  matchups    Matchup[]
+  id              String          @id @default(uuid())
+  name            String
+  type            String          @default("time")
+  description     String
+  matchups        Matchup[]
+  matchup_reports MatchupReport[]
 
   @@map("challenges")
 }
