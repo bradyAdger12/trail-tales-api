@@ -22,3 +22,17 @@ export const SCHEMA_MATCHUP_RETURN = {
         created_at: { type: 'string' },
     }
 }
+
+export const SCHEMA_MATCHUPS_RETURN = {
+    type: 'array',
+    properties: {
+        id: { type: 'string' },
+        entries: SCHEMA_MATCHUP_ENTRIES_RETURN,
+        challenge: SCHEMA_CHALLENGE_RETURN,
+        squad_one: SCHEMA_SQUAD_RETURN,
+        squad_two: SCHEMA_SQUAD_RETURN,
+        starts_at: { type: 'string' },
+        ends_at: { type: 'string' },
+        created_at: { type: 'string' },
+    }
+}

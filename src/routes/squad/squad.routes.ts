@@ -33,7 +33,6 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             const name = body.name
             const userId = request.user?.id
             const description = body.description
-            const isPublic = body.is_public || false
             const squadId = randomUUID()
             const ownsSquad = await prisma.squad.findFirst({
                 where: {
@@ -60,8 +59,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                         id: squadId,
                         name: name!,
                         owner_id: userId!,
-                        description: description!,
-                        is_public: isPublic
+                        description: description!
                     }
                 }),
                 prisma.squadMember.create({
@@ -90,11 +88,6 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         const { limit, offset } = request.query as { limit?: number, offset?: number }
         try {
             const squads = await prisma.squad.findMany({
-                where: {
-                    is_public: {
-                        equals: true
-                    }
-                },
                 take: limit || 10,
                 skip: offset || 0,
                 select: {
@@ -139,14 +132,14 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
     }, async (request, reply) => {
         const { id } = request.params as { id: string }
         try {
-            const whereParam: any = {}
-            if (id === 'me') {
-                whereParam.owner_id = request.user?.id
-            } else {
-                whereParam.id = id
-            }
             const squad = await prisma.squad.findFirst({
-                where: whereParam,
+                where: id === 'me' ? {
+                    members: {
+                        some: {
+                            user_id: request.user?.id
+                        }
+                    }
+                } : { id },
                 select: {
                     _count: true,
                     id: true,
@@ -168,6 +161,9 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
 
                 }
             })
+            if (!squad) {
+                return reply.status(404).send({ message: 'Squad not found' })
+            }
             return squad
         } catch (e) {
             return reply.status(500).send(e as string)

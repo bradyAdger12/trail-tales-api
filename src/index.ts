@@ -29,14 +29,7 @@ async function matchupSquads() {
     const challenges = await prisma.challenge.findMany()
     const squadsWithoutMatchups: Squad[] = await prisma.squad.findMany({
       where: {
-        AND: [
-          {
-            matchup_squad_one: null
-          },
-          {
-            matchup_squad_two: null
-          }
-        ]
+        is_engaged: false
       }
     })
     const shuffledSquads = getShuffledArr(squadsWithoutMatchups) as Squad[]
@@ -50,15 +43,34 @@ async function matchupSquads() {
 
       const now = new Date();
       const twoWeeksLater = new Date();
-      twoWeeksLater.setDate(now.getDate() + 14)
-      await prisma.matchup.create({
-        data: {
-          challenge_id: shuffledChallenges[0].id,
-          squad_one_id: squad1.id,
-          squad_two_id: squad2.id,
-          ends_at: twoWeeksLater
-        }
-      })
+      twoWeeksLater.setMinutes(now.getMinutes() + 2)
+      await prisma.$transaction([
+        prisma.matchup.create({
+          data: {
+            challenge_id: shuffledChallenges[0].id,
+            squad_one_id: squad1.id,
+            squad_two_id: squad2.id,
+            ends_at: twoWeeksLater,
+          }
+        }),
+        prisma.squad.update({
+          data: {
+            is_engaged: true
+          },
+          where: {
+            id: squad1.id
+          }
+        }),
+        prisma.squad.update({
+          data: {
+            is_engaged: true
+          },
+          where: {
+            id: squad2.id
+          }
+        })
+      ])
+
     }
   } catch (e) {
     console.error(e)

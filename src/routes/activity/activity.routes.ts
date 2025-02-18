@@ -26,7 +26,6 @@ async function processFastestMile(userId: string, activity: Activity, matchup: M
                 if (!entry) {
                     await prisma.matchupEntry.create({
                         data: {
-                            type: 'time',
                             value: fastestSegment.time,
                             activity_id: activity.id,
                             matchup_id: matchup.id,

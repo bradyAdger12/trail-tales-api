@@ -11,14 +11,10 @@ function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo
     return squadOneTotalTime < squadTwoTotalTime ? [squadOne, squadTwo] : [squadTwo, squadOne]
 }
 
-export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) {
-    let squadTotalTime = 0
-    // Sort entries by value and take the top 5 values
-    const squadSortedMembersByTime = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value)
-    console.log(squadSortedMembersByTime)
-    squadTotalTime += _.reduce(squadSortedMembersByTime, (a, b) => { return a + b.user.matchup_entries[0]?.value || 0 }, 0)
-
-    return Math.round(squadTotalTime / squadSortedMembersByTime.length)
+export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) { 
+    const squadSortedMembersByTime = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value).filter((item) => item.user.matchup_entries[0]?.value)
+    const squadTotalTime = _.reduce(squadSortedMembersByTime, (a, b) => { return a + b.user.matchup_entries[0].value }, 0)
+    return Math.round(squadTotalTime / (squadSortedMembersByTime.length || 1))
 }
 
 function determineWinningAndLosingSquad(squadOne: any, squadTwo: any, challengeType: string) {
@@ -42,6 +38,7 @@ async function buildPostMatchupReports() {
     try {
         const concludedMatchups = await prisma.matchup.findMany({
             where: {
+                completed: false,
                 ends_at: {
                     lte: new Date().toISOString()
                 }
@@ -106,6 +103,7 @@ async function buildPostMatchupReports() {
                         id: winningSquad?.id
                     },
                     data: {
+                        is_engaged: false,
                         wins: {
                             increment: 1
                         },
@@ -119,20 +117,18 @@ async function buildPostMatchupReports() {
                         id: losingSquad?.id
                     },
                     data: {
+                        is_engaged: false,
                         losses: {
                             increment: 1
                         }
                     }
                 }),
-                prisma.matchupReport.create({
-                    data: {
-                        matchup_id: matchup.id,
-                        snapshot: { ...matchup }
-                    }
-                }),
-                prisma.matchup.delete({
+                prisma.matchup.update({
                     where: {
                         id: matchup.id
+                    },
+                    data: {
+                        completed: true
                     }
                 })
             ]).catch((e) => {

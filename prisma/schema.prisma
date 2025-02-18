@@ -43,56 +43,45 @@ model Squad {
   losses              Int                @default(0)
   xp                  Int                @default(0)
   name                String
-  is_public           Boolean            @default(true)
   description         String
   created_at          DateTime           @default(now())
   updated_at          DateTime           @default(now())
-  matchup_squad_one   Matchup?           @relation("squad_one")
-  matchup_squad_two   Matchup?           @relation("squad_two")
+  is_engaged          Boolean            @default(false)
   members             SquadMember[]
   squad_join_requests SquadJoinRequest[]
+  matchup_one         Matchup[]          @relation("squad_matchup_one")
+  matchup_two         Matchup[]          @relation("squad_matchup_two")
 
   @@map("squads")
 }
 
 model Matchup {
-  id            String          @id @default(uuid())
-  challenge_id  String
-  squad_one_id  String          @unique
-  squad_two_id  String          @unique
-  starts_at     DateTime        @default(now())
-  ends_at       DateTime
-  created_at    DateTime        @default(now())
-  completed     Boolean         @default(false)
-  snapshot      Json?
-  squad_one     Squad           @relation("squad_one", fields: [squad_one_id], references: [id], onDelete: Cascade)
-  squad_two     Squad           @relation("squad_two", fields: [squad_two_id], references: [id], onDelete: Cascade)
-  challenge     Challenge       @relation(fields: [challenge_id], references: [id])
-  entries       MatchupEntry[]
-  MatchupReport MatchupReport[]
+  id              String         @id @default(uuid())
+  challenge_id    String
+  squad_one_id    String
+  squad_two_id    String
+  starts_at       DateTime       @default(now())
+  ends_at         DateTime
+  created_at      DateTime       @default(now())
+  completed       Boolean        @default(false)
+  squad_one       Squad          @relation(name: "squad_matchup_one", fields: [squad_one_id], references: [id], onDelete: Cascade)
+  squad_two       Squad          @relation(name: "squad_matchup_two", fields: [squad_two_id], references: [id], onDelete: Cascade)
+  challenge       Challenge      @relation(fields: [challenge_id], references: [id])
+  matchup_entries MatchupEntry[]
 
   @@map("matchups")
 }
 
-model MatchupReport {
-  matchup_id String  @id @default(uuid())
-  matchup    Matchup @relation(fields: [matchup_id], references: [id])
-  snapshot   Json?
-
-  @@map("matchup_reports")
-}
-
 model MatchupEntry {
-  id          String   @default(uuid())
+  id          String    @default(uuid())
   matchup_id  String
-  activity_id String
+  activity_id String?
   user_id     String
-  type        String
   value       Float
-  created_at  DateTime @default(now())
-  matchup     Matchup  @relation(fields: [matchup_id], references: [id], onDelete: Cascade)
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade)
+  created_at  DateTime  @default(now())
+  matchup     Matchup   @relation(fields: [matchup_id], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  activity    Activity? @relation(fields: [activity_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, matchup_id])
   @@map("matchup_entries")
