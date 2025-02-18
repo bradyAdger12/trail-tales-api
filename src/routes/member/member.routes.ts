@@ -1,8 +1,7 @@
 import { FastifyPluginAsync } from "fastify"
 import { authenticate } from "../../middleware/authentication"
-import { SCHEMA_MEMBER_RETURN } from "./member.schema"
 import { squadAuthorization } from "../../middleware/authorize_squad"
-import { prisma } from "../../server"
+import { prisma } from "../../db"
 
 const memberRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.delete('/:user_id/:squad_id', {

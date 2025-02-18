@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "../server";
 import _ from "lodash";
+import { prisma } from "../db";
 export const activityAuthorization = (request: FastifyRequest, reply: FastifyReply, done: (err?: Error) => void) => {
     let id
     if (_.has(request.params, 'id')) {

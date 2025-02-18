@@ -1,10 +1,10 @@
 import { FastifyPluginAsync } from "fastify"
 import { SCHEMA_ACTIVITIES_RETURN, SCHEMA_ACTIVITY_RETURN } from "./activity.schema";
 import { Activity, Challenge, Matchup } from "@prisma/client";
-import { prisma } from "../../server";
 import { authenticate } from "../../middleware/authentication";
 import { activityAuthorization } from "../../middleware/authorize_activity";
 import _ from "lodash";
+import { prisma } from "../../db";
 
 export async function processActivityForMatchup(userId: string, activity: Activity, matchup: Matchup & { challenge: Challenge }) {
     if (matchup.challenge.name === 'fastest_mile') {
@@ -240,6 +240,29 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             })
             return { success: true }
+        } catch (e) {
+            return reply.status(500).send({ message: e as string })
+        }
+    });
+
+    fastify.get('/me/all', {
+        preHandler: [authenticate],
+        schema: {
+            description: 'Fetch me activities',
+            security: [{ bearerAuth: [] }],
+            tags: ['activity'],
+            response: {
+                200: SCHEMA_ACTIVITIES_RETURN
+            }
+        }
+    }, async (request, reply) => {
+        try {
+            const activities = await prisma.activity.findMany({
+                where: {
+                    user_id: request.user?.id
+                }
+            })
+            return activities
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }

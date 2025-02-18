@@ -2,23 +2,11 @@ import Fastify from "fastify";
 import 'dotenv/config'
 import _ from 'lodash'
 import authRoutes from "./routes/auth/auth.routes";
-import { PrismaClient } from "@prisma/client";
 import userRoutes from "./routes/user/user.routes";
-import type { User } from '@prisma/client'
 import squadRoutes from "./routes/squad/squad.routes";
 import memberRoutes from "./routes/member/member.routes";
 import activityRoutes from "./routes/activity/activity.routes";
 import matchupRoutes from "./routes/matchup/matchup.routes";
-
-// Init Prisma client
-export const prisma = new PrismaClient()
-
-// Fastify request extension
-declare module 'fastify' {
-  interface FastifyRequest {
-    user?: User
-  }
-}
 
 // Build Server
 function buildServer() {

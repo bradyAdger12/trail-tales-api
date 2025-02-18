@@ -1,19 +1,18 @@
 import 'dotenv/config'
 import _ from 'lodash'
-import buildServer, { prisma } from "./server";
 import { CronJob } from 'cron';
-import axios from 'axios';
 import { Challenge, Squad } from '@prisma/client';
-
+import buildServer from "./server";
+import { postMatchupCron } from './cron/post_matchup';
+import { prisma } from './db';
 
 // Cron for matching up squads
 const job = CronJob.from({
   cronTime: '*/3 * * * *', // cronTime
   onTick: matchupSquads, // onTick
   onComplete: null, // onComplete
-  start: true, // start
+  runOnInit: true,
   timeZone: 'America/Denver', // timeZone
-  runOnInit: true
 });
 
 const getShuffledArr = (arr: any[]) => {
@@ -32,10 +31,10 @@ async function matchupSquads() {
       where: {
         AND: [
           {
-            matchup_one: null
+            matchup_squad_one: null
           },
           {
-            matchup_two: null
+            matchup_squad_two: null
           }
         ]
       }
@@ -60,106 +59,6 @@ async function matchupSquads() {
           ends_at: twoWeeksLater
         }
       })
-    }
-  } catch (e) {
-    console.error(e)
-  }
-}
-
-// Cron for building reports from matchups that have concluded
-const postMatchupCron = CronJob.from({
-  cronTime: '*/3 * * * *', // cronTime
-  onTick: buildPostMatchupReports, // onTick
-  onComplete: null, // onComplete
-  start: true, // start
-  timeZone: 'America/Denver', // timeZone
-  runOnInit: true
-});
-
-async function buildPostMatchupReports() {
-  try {
-    const concludedMatchups = await prisma.matchup.findMany({
-      where: {
-        ends_at: {
-          lte: new Date().toISOString()
-        }
-      },
-      include: {
-        squad_one: {
-          select: {
-            id: true,
-            name: true,
-            description: true,
-            members: {
-              select: {
-                user: {
-                  select: {
-                    id: true,
-                    display_name: true,
-                    matchup_entries: {
-                      select: {
-                        value: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        squad_two: {
-          select: {
-            id: true,
-            name: true,
-            description: true,
-            members: {
-              select: {
-                user: {
-                  select: {
-                    id: true,
-                    display_name: true,
-                    matchup_entries: {
-                      select: {
-                        value: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-    for (const matchup of concludedMatchups) {
-      const uniqueUsers = matchup.squad_one.members.map((item) => { return { user_id: item.user.id, display_name: item.user.display_name, entry: item.user.matchup_entries[0]?.value || -1 } }).concat(matchup.squad_two.members.map((item) => { return { user_id: item.user.id, display_name: item.user.display_name, entry: item.user.matchup_entries[0]?.value || -1 } }))
-      await prisma.$transaction([
-        prisma.matchupReport.upsert({
-          where: {
-            matchup_id: matchup.id
-          },
-          update: {},
-          create: {
-            matchup_id: matchup.id,
-            squad_one_id: matchup.squad_one_id,
-            squad_two_id: matchup.squad_two_id,
-            challenge_id: matchup.challenge_id,
-            squad_one_snapshot: {
-              name: matchup.squad_one.name,
-              description: matchup.squad_one.description,
-              entries: matchup.squad_one.members.map((item) => { return { user_id: item.user.id, display_name: item.user.display_name, entry: item.user.matchup_entries[0]?.value || -1 } })
-            },
-            squad_two_snapshot: {
-              name: matchup.squad_two.name,
-              description: matchup.squad_two.description,
-              entries: matchup.squad_two.members.map((item) => { return { user_id: item.user.id, display_name: item.user.display_name, entry: item.user.matchup_entries[0]?.value || -1 } })
-            }
-          }
-        }),
-        prisma.matchupReportUsers.createMany({
-          data: uniqueUsers.map((item) => { return { user_id: item.user_id, matchup_report_id: matchup.id }})
-        })
-      ]).catch(() => {})
     }
   } catch (e) {
     console.error(e)

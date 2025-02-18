@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
 import _ from 'lodash'
-import { prisma } from '../../server';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { SAFE_USER_RETURN } from '../../lib/safe_return_data';
@@ -8,6 +7,7 @@ import { authenticate } from '../../middleware/authentication';
 import * as crypto from "node:crypto";
 import { sendEmail } from '../../resend/send_email';
 import { SCHEMA_USER_RETURN } from '../user/user.schema';
+import { prisma } from '../../db';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 

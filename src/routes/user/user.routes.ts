@@ -1,10 +1,9 @@
 import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
-import { prisma } from '../../server';
-import { SAFE_USER_RETURN } from "../../lib/safe_return_data";
 import { User } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_USER_RETURN } from "./user.schema";
+import { prisma } from "../../db";
 
 const userRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.put('/me', {

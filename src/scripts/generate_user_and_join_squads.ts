@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker"
-import { prisma } from "../server"
-import { User } from "@prisma/client"
 import bcrypt from 'bcrypt'
 import { randomUUID } from "crypto"
 import { processActivityForMatchup } from "../routes/activity/activity.routes"
+import { prisma } from "../db"
 
 const squadIds = ['ad31076a-4993-490b-bf23-e006b66041a2', '1f4b1ac6-d64b-4ad6-8ad2-e4d2b272b2d0']
 
@@ -102,7 +101,6 @@ async function execute() {
             await processActivityForMatchup(user.id, activityReturn, currentMatchup)
         }
     }
-
 }
 
 function buildMockActivity(size: number) {

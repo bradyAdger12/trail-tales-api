@@ -1,22 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "../server";
 import _ from "lodash";
+import { prisma } from "../db";
 export const squadAuthorization = (request: FastifyRequest, reply: FastifyReply, done: (err?: Error) => void) => {
     const userId = request.user?.id
-    let id
-
-    // Check params for squad id
-    if (_.has(request.params, 'squad_id')) {
-        id = request.params.squad_id
-    }
-
-    // Check params for squad id
-    if (_.has(request.body, 'squad_id')) {
-        id = request.body.squad_id
-    }
     prisma.squad.findFirst({
         where: {
-            id
+            owner_id: userId
         }
     }).then((squad) => {
         if (squad?.owner_id !== userId) {

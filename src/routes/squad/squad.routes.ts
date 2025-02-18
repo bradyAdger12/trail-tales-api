@@ -1,11 +1,12 @@
 import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
-import { prisma } from '../../server'; import { Squad } from "@prisma/client";
+import { Squad } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_REQUEST_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
 import { randomUUID } from "node:crypto";
 import { sendEmail } from "../../resend/send_email";
 import { squadAuthorization } from "../../middleware/authorize_squad";
+import { prisma } from "../../db";
 
 const squadRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.post('/create', {
