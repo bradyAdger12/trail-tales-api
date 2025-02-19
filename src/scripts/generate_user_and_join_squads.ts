@@ -4,7 +4,7 @@ import { randomUUID } from "crypto"
 import { processActivityForMatchup } from "../routes/activity/activity.routes"
 import { prisma } from "../db"
 
-const squadIds = ['ad31076a-4993-490b-bf23-e006b66041a2', '1f4b1ac6-d64b-4ad6-8ad2-e4d2b272b2d0']
+const squadIds = ['008258bf-edc9-4e8d-baa1-88e933ebbb73', '15b3a866-703d-4eb5-a2c3-2131a70c320e']
 
 async function execute() {
     const users: any = []

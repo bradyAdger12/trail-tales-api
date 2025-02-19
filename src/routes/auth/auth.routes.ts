@@ -8,6 +8,7 @@ import * as crypto from "node:crypto";
 import { sendEmail } from '../../resend/send_email';
 import { SCHEMA_USER_RETURN } from '../user/user.schema';
 import { prisma } from '../../db';
+import { User } from '@prisma/client';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 
@@ -79,7 +80,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['email', 'password']
             },
             response: {
-                200: { properties: { token: { type: 'string' }, user: SCHEMA_USER_RETURN } }
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } }
             }
         }
     }, async (request, reply) => {
@@ -101,11 +102,41 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             return reply.status(401).send({ message: 'Username or password is incorrect' })
         }
 
-        var token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string);
+        var token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '30s' });
+        var refreshToken = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
         return reply.status(200).send({
             token,
+            refreshToken,
             user
         })
+    });
+
+    fastify.post('/refresh', {
+        schema: {
+            tags: ['auth'],
+            response: {
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' } } }
+            }
+        }
+    }, async (request, reply) => {
+        const authHeader = request.headers['authorization']
+        if (!authHeader) {
+            return reply.status(403).send('You do have not have permissions to access this resource')
+        }
+        try {
+            const token: string = authHeader?.split(' ')[1]!
+            const decodedToken = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string)
+            if (decodedToken) {
+                const user = decodedToken as User
+                const token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '30s' });
+                const refreshToken = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
+                return { token, refreshToken }
+            } else {
+                return reply.status(401).send('Invalid refresh token')
+            }
+        } catch (e) {
+            return reply.status(401).send('You do have not have permissions to access this resource')
+        }
     });
 
     // Password Reset Email

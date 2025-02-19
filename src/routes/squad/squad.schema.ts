@@ -5,6 +5,7 @@ export const SCHEMA_SQUAD_RETURN = {
         id: { type: 'string' },
         name: { type: 'string' },
         members: { type: 'array' },
+        level: { type: 'string' },
         wins: { type: 'number' },
         losses: { type: 'number' },
         xp: { type: 'number' },
