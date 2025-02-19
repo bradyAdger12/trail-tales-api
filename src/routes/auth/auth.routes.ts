@@ -3,12 +3,12 @@ import _ from 'lodash'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { SAFE_USER_RETURN } from '../../lib/safe_return_data';
-import { authenticate } from '../../middleware/authentication';
 import * as crypto from "node:crypto";
 import { sendEmail } from '../../resend/send_email';
 import { SCHEMA_USER_RETURN } from '../user/user.schema';
 import { prisma } from '../../db';
 import { User } from '@prisma/client';
+import { signAccessToken, signRefreshToken } from './auth.controller';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 
@@ -102,8 +102,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             return reply.status(401).send({ message: 'Username or password is incorrect' })
         }
 
-        var token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '30s' });
-        var refreshToken = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
+        var token = signAccessToken(user)
+        var refreshToken = signRefreshToken(user)
         return reply.status(200).send({
             token,
             refreshToken,
@@ -128,8 +128,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             const decodedToken = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string)
             if (decodedToken) {
                 const user = decodedToken as User
-                const token = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '30s' });
-                const refreshToken = jwt.sign({ name: user.display_name, email: user.email, id: user.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
+                const token = signAccessToken(user)
+                const refreshToken = signRefreshToken(user)
                 return { token, refreshToken }
             } else {
                 return reply.status(401).send('Invalid refresh token')

@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker"
 import bcrypt from 'bcrypt'
 import { randomUUID } from "crypto"
-import { processActivityForMatchup } from "../routes/activity/activity.routes"
 import { prisma } from "../db"
+import { processActivityForMatchup } from "../routes/activity/activity.controller"
 
 const squadIds = ['008258bf-edc9-4e8d-baa1-88e933ebbb73', '15b3a866-703d-4eb5-a2c3-2131a70c320e']
 

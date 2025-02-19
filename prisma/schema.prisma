@@ -140,7 +140,7 @@ model Activity {
 
 model Challenge {
   id          String    @id @default(uuid())
-  name        String
+  name        String    
   label       String    @default("")
   type        String    @default("time")
   description String

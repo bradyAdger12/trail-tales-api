@@ -5,73 +5,7 @@ import { authenticate } from "../../middleware/authentication";
 import { activityAuthorization } from "../../middleware/authorize_activity";
 import _ from "lodash";
 import { prisma } from "../../db";
-
-export async function processActivityForMatchup(userId: string, activity: Activity, matchup: Matchup & { challenge: Challenge }) {
-    if (matchup.challenge.name === 'fastest_mile') {
-        processFastestMile(userId, activity, matchup)
-    }
-}
-
-async function processFastestMile(userId: string, activity: Activity, matchup: Matchup & { challenge: Challenge }) {
-    if (activity.distance_series.length === activity.time_series.length) {
-        const fastestSegment = findFastestSegment(activity.distance_series, activity.time_series, 1609.4)
-        if (!_.isEmpty(fastestSegment) && fastestSegment.time) {
-            try {
-                const entry: any = await prisma.matchupEntry.findFirst({
-                    where: {
-                        matchup_id: matchup.id,
-                        user_id: userId
-                    }
-                })
-                if (!entry) {
-                    await prisma.matchupEntry.create({
-                        data: {
-                            value: fastestSegment.time,
-                            activity_id: activity.id,
-                            matchup_id: matchup.id,
-                            user_id: userId,
-                        }
-                    })
-                } else if (entry.value && fastestSegment.time < entry.value) {
-                    await prisma.matchupEntry.update({
-                        where: {
-                            user_id_matchup_id: {
-                                user_id: userId,
-                                matchup_id: matchup.id
-                            }
-                        },
-                        data: {
-                            value: fastestSegment.time
-                        }
-                    })
-                }
-            } catch (e) {
-                throw new Error(e as string)
-            }
-        }
-    }
-}
-
-function findFastestSegment(distances: number[], timestamps: number[], goal_distance: number) {
-    let fastestTime = Infinity;
-    let fastestSegment = { startIndex: null, endIndex: null, time: null } as any;
-
-    let start = 0;
-
-    for (let end = 0; end < distances.length; end++) {
-        while (distances[end] - distances[start] >= goal_distance) {
-            let timeTaken = timestamps[end] - timestamps[start];
-
-            if (timeTaken < fastestTime) {
-                fastestTime = timeTaken;
-                fastestSegment = { startIndex: start, endIndex: end, time: fastestTime };
-            }
-            start++;  // Move start forward to check the next possible segment
-        }
-    }
-
-    return fastestSegment;
-}
+import { processActivityForMatchup } from "./activity.controller";
 
 const activityRoutes: FastifyPluginAsync = async (fastify) => {
 
@@ -303,16 +237,13 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
             if (!activity) {
                 return reply.status(404).send('Activity not found')
             }
-            // if (activity.user_id != request.user?.id) {
-            //     return {...activity}
-            // }
             return activity
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }
     });
     fastify.get('/fetch/source_ids', {
-        preHandler: [authenticate, activityAuthorization],
+        preHandler: [authenticate],
         schema: {
             description: 'Fetch activities by source id',
             security: [{ bearerAuth: [] }],

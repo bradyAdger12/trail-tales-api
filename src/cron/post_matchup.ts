@@ -1,9 +1,23 @@
 import { CronJob } from "cron"
 import _ from "lodash"
-import { MatchupEntry, Squad, SquadMember, User } from "@prisma/client"
+import { Level, MatchupEntry, Squad, SquadMember, User } from "@prisma/client"
 import { prisma } from "../db"
 
 type SquadWithMatchupEntries = Squad & { members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[] }
+
+function getSquadLevel(xp: number): Level {
+    let level: Level = 'D'
+    if (xp > 150) {
+        level = 'C'
+    }
+    if (xp > 300) {
+       level = 'B'
+    }
+    if (xp > 500) {
+        level = 'A'
+    }
+    return level
+}
 
 function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries): { winner?: Squad, loser?: Squad, isTie: boolean } {
     const squadOneTotalTime = getTimesAndSum(squadOne.members)
@@ -14,7 +28,7 @@ function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo
     return squadOneTotalTime < squadTwoTotalTime ? { winner: squadOne, loser: squadTwo, isTie: false } : { winner: squadTwo, loser: squadOne, isTie: false }
 }
 
-export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) { 
+export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) {
     const squadSortedMembersByTime = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value).filter((item) => item.user.matchup_entries[0]?.value)
     const squadTotalTime = _.reduce(squadSortedMembersByTime, (a, b) => { return a + b.user.matchup_entries[0].value }, 0)
     return Math.round(squadTotalTime / (squadSortedMembersByTime.length || 1))
@@ -100,6 +114,16 @@ async function buildPostMatchupReports() {
         })
         for (const matchup of concludedMatchups) {
             const { winner, loser, isTie } = determineWinningAndLosingSquad(matchup.squad_one, matchup.squad_two, matchup.challenge.type)
+            if (winner) {
+                winner.xp += 50
+                winner.wins += 1
+            }
+            if (loser) {
+                loser.losses += 1
+            }
+            if (!isTie && winner) {
+                winner.level = getSquadLevel(winner.xp)
+            }
             await prisma.$transaction([
                 prisma.squad.update({
                     where: {
@@ -107,12 +131,9 @@ async function buildPostMatchupReports() {
                     },
                     data: {
                         is_engaged: false,
-                        wins: {
-                            increment: 1
-                        },
-                        xp: {
-                            increment: 50
-                        }
+                        wins: winner?.wins,
+                        level: winner?.level,
+                        xp: winner?.xp
                     }
                 }),
                 prisma.squad.update({
@@ -121,9 +142,7 @@ async function buildPostMatchupReports() {
                     },
                     data: {
                         is_engaged: false,
-                        losses: {
-                            increment: 1
-                        }
+                        losses: loser?.losses
                     }
                 }),
                 prisma.matchup.update({

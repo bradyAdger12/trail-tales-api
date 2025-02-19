@@ -79,17 +79,35 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
         preHandler: authenticate, schema: {
             description: 'Fetch all public squads',
             security: [{ bearerAuth: [] }],
+            querystring: {
+                type: 'object',
+                properties: {
+                    limit: { type: 'number' },
+                    query: { type: 'string' },
+                    offset: { type: 'number' }
+                }
+            },
             tags: ['squad'],
             response: {
                 200: SCHEMA_SQUADS_RETURN
             }
         }
     }, async (request, reply) => {
-        const { limit, offset } = request.query as { limit?: number, offset?: number }
+        const { limit, offset, query } = request.query as { limit?: number, offset?: number, query?: string }
         try {
+            let where = {}
+            if (query) {
+                where = {
+                    name: {
+                        contains: query,
+                        mode: 'insensitive'
+                    }
+                }
+            }
             const squads = await prisma.squad.findMany({
                 take: limit || 10,
                 skip: offset || 0,
+                where,
                 select: {
                     _count: true,
                     id: true,
