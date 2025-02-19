@@ -119,6 +119,7 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                     challenge: true
                 },
                 where: {
+                    completed: false,
                     ends_at: {
                         gte: new Date().toISOString()
                     },

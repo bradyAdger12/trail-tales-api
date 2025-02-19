@@ -36,11 +36,20 @@ model SquadMember {
   @@map("squad_members")
 }
 
+enum Level {
+  A
+  B
+  C
+  D
+}
+
 model Squad {
   id                  String             @id @default(uuid())
   owner_id            String
   wins                Int                @default(0)
   losses              Int                @default(0)
+  ties                Int                @default(0)
+  level               Level              @default(D)
   xp                  Int                @default(0)
   name                String
   description         String

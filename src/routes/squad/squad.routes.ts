@@ -146,6 +146,9 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                     name: true,
                     owner_id: true,
                     description: true,
+                    losses: true,
+                    wins: true,
+                    xp: true,
                     members: {
                         select: {
                             created_at: true,

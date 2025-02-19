@@ -69,6 +69,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                         select: {
                             id: true,
                             name: true,
+                            owner_id: true,
                             members: {
                                 select: {
                                     user: {
@@ -94,6 +95,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                         select: {
                             id: true,
                             name: true,
+                            owner_id: true,
                             members: {
                                 select: {
                                     user: {
@@ -130,14 +132,14 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
-    fastify.get('/squad/:id/results', {
+    fastify.get('/squad/:squad_id/results', {
         preHandler: [authenticate], schema: {
             description: 'Fetch a squads matchup results',
             security: [{ bearerAuth: [] }],
             params: {
                 type: 'object',
                 properties: {
-                    id: { type: 'string' }
+                    squad_id: { type: 'string' }
                 }
             },
             tags: ['matchup'],
@@ -147,7 +149,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
         }
     }, async (request, reply) => {
         try {
-            const { id } = request.params as { id: string }
+            const { squad_id } = request.params as { squad_id: string }
             const matchups = await prisma.matchup.findMany({
                 orderBy: {
                     ends_at: 'desc'
@@ -157,12 +159,12 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     OR: [
                         {
                             squad_one: {
-                                id
+                                id: squad_id
                             }
                         },
                         {
                             squad_two: {
-                                id
+                                id: squad_id
                             }
                         }
                     ]
@@ -183,121 +185,117 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     }
                 }
             })
-            // const matchupWithEntries = []
-            // for (const matchup of matchups) {
-            //     const matchupWithEntriesResponse = await prisma.matchup.findFirst({
-            //         where: {
-            //             id: matchup.id
-            //         },
-            //         select: {
-            //             id: true,
-            //             starts_at: true,
-            //             ends_at: true,
-            //             created_at: true,
-            //             challenge: {
-            //                 select: {
-            //                     description: true,
-            //                     type: true,
-            //                     label: true,
-            //                     name: true,
-            //                 }
-            //             },
-            //             squad_one: {
-            //                 select: {
-            //                     id: true,
-            //                     name: true,
-            //                     members: {
-            //                         select: {
-            //                             user: {
-            //                                 select: {
-            //                                     id: true,
-            //                                     display_name: true,
-            //                                     avatar_file_key: true,
-            //                                     matchup_entries: {
-            //                                         where: {
-            //                                             matchup_id: matchup.id
-            //                                         },
-            //                                         select: {
-            //                                             value: true
-            //                                         }
-            //                                     }
-            //                                 }
-            //                             }
-            //                         }
-            //                     }
-            //                 }
-            //             },
-            //             squad_two: {
-            //                 select: {
-            //                     id: true,
-            //                     name: true,
-            //                     members: {
-            //                         select: {
-            //                             user: {
-            //                                 select: {
-            //                                     display_name: true,
-            //                                     id: true,
-            //                                     avatar_file_key: true,
-            //                                     matchup_entries: {
-            //                                         where: {
-            //                                             matchup_id: matchup.id
-            //                                         },
-            //                                         select: {
-            //                                             value: true
-            //                                         }
-            //                                     }
-            //                                 }
-            //                             }
-            //                         }
-            //                     }
-            //                 }
-            //             },
-            //         }
-            //     })
-            //     if (matchupWithEntriesResponse) {
-            //         const squadOneScore = getTimesAndSum(matchupWithEntriesResponse?.squad_one.members as any)
-            //         const squadTwoScore = getTimesAndSum(matchupWithEntriesResponse?.squad_two.members as any)
-            //         matchupWithEntriesResponse.squad_one.members = _.sortBy(matchupWithEntriesResponse?.squad_one.members, (item) => item.user.matchup_entries[0]?.value)
-            //         matchupWithEntriesResponse.squad_two.members = _.sortBy(matchupWithEntriesResponse?.squad_two.members, (item) => item.user.matchup_entries[0]?.value)
-            //         matchupWithEntries.push({ ...matchupWithEntriesResponse, _squad_one_score: squadOneScore, _squad_two_score: squadTwoScore })
-            //     }
-            // }
             return matchups
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }
     })
 
-    // fastify.get('/squad/:id/matchup_results', {
-    //     preHandler: [authenticate], schema: {
-    //         description: 'Fetch a squads matchup results',
-    //         security: [{ bearerAuth: [] }],
-    //         tags: ['matchup'],
-    //         params: {
-    //             type: 'object',
-    //             properties: {
-    //                 id: { type: 'string' }
-    //             }
-    //         },
-    //         response: {
-    //             200: { ...SCHEMA_MATCHUP_RETURN, properties: { ...SCHEMA_MATCHUP_RETURN.properties, _squad_one_score: { type: 'number' }, _squad_two_score: { type: 'number' } } }
-    //         }
-    //     }
-    // }, async (request, reply) => {
-    //     const { id } = request.params as { id: string }
-    //     try {
-    //         const matchupResults = await prisma.matchupReport.findMany({
-    //             where: {
-
-    //             }
-    //         })
-    //         if (!matchupResult) {
-    //             return reply.status(404).send({ message: 'Matchups not found' })
-    //         }
-    //     } catch (e) {
-    //         return reply.status(500).send({ message: e as string })
-    //     }
-    // })
+    fastify.get('/:id/results', {
+        preHandler: [authenticate], schema: {
+            description: 'Fetch a matchup result',
+            security: [{ bearerAuth: [] }],
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            tags: ['matchup'],
+            response: {
+                200: { ...SCHEMA_MATCHUP_RETURN, properties: { ...SCHEMA_MATCHUP_RETURN.properties, _squad_one_score: { type: 'number' }, _squad_two_score: { type: 'number' } } }
+            }
+        }
+    }, async (request, reply) => {
+        try {
+            const { id } = request.params as { id: string }
+            const matchup = await prisma.matchup.findFirst({
+                orderBy: {
+                    ends_at: 'desc'
+                },
+                where: {
+                    completed: true,
+                    id
+                },
+                select: {
+                    id: true,
+                    starts_at: true,
+                    ends_at: true,
+                    created_at: true,
+                    challenge: {
+                        select: {
+                            description: true,
+                            type: true,
+                            label: true,
+                            name: true,
+                        }
+                    },
+                    squad_one: {
+                        select: {
+                            id: true,
+                            name: true,
+                            owner_id: true,
+                            members: {
+                                select: {
+                                    user: {
+                                        select: {
+                                            id: true,
+                                            display_name: true,
+                                            avatar_file_key: true,
+                                            matchup_entries: {
+                                                where: {
+                                                    matchup_id: id
+                                                },
+                                                select: {
+                                                    value: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    squad_two: {
+                        select: {
+                            id: true,
+                            name: true,
+                            owner_id: true,
+                            members: {
+                                select: {
+                                    user: {
+                                        select: {
+                                            display_name: true,
+                                            id: true,
+                                            avatar_file_key: true,
+                                            matchup_entries: {
+                                                where: {
+                                                    matchup_id: id
+                                                },
+                                                select: {
+                                                    value: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                }
+            })
+            if (!matchup) {
+                return reply.status(404).send({ message: 'Matchup not found' })
+            }
+            const squadOneScore = getTimesAndSum(matchup?.squad_one.members as any)
+            const squadTwoScore = getTimesAndSum(matchup?.squad_two.members as any)
+            matchup.squad_one.members = _.sortBy(matchup?.squad_one.members, (item) => item.user.matchup_entries[0]?.value)
+            matchup.squad_two.members = _.sortBy(matchup?.squad_two.members, (item) => item.user.matchup_entries[0]?.value)
+            return { ...matchup, _squad_one_score: squadOneScore, _squad_two_score: squadTwoScore }
+        } catch (e) {
+            return reply.status(500).send({ message: e as string })
+        }
+    })
 }
 
 export default matchupRoutes

@@ -43,7 +43,7 @@ async function matchupSquads() {
 
       const now = new Date();
       const twoWeeksLater = new Date();
-      twoWeeksLater.setMinutes(now.getMinutes() + 2)
+      twoWeeksLater.setDate(now.getDate() + 2)
       await prisma.$transaction([
         prisma.matchup.create({
           data: {

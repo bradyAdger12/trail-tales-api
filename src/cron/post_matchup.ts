@@ -5,10 +5,13 @@ import { prisma } from "../db"
 
 type SquadWithMatchupEntries = Squad & { members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[] }
 
-function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries) {
+function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries): { winner?: Squad, loser?: Squad, isTie: boolean } {
     const squadOneTotalTime = getTimesAndSum(squadOne.members)
     const squadTwoTotalTime = getTimesAndSum(squadOne.members)
-    return squadOneTotalTime < squadTwoTotalTime ? [squadOne, squadTwo] : [squadTwo, squadOne]
+    if (squadOneTotalTime === squadTwoTotalTime) {
+        return { isTie: true, winner: squadOne, loser: squadTwo }
+    }
+    return squadOneTotalTime < squadTwoTotalTime ? { winner: squadOne, loser: squadTwo, isTie: false } : { winner: squadTwo, loser: squadOne, isTie: false }
 }
 
 export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) { 
@@ -17,11 +20,11 @@ export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_
     return Math.round(squadTotalTime / (squadSortedMembersByTime.length || 1))
 }
 
-function determineWinningAndLosingSquad(squadOne: any, squadTwo: any, challengeType: string) {
+function determineWinningAndLosingSquad(squadOne: any, squadTwo: any, challengeType: string): { winner?: Squad, loser?: Squad, isTie: boolean } {
     if (challengeType === 'time') {
         return calculateWinningSquadByTime(squadOne, squadTwo)
     }
-    return []
+    return { isTie: false }
 }
 
 // Cron for building reports from matchups that have concluded
@@ -96,11 +99,11 @@ async function buildPostMatchupReports() {
             }
         })
         for (const matchup of concludedMatchups) {
-            const [winningSquad, losingSquad] = determineWinningAndLosingSquad(matchup.squad_one, matchup.squad_two, matchup.challenge.type)
+            const { winner, loser, isTie } = determineWinningAndLosingSquad(matchup.squad_one, matchup.squad_two, matchup.challenge.type)
             await prisma.$transaction([
                 prisma.squad.update({
                     where: {
-                        id: winningSquad?.id
+                        id: winner?.id
                     },
                     data: {
                         is_engaged: false,
@@ -114,7 +117,7 @@ async function buildPostMatchupReports() {
                 }),
                 prisma.squad.update({
                     where: {
-                        id: losingSquad?.id
+                        id: loser?.id
                     },
                     data: {
                         is_engaged: false,
