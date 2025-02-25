@@ -30,6 +30,7 @@ export const SCHEMA_SQUADS_RETURN = {
     properties: {
         _count: { properties: { members: { type: 'number' }} },
         id: { type: 'string' },
+        level: { type: 'string' },
         name: { type: 'string' },
         members: { type: 'array' },
         owner_id: { type: 'string' },

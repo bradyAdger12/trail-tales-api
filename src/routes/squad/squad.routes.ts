@@ -113,11 +113,8 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 take: limit || 10,
                 skip: offset || 0,
                 where,
-                select: {
+                include: {
                     _count: true,
-                    id: true,
-                    name: true,
-                    owner_id: true,
                     members: {
                         select: {
                             user: {
@@ -127,8 +124,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                                 }
                             }
                         }
-                    },
-                    description: true
+                    }
                 }
             })
             return squads
