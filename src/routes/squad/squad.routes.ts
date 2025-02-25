@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
-import { Squad } from "@prisma/client";
+import { Prisma, Squad } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_SQUAD_RETURN, SCHEMA_SQUADS_REQUEST_RETURN, SCHEMA_SQUADS_RETURN } from "./squad.schema";
 import { randomUUID } from "node:crypto";
@@ -84,6 +84,7 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
                 properties: {
                     limit: { type: 'number' },
                     query: { type: 'string' },
+                    is_engaged: { type: 'boolean' },
                     offset: { type: 'number' }
                 }
             },
@@ -93,15 +94,19 @@ const squadRoutes: FastifyPluginAsync = async (fastify) => {
             }
         }
     }, async (request, reply) => {
-        const { limit, offset, query } = request.query as { limit?: number, offset?: number, query?: string }
+        const { limit, offset, query, is_engaged} = request.query as { limit?: number, offset?: number, query?: string, is_engaged?: boolean }
         try {
-            let where = {}
+            let where = {} as Prisma.SquadWhereInput
             if (query) {
                 where = {
                     name: {
                         contains: query,
                         mode: 'insensitive'
                     }
+                }
+            } if (_.has(request.query, 'is_engaged')) {
+                where.is_engaged = {
+                    equals: is_engaged
                 }
             }
             const squads = await prisma.squad.findMany({

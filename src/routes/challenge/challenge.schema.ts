@@ -8,3 +8,8 @@ export const SCHEMA_CHALLENGE_RETURN = {
         description: { type: 'string' },
     }
 }
+
+export const SCHEMA_CHALLENGES_RETURN = {
+    type: 'array',
+    properties: SCHEMA_CHALLENGE_RETURN.properties
+}

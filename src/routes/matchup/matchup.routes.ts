@@ -4,7 +4,7 @@ import { SCHEMA_MATCHUP_RETURN, SCHEMA_MATCHUPS_RETURN } from "./matchup.schema"
 import { getTimesAndSum } from "../../cron/post_matchup"
 import _ from "lodash"
 import { prisma } from "../../db"
-import { squadAuthorization } from "../../middleware/authorize_squad"
+import { Squad } from "@prisma/client"
 
 // console.log(prisma)
 
@@ -186,6 +186,91 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             })
             return matchups
+        } catch (e) {
+            return reply.status(500).send({ message: e as string })
+        }
+    })
+
+    fastify.post('/create', {
+        preHandler: [authenticate], schema: {
+            description: 'Create a matchup',
+            security: [{ bearerAuth: [] }],
+            body: {
+                type: 'object',
+                properties: {
+                    squadId: { type: 'string' },
+                    challengeId: { type: 'string' },
+                    random: { type: 'boolean' },
+                    duration: { type: 'number' }
+                }
+            },
+            tags: ['matchup'],
+            response: {
+                201: { type: 'object', properties: { success: { type: 'boolean' } } }
+            }
+        }
+    }, async (request, reply) => {
+        try {
+            const { squadId, challengeId, random, duration } = request.body as { squadId?: string, challengeId: string, random?: boolean, duration: number }
+            let squadToChallenge: Squad | null = null
+            const mySquad = await prisma.squad.findFirst({
+                where: {
+                    owner_id: request.user?.id
+                }
+            })
+            if (!mySquad) {
+                return reply.status(400).send('You must own a squad in order to create a matchup')
+            }
+            if (squadId) {
+                squadToChallenge = await prisma.squad.findFirst({
+                    where: {
+                        id: squadId,
+                        is_engaged: false
+                    }
+                })
+            }
+            if (random) {
+                const squads: Squad[] = await prisma.$queryRaw`SELECT * FROM "squads" WHERE id != ${mySquad.id} ORDER BY RANDOM() LIMIT 1`;
+                if (squads.length > 0) {
+                    squadToChallenge = squads[0]
+                }
+            }
+
+            if (!squadToChallenge) {
+                return reply.status(404).send('We are unable to create a matchup for you at this time. Please try again later')
+            } else {
+                const now = new Date();
+                const endsAtDate = new Date();
+                endsAtDate.setDate(now.getDate() + duration)
+                console.log(challengeId, mySquad.id, squadToChallenge.id, endsAtDate)
+                await prisma.$transaction([
+                    prisma.matchup.create({
+                        data: {
+                            challenge_id: challengeId,
+                            squad_one_id: mySquad.id,
+                            squad_two_id: squadToChallenge.id,
+                            ends_at: endsAtDate,
+                        }
+                    }),
+                    prisma.squad.update({
+                        data: {
+                            is_engaged: true
+                        },
+                        where: {
+                            id: mySquad.id
+                        }
+                    }),
+                    prisma.squad.update({
+                        data: {
+                            is_engaged: true
+                        },
+                        where: {
+                            id: squadToChallenge.id
+                        }
+                    })
+                ])
+            }
+            return { success: true }
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }

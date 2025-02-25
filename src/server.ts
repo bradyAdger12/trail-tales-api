@@ -8,6 +8,7 @@ import memberRoutes from "./routes/member/member.routes";
 import activityRoutes from "./routes/activity/activity.routes";
 import matchupRoutes from "./routes/matchup/matchup.routes";
 import stravaRoutes from "./routes/strava/strava.routes";
+import challengeRoutes from "./routes/challenge/challenge.routes";
 
 // Build Server
 function buildServer() {
@@ -68,6 +69,7 @@ function buildServer() {
   fastify.register(activityRoutes, { prefix: '/activity' })
   fastify.register(matchupRoutes, { prefix: '/matchup' })
   fastify.register(stravaRoutes, { prefix: '/strava' })
+  fastify.register(challengeRoutes, { prefix: '/challenges' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
