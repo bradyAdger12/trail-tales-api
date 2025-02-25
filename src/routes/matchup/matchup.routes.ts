@@ -4,10 +4,7 @@ import { SCHEMA_MATCHUP_RETURN, SCHEMA_MATCHUPS_RETURN } from "./matchup.schema"
 import { getTimesAndSum } from "../../cron/post_matchup"
 import _ from "lodash"
 import { prisma } from "../../db"
-import { Squad } from "@prisma/client"
-
-// console.log(prisma)
-
+import { Squad } from "@prisma/client" 
 const matchupRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.get('/me', {
         preHandler: [authenticate], schema: {
@@ -242,7 +239,6 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                 const now = new Date();
                 const endsAtDate = new Date();
                 endsAtDate.setDate(now.getDate() + duration)
-                console.log(challengeId, mySquad.id, squadToChallenge.id, endsAtDate)
                 await prisma.$transaction([
                     prisma.matchup.create({
                         data: {

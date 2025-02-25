@@ -2,6 +2,6 @@ TAP version 14
 # Subtest: GET /user/me - fetch own user data
     ok 1 - should have all specified properties
     1..1
-ok 1 - GET /user/me - fetch own user data # time=242.197ms
+ok 1 - GET /user/me - fetch own user data # time=283.444ms
 
 1..1

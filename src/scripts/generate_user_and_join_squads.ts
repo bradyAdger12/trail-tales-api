@@ -3,8 +3,16 @@ import bcrypt from 'bcrypt'
 import { randomUUID } from "crypto"
 import { prisma } from "../db"
 import { processActivityForMatchup } from "../routes/activity/activity.controller"
+import { User } from "@prisma/client"
 
 const squadIds = ['008258bf-edc9-4e8d-baa1-88e933ebbb73', '15b3a866-703d-4eb5-a2c3-2131a70c320e']
+
+// Fastify request extension
+declare module 'fastify' {
+    interface FastifyRequest {
+        user?: User
+    }
+}
 
 async function execute() {
     const users: any = []

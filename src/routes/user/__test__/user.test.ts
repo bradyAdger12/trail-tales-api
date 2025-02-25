@@ -1,7 +1,8 @@
-import { test } from 'tap'
-import buildServer, { prisma } from '../../../server'
-import { faker } from '@faker-js/faker'
+import { test, teardown } from 'tap'
+import buildServer from '../../../server'
 import { registerAndLoginUser } from '../../../lib/helper'
+import { prisma } from '../../../db'
+import { postMatchupCron } from '../../../cron/post_matchup'
 
 test('GET /user/me - fetch own user data', async (t) => {
     const fastify = buildServer()
@@ -11,6 +12,11 @@ test('GET /user/me - fetch own user data', async (t) => {
 
     t.teardown(async () => {
         await fastify.close()
+        await prisma.$disconnect()
         await prisma.user.deleteMany({})
     })
 })
+
+teardown(async () => {
+    postMatchupCron.stop()
+});

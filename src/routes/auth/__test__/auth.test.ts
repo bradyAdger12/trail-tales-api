@@ -1,6 +1,8 @@
-import { test } from 'tap'
-import buildServer, { prisma } from '../../../server'
+import { teardown, test } from 'tap'
+import buildServer from '../../../server'
 import { faker } from '@faker-js/faker'
+import { prisma } from '../../../db'
+import { postMatchupCron } from '../../../cron/post_matchup'
 
 const display_name = faker.person.firstName()
 const email = faker.internet.email()
@@ -92,3 +94,7 @@ test('POST /register - email already exists', async (t) => {
         await prisma.user.deleteMany({}) // Delete created users
     })
 })
+
+teardown(async () => {
+    postMatchupCron.stop()
+});

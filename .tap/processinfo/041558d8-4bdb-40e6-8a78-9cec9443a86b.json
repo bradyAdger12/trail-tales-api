@@ -1,5 +1,5 @@
 {
-  "date": "2025-02-04T01:45:47.019Z",
+  "date": "2025-02-25T02:15:13.587Z",
   "argv": [
     "C:\\nvm4w\\nodejs\\node.exe",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\user\\__test__\\user.test.ts"
@@ -12,10 +12,10 @@
   ],
   "NODE_OPTIONS": "\"--import=file:///C:/Users/brady/Projects/api_fastify_primsa_template/node_modules/@tapjs/processinfo/dist/esm/import.mjs\"",
   "cwd": "C:\\Users\\brady\\Projects\\api_fastify_primsa_template",
-  "pid": 39104,
-  "ppid": 100288,
+  "pid": 85180,
+  "ppid": 80556,
   "parent": null,
-  "uuid": "8f5e3fe1-c3b0-4a5e-a06d-14da8edb2b23",
+  "uuid": "041558d8-4bdb-40e6-8a78-9cec9443a86b",
   "files": [
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\user\\__test__\\user.test.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@isaacs\\ts-node-temp-fork-for-pr-2009\\import.mjs",
@@ -25,12 +25,10 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\index.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\index.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\is-relative-require.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\munge-mocks.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\export-line.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\service-key.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\munge-mocks.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\resolve-mock-entry-point.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\call-site-like.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\require-resolve.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\service-key.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-all-conditional-values.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-all-conditions.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-unique-condition-sets.js",
@@ -38,12 +36,13 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-all-local-imports.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-conditional-value.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-import.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\call-site-like.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\require-resolve.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\is-windows.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\parse.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-conditional-values-list.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-pkg.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\errors.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-named-exports-list.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-pkg.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-export.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\star-glob.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\to-path.js",
@@ -52,25 +51,26 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\to-file-url.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-dependency-export.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-package-import.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\parse.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-json.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\find-star-match.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\index.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\walk-up-path\\dist\\esm\\index.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\glob.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\index.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\glob.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\has-magic.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\ignore.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\assert-valid-pattern.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\ast.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\escape.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\unescape.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\pattern.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\dist\\esm\\index.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\pattern.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\walker.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\brace-expressions.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\node_modules\\lru-cache\\dist\\esm\\index.js",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\processor.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\minipass\\dist\\esm\\index.js",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\processor.js",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\loader.mjs",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\hooks.mjs",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\mock-service-client.js",
@@ -79,10 +79,24 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\lib\\safe_return_data.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\resend\\send_email.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\user\\user.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\matchup\\matchup.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\challenge\\challenge.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\squad\\squad.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\db.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\auth\\auth.controller.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\user\\user.routes.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\middleware\\authentication.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\squad\\squad.routes.ts",
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\squad\\squad.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\middleware\\authorize_squad.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\member\\member.routes.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\activity\\activity.routes.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\activity\\activity.schema.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\middleware\\authorize_activity.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\activity\\activity.controller.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\matchup\\matchup.routes.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\cron\\post_matchup.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\strava\\strava.routes.ts",
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\routes\\challenge\\challenge.routes.ts",
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\src\\lib\\helper.ts"
   ],
   "sources": {
@@ -101,23 +115,17 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\is-relative-require.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\is-relative-require.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\munge-mocks.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\munge-mocks.ts"
-    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\export-line.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\export-line.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\service-key.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\service-key.ts"
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\munge-mocks.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\munge-mocks.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\resolve-mock-entry-point.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\resolve-mock-entry-point.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\call-site-like.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\call-site-like.ts"
-    ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\require-resolve.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\require-resolve.ts"
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\dist\\esm\\service-key.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\mock\\src\\service-key.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-all-conditional-values.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\get-all-conditional-values.ts"
@@ -140,23 +148,26 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-import.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\resolve-import.ts"
     ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\call-site-like.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\call-site-like.ts"
+    ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\require-resolve.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\require-resolve.ts"
+    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\is-windows.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\is-windows.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\parse.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\parse.ts"
-    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-conditional-values-list.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\get-conditional-values-list.ts"
-    ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-pkg.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\read-pkg.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\errors.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\errors.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\get-named-exports-list.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\get-named-exports-list.ts"
+    ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-pkg.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\read-pkg.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-export.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\resolve-export.ts"
@@ -182,6 +193,9 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\resolve-package-import.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\resolve-package-import.ts"
     ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\dist\\esm\\parse.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\@tapjs\\stack\\src\\parse.ts"
+    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\dist\\esm\\read-json.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\resolve-import\\src\\read-json.ts"
     ],
@@ -194,11 +208,11 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\walk-up-path\\dist\\esm\\index.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\walk-up-path\\src\\index.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\glob.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\glob.ts"
-    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\index.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\src\\index.ts"
+    ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\glob.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\glob.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\has-magic.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\has-magic.ts"
@@ -218,11 +232,11 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\dist\\esm\\unescape.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\node_modules\\minimatch\\src\\unescape.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\pattern.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\pattern.ts"
-    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\dist\\esm\\index.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\src\\index.ts"
+    ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\pattern.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\pattern.ts"
     ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\walker.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\walker.ts"
@@ -233,18 +247,18 @@
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\node_modules\\lru-cache\\dist\\esm\\index.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\path-scurry\\node_modules\\lru-cache\\src\\index.ts"
     ],
-    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\processor.js": [
-      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\processor.ts"
-    ],
     "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\minipass\\dist\\esm\\index.js": [
       "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\minipass\\src\\index.ts"
+    ],
+    "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\dist\\esm\\processor.js": [
+      "C:\\Users\\brady\\Projects\\api_fastify_primsa_template\\node_modules\\glob\\src\\processor.ts"
     ]
   },
-  "root": "8f5e3fe1-c3b0-4a5e-a06d-14da8edb2b23",
+  "root": "041558d8-4bdb-40e6-8a78-9cec9443a86b",
   "externalID": "src/routes/user/__test__/user.test.ts",
   "code": 0,
   "signal": null,
-  "runtime": 1442.3692,
+  "runtime": 1632.7774,
   "globalsAdded": [
     "DEBUG",
     "DEBUG_COLORS",
