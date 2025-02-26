@@ -4,6 +4,8 @@
   },
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "npx tsc",
+    "start": "node dist/index.js",
     "test": "npx dotenv -e .env.test -- tap --jobs=1",
     "test:auth": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/auth/__test__/auth.test.ts",
     "test:user": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/user/__test__/user.test.ts",
@@ -38,8 +40,9 @@
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.10.3",
     "@types/pug": "^2.0.10",
+    "@types/react": "^19.0.10",
     "dotenv-cli": "^8.0.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }

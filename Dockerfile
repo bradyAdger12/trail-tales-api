@@ -1,23 +1,12 @@
-# Use an official Node.js runtime as a parent image
-FROM node:18-alpine
-
-# Set the working directory inside the container
+FROM node:20-alpine
 WORKDIR /app
-
-# Copy package.json and package-lock.json first for better caching
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 COPY package.json yarn.lock ./
-
-# Install dependencies
 RUN yarn install
-
-# Copy the rest of the application files
 COPY . .
-
-# Build the Nuxt 3 application
+COPY .env .env
+RUN yarn generate
 RUN yarn build
-
-# Expose the port Nuxt will run on
-EXPOSE 3000
-
-# Start the Nuxt application
+EXPOSE 8080
 CMD ["yarn", "start"]
