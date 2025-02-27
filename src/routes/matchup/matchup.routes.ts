@@ -216,7 +216,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             })
             if (!mySquad) {
-                return reply.status(400).send('You must own a squad in order to create a matchup')
+                return reply.status(400).send({ message: 'You must own a squad in order to create a matchup' })
             }
             if (squadId) {
                 squadToChallenge = await prisma.squad.findFirst({
@@ -234,7 +234,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             }
 
             if (!squadToChallenge) {
-                return reply.status(404).send('We are unable to create a matchup for you at this time. Please try again later')
+                return reply.status(404).send({ message: 'We are unable to create a matchup for you at this time. Please try again later' })
             } else {
                 const now = new Date();
                 const endsAtDate = new Date();

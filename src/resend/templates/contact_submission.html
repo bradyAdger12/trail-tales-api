@@ -47,6 +47,17 @@
             margin: 10px 0;
         }
 
+        .email-body a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
         .email-footer {
             text-align: center;
             padding: 10px;
@@ -60,16 +71,19 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <img src="https://via.placeholder.com/150" alt="Company Logo">
+            <img src="https://runsquad-ba-8402.s3.us-west-2.amazonaws.com/company/squadrn_logo.png" alt="Company Logo">
         </div>
         <div class="email-body">
-            <h1>Request to join {{name}}</h1>
-            <p>Hello,</p>
-            <p>A user has requested to join your squad</p>
+            <h1>Contact Submission</h1>
             <p>
-                <span>Username: </span><span style="font-weight: bold;">{{ display_name }}</span>
+                <strong>Name:</strong><span> {{name}}</span>
             </p>
-            <p>Click <a href="{{url}}" target="_blank">this</a> link in order to accept/decline this users invitation.</p>
+            <p>
+                <strong>Email:</strong><span> {{email}}</span>
+            </p>
+            <p>
+                <strong>Message:</strong><span> {{message}}</span>
+            </p>
         </div>
         <div class="email-footer">
             &copy; 2025 Squadrn. All rights reserved.

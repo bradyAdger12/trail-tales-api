@@ -9,6 +9,7 @@ import activityRoutes from "./routes/activity/activity.routes";
 import matchupRoutes from "./routes/matchup/matchup.routes";
 import stravaRoutes from "./routes/strava/strava.routes";
 import challengeRoutes from "./routes/challenge/challenge.routes";
+import { sendEmail } from "./resend/send_email";
 
 // Build Server
 function buildServer() {
@@ -73,6 +74,34 @@ function buildServer() {
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
+  })
+
+  fastify.post('/contact', {
+    schema: {
+      description: 'Send a message to squadrn email',
+      security: [{ bearerAuth: [] }],
+      tags: ['contact'],
+      body: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          email: { type: 'string' },
+          message: { type: 'string' }
+        },
+        required: ['name', 'email', 'message']
+      },
+      response: {
+        200: { type: 'object', properties: { success: { type: 'boolean' } } }
+      }
+    }
+  }, async (request, reply) => {
+    const { email, message, name } = request.body as { name: string, message: string, email: string }
+    console.log('ok')
+    try {
+      await sendEmail('contact_submission.html', { email, message, name }, 'Contact Submission')
+    } catch (e) {
+      reply.status(500).send('Error sending message')
+    }
   })
 
   return fastify
