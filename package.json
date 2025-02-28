@@ -6,7 +6,7 @@
     "dev": "ts-node-dev --respawn src/index.ts",
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "test": "npx dotenv -e .env.test -- tap --jobs=1",
+    "test": "npx dotenv -e .env.test -- tap --jobs=3",
     "test:auth": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/auth/__test__/auth.test.ts",
     "test:user": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/user/__test__/user.test.ts",
     "migrate": "npx prisma migrate dev",

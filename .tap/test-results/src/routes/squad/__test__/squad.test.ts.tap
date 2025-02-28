@@ -2,66 +2,94 @@ TAP version 14
 # Subtest: POST /squad/create - name and description required to create a squad
     ok 1 - should be equal
     1..1
-ok 1 - POST /squad/create - name and description required to create a squad # time=271.784ms
+ok 1 - POST /squad/create - name and description required to create a squad # time=782.551ms
 
 # Subtest: POST /squad/create - successfully create a squad
-    ok 1 - should have all specified properties
-    ok 2 - should be equal
-    1..2
-ok 2 - POST /squad/create - successfully create a squad # time=172.888ms
-
-# Subtest: GET /squad/all - fetch all squads
-    not ok 1 - should be equal
+    not ok 1 - should have all specified properties
       ---
-      compare: ===
       at:
         fileName: src\routes\squad\__test__\squad.test.ts
-        lineNumber: 63
+        lineNumber: 33
         columnNumber: 7
         typeName: Test
         generated:
           fileName: src/routes/squad/__test__/squad.test.ts
-          lineNumber: 62
+          lineNumber: 32
           columnNumber: 7
       stack: |
-        Test.<anonymous> (src/routes/squad/__test__/squad.test.ts:63:7)
-      source: "    })\r
+        Test.<anonymous> (src/routes/squad/__test__/squad.test.ts:33:7)
+      source: "        }\r
       
-        \    const response = await fastify.inject({ method: 'GET', url: '/squad/all',
-        headers: { authorization: `Bearer ${token}` } })\r
+        \    })\r
       
-        \    t.equal(response.json().length, 2)\r
+        \    t.hasProps(response.json(), ['name', 'description'])\r
       
         ------^
       
-        \    t.teardown(async () => {\r
+        \    t.equal(response.statusCode, 201)\n"
+      diff: |
+        --- expected
+        +++ actual
+        @@ -1,4 +1,3 @@
+        -Array [
+        -  "name",
+        -  "description",
+        -]
+        +Object {
+        +  "message": "Squad with name 'squad1' already exists",
+        +}
+      ...
+    
+    not ok 2 - should be equal
+      ---
+      compare: ===
+      at:
+        fileName: src\routes\squad\__test__\squad.test.ts
+        lineNumber: 34
+        columnNumber: 7
+        typeName: Test
+        generated:
+          fileName: src/routes/squad/__test__/squad.test.ts
+          lineNumber: 33
+          columnNumber: 7
+      stack: |
+        Test.<anonymous> (src/routes/squad/__test__/squad.test.ts:34:7)
+      source: "    })\r
       
-        \        await fastify.close()\n"
+        \    t.hasProps(response.json(), ['name', 'description'])\r
+      
+        \    t.equal(response.statusCode, 201)\r
+      
+        ------^
+      
+        \r
+      
+        \    t.teardown(async () => {\n"
       diff: |
         --- expected
         +++ actual
         @@ -1,1 +1,1 @@
-        -2
-        +1
+        -201
+        +500
       ...
     
-    1..1
-not ok 3 - GET /squad/all - fetch all squads # time=176.672ms
+    1..2
+not ok 2 - POST /squad/create - successfully create a squad # time=739.376ms
   ---
   at:
     fileName: src\routes\squad\__test__\squad.test.ts
-    lineNumber: 45
+    lineNumber: 23
     columnNumber: 6
     typeName: Object
     generated:
       fileName: src/routes/squad/__test__/squad.test.ts
-      lineNumber: 44
+      lineNumber: 22
       columnNumber: 16
   source: "})\r
   
     \r
   
-    test('GET /squad/all - fetch all squads', async (t) => {\r
+    test('POST /squad/create - successfully create a squad', async (t) => {\r
   
     -----^
   
@@ -70,21 +98,26 @@ not ok 3 - GET /squad/all - fetch all squads # time=176.672ms
     \    const { token } = await registerAndLoginUser(fastify)\n"
   ...
 
+# Subtest: GET /squad/all - fetch all squads
+    ok 1 - should be equal
+    1..1
+ok 3 - GET /squad/all - fetch all squads # time=1051.209ms
+
 # Subtest: GET /squad/me - fetch squads belonging to me
     not ok 1 - should be equal
       ---
       compare: ===
       at:
         fileName: src\routes\squad\__test__\squad.test.ts
-        lineNumber: 90
+        lineNumber: 84
         columnNumber: 7
         typeName: Test
         generated:
           fileName: src/routes/squad/__test__/squad.test.ts
-          lineNumber: 88
+          lineNumber: 80
           columnNumber: 7
       stack: |
-        Test.<anonymous> (src/routes/squad/__test__/squad.test.ts:90:7)
+        Test.<anonymous> (src/routes/squad/__test__/squad.test.ts:84:7)
       source: "    })\r
       
         \    const response = await fastify.inject({ method: 'GET', url: '/squad/me',
@@ -106,16 +139,16 @@ not ok 3 - GET /squad/all - fetch all squads # time=176.672ms
       ...
     
     1..1
-not ok 4 - GET /squad/me - fetch squads belonging to me # time=270.377ms
+not ok 4 - GET /squad/me - fetch squads belonging to me # time=1549.275ms
   ---
   at:
     fileName: src\routes\squad\__test__\squad.test.ts
-    lineNumber: 71
+    lineNumber: 65
     columnNumber: 6
     typeName: Object
     generated:
       fileName: src/routes/squad/__test__/squad.test.ts
-      lineNumber: 69
+      lineNumber: 61
       columnNumber: 16
   source: "})\r
   
@@ -130,4 +163,3 @@ not ok 4 - GET /squad/me - fetch squads belonging to me # time=270.377ms
     \    const { token } = await registerAndLoginUser(fastify)\n"
   ...
 
-1..4

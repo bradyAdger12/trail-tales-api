@@ -1,9 +1,6 @@
-import { teardown, test } from 'tap'
+import { test } from 'tap'
 import buildServer from '../../../server'
-import { faker } from '@faker-js/faker'
 import { registerAndLoginUser } from '../../../lib/helper'
-import { prisma } from '../../../db'
-import { postMatchupCron } from '../../../cron/post_matchup'
 
 test('POST /squad/create - name and description required to create a squad', async (t) => {
     const fastify = buildServer()
@@ -17,8 +14,6 @@ test('POST /squad/create - name and description required to create a squad', asy
 
     t.teardown(async () => {
         await fastify.close()
-        await prisma.user.deleteMany({})
-        await prisma.squad.deleteMany({})
     })
 })
 
@@ -37,8 +32,6 @@ test('POST /squad/create - successfully create a squad', async (t) => {
 
     t.teardown(async () => {
         await fastify.close()
-        await prisma.user.deleteMany({})
-        await prisma.squad.deleteMany({})
     })
 })
 
@@ -63,8 +56,6 @@ test('GET /squad/all - fetch all squads', async (t) => {
     t.equal(response.json().length, 2)
     t.teardown(async () => {
         await fastify.close()
-        await prisma.user.deleteMany({})
-        await prisma.squad.deleteMany({})
     })
 })
 
@@ -90,11 +81,5 @@ test('GET /squad/me - fetch squads belonging to me', async (t) => {
     t.equal(response.json().length, 1)
     t.teardown(async () => {
         await fastify.close()
-        await prisma.user.deleteMany({})
-        await prisma.squad.deleteMany({})
     })
 })
-
-teardown(async () => {
-    postMatchupCron.stop()
-});

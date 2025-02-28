@@ -12,11 +12,5 @@ test('GET /user/me - fetch own user data', async (t) => {
 
     t.teardown(async () => {
         await fastify.close()
-        await prisma.$disconnect()
-        await prisma.user.deleteMany({})
     })
 })
-
-teardown(async () => {
-    postMatchupCron.stop()
-});
