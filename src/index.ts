@@ -7,7 +7,7 @@ const server = buildServer()
 const main = async () => {
   try {
     const port = (process.env.PORT || 3000) as number
-    await server.listen({ port, host: '0.0.0.0' });
+    await server.listen({ port, host: process.env.NODE_ENV === 'development' ? '0.0.0.0' : undefined });
     // job.start()
     postMatchupCron.start()
     console.log(`Server listening on port ${port}`)
