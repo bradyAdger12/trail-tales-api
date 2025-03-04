@@ -17,6 +17,8 @@ export const SCHEMA_MATCHUP_RETURN = {
         challenge: SCHEMA_CHALLENGE_RETURN,
         squad_one: SCHEMA_SQUAD_RETURN,
         squad_two: SCHEMA_SQUAD_RETURN,
+        squad_one_score: { type: 'number' },
+        squad_two_score: { type: 'number' },
         starts_at: { type: 'string' },
         ends_at: { type: 'string' },
         created_at: { type: 'string' },
@@ -25,14 +27,5 @@ export const SCHEMA_MATCHUP_RETURN = {
 
 export const SCHEMA_MATCHUPS_RETURN = {
     type: 'array',
-    properties: {
-        id: { type: 'string' },
-        entries: SCHEMA_MATCHUP_ENTRIES_RETURN,
-        challenge: SCHEMA_CHALLENGE_RETURN,
-        squad_one: SCHEMA_SQUAD_RETURN,
-        squad_two: SCHEMA_SQUAD_RETURN,
-        starts_at: { type: 'string' },
-        ends_at: { type: 'string' },
-        created_at: { type: 'string' },
-    }
+    properties: SCHEMA_MATCHUP_RETURN.properties
 }

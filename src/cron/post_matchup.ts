@@ -19,24 +19,38 @@ function getSquadLevel(xp: number): Level {
     return level
 }
 
-function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries): { winner?: Squad, loser?: Squad, isTie: boolean } {
-    const squadOneTotalTime = getTimesAndSum(squadOne.members)
-    const squadTwoTotalTime = getTimesAndSum(squadOne.members)
+function calculateWinningSquadByTime(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries, challengeType: string): { winner?: Squad, loser?: Squad, isTie: boolean } {
+    const squadOneTotalTime = getResultsAndSum(squadOne.members, challengeType)
+    const squadTwoTotalTime = getResultsAndSum(squadOne.members, challengeType)
     if (squadOneTotalTime === squadTwoTotalTime) {
         return { isTie: true, winner: squadOne, loser: squadTwo }
     }
     return squadOneTotalTime < squadTwoTotalTime ? { winner: squadOne, loser: squadTwo, isTie: false } : { winner: squadTwo, loser: squadOne, isTie: false }
 }
 
-export function getTimesAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[]) {
-    const squadSortedMembersByTime = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value).filter((item) => item.user.matchup_entries[0]?.value)
-    const squadTotalTime = _.reduce(squadSortedMembersByTime, (a, b) => { return a + b.user.matchup_entries[0].value }, 0)
-    return Math.round(squadTotalTime / (squadSortedMembersByTime.length || 1))
+function calculateWinningSquadByDistance(squadOne: SquadWithMatchupEntries, squadTwo: SquadWithMatchupEntries, challengeType: string): { winner?: Squad, loser?: Squad, isTie: boolean } {
+    const squadOneTotalDistance = getResultsAndSum(squadOne.members, challengeType)
+    const squadTwoTotalDistance = getResultsAndSum(squadOne.members, challengeType)
+    if (squadOneTotalDistance === squadTwoTotalDistance) {
+        return { isTie: true, winner: squadOne, loser: squadTwo }
+    }
+    return squadOneTotalDistance < squadTwoTotalDistance ? { winner: squadOne, loser: squadTwo, isTie: false } : { winner: squadTwo, loser: squadOne, isTie: false }
+}
+
+export function getResultsAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[], challengeType: string) {
+    const squadSortedMembersByResult = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value).filter((item) => item.user.matchup_entries[0]?.value)
+    if (challengeType === 'distance') {
+        squadSortedMembersByResult.reverse()
+    }
+    const squadTotal = _.reduce(squadSortedMembersByResult, (a, b) => { return a + b.user.matchup_entries[0].value }, 0)
+    return Math.round(squadTotal / (squadSortedMembersByResult.length || 1))
 }
 
 function determineWinningAndLosingSquad(squadOne: any, squadTwo: any, challengeType: string): { winner?: Squad, loser?: Squad, isTie: boolean } {
     if (challengeType === 'time') {
-        return calculateWinningSquadByTime(squadOne, squadTwo)
+        return calculateWinningSquadByTime(squadOne, squadTwo, challengeType)
+    } else if (challengeType === 'distance') {
+        return calculateWinningSquadByDistance(squadOne, squadTwo, challengeType)
     }
     return { isTie: false }
 }
@@ -70,6 +84,9 @@ async function buildPostMatchupReports() {
                     select: {
                         id: true,
                         name: true,
+                        wins: true,
+                        losses: true,
+                        xp: true,
                         description: true,
                         members: {
                             select: {
@@ -93,6 +110,9 @@ async function buildPostMatchupReports() {
                         id: true,
                         name: true,
                         description: true,
+                        wins: true,
+                        losses: true,
+                        xp: true,
                         members: {
                             select: {
                                 user: {

@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify"
 import { SCHEMA_ACTIVITIES_RETURN, SCHEMA_ACTIVITY_RETURN } from "./activity.schema";
-import { Activity, Challenge, Matchup } from "@prisma/client";
+import { Activity } from "@prisma/client";
 import { authenticate } from "../../middleware/authentication";
 import { activityAuthorization } from "../../middleware/authorize_activity";
 import _ from "lodash";
@@ -95,8 +95,8 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                     elapsed_time_in_seconds
                 }
             })
-            if (currentMatchup) {
-                await processActivityForMatchup(request.user.id, activity, currentMatchup)
+            if (currentMatchup && activity.created_at > currentMatchup.starts_at && activity.created_at < currentMatchup.ends_at) {
+                await processActivityForMatchup(request.user.id, activity, currentMatchup as any)
             }
             return activity
         } catch (e) {

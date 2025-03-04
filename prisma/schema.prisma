@@ -69,6 +69,8 @@ model Matchup {
   challenge_id    String
   squad_one_id    String
   squad_two_id    String
+  squad_one_score Float?          
+  squad_two_score Float?
   starts_at       DateTime       @default(now())
   ends_at         DateTime
   created_at      DateTime       @default(now())
@@ -140,7 +142,7 @@ model Activity {
 
 model Challenge {
   id          String    @id @default(uuid())
-  name        String    
+  name        String
   label       String    @default("")
   type        String    @default("time")
   description String

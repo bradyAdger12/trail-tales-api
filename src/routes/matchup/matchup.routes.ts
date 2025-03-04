@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify"
 import { authenticate } from "../../middleware/authentication"
 import { SCHEMA_MATCHUP_RETURN, SCHEMA_MATCHUPS_RETURN } from "./matchup.schema"
-import { getTimesAndSum } from "../../cron/post_matchup"
+import { getResultsAndSum } from "../../cron/post_matchup"
 import _ from "lodash"
 import { prisma } from "../../db"
 import { Squad } from "@prisma/client" 
@@ -12,7 +12,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             security: [{ bearerAuth: [] }],
             tags: ['matchup'],
             response: {
-                200: { ...SCHEMA_MATCHUP_RETURN, properties: { ...SCHEMA_MATCHUP_RETURN.properties, _squad_one_score: { type: 'number' }, _squad_two_score: { type: 'number' } } }
+                200: SCHEMA_MATCHUP_RETURN
             }
         }
     }, async (request, reply) => {
@@ -54,6 +54,8 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     starts_at: true,
                     ends_at: true,
                     created_at: true,
+                    squad_one_score: true,
+                    squad_two_id: true,
                     challenge: {
                         select: {
                             description: true,
@@ -119,11 +121,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             if (!matchupWithEntries) {
                 return reply.status(404).send({ message: 'Matchup not found' })
             }
-            const squadOneScore = getTimesAndSum(matchupWithEntries?.squad_one.members as any)
-            const squadTwoScore = getTimesAndSum(matchupWithEntries?.squad_two.members as any)
-            matchupWithEntries.squad_one.members = _.sortBy(matchupWithEntries?.squad_one.members, (item) => item.user.matchup_entries[0]?.value)
-            matchupWithEntries.squad_two.members = _.sortBy(matchupWithEntries?.squad_two.members, (item) => item.user.matchup_entries[0]?.value)
-            return { ...matchupWithEntries, _squad_one_score: squadOneScore, _squad_two_score: squadTwoScore }
+            return matchupWithEntries
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }
@@ -141,7 +139,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             },
             tags: ['matchup'],
             response: {
-                200: { ...SCHEMA_MATCHUPS_RETURN, properties: { ...SCHEMA_MATCHUP_RETURN.properties, _squad_one_score: { type: 'number' }, _squad_two_score: { type: 'number' } } }
+                200: SCHEMA_MATCHUPS_RETURN
             }
         }
     }, async (request, reply) => {
@@ -170,6 +168,8 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     id: true,
                     challenge: true,
                     ends_at: true,
+                    squad_one_score: true,
+                    squad_two_score: true,
                     squad_one: {
                         select: {
                             name: true
@@ -284,7 +284,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             },
             tags: ['matchup'],
             response: {
-                200: { ...SCHEMA_MATCHUP_RETURN, properties: { ...SCHEMA_MATCHUP_RETURN.properties, _squad_one_score: { type: 'number' }, _squad_two_score: { type: 'number' } } }
+                200: SCHEMA_MATCHUP_RETURN
             }
         }
     }, async (request, reply) => {
@@ -303,6 +303,8 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     starts_at: true,
                     ends_at: true,
                     created_at: true,
+                    squad_one_score: true,
+                    squad_two_score: true,
                     challenge: {
                         select: {
                             description: true,
@@ -368,11 +370,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
             if (!matchup) {
                 return reply.status(404).send({ message: 'Matchup not found' })
             }
-            const squadOneScore = getTimesAndSum(matchup?.squad_one.members as any)
-            const squadTwoScore = getTimesAndSum(matchup?.squad_two.members as any)
-            matchup.squad_one.members = _.sortBy(matchup?.squad_one.members, (item) => item.user.matchup_entries[0]?.value)
-            matchup.squad_two.members = _.sortBy(matchup?.squad_two.members, (item) => item.user.matchup_entries[0]?.value)
-            return { ...matchup, _squad_one_score: squadOneScore, _squad_two_score: squadTwoScore }
+            return matchup
         } catch (e) {
             return reply.status(500).send({ message: e as string })
         }
