@@ -38,12 +38,9 @@ function calculateWinningSquadByDistance(squadOne: SquadWithMatchupEntries, squa
 }
 
 export function getResultsAndSum(members: (SquadMember & { user: User & { matchup_entries: MatchupEntry[] } })[], challengeType: string) {
-    const squadSortedMembersByResult = _.sortBy(members, (item) => item.user.matchup_entries[0]?.value).filter((item) => item.user.matchup_entries[0]?.value)
-    if (challengeType === 'distance') {
-        squadSortedMembersByResult.reverse()
-    }
+    const squadSortedMembersByResult = members.filter((item) => item.user.matchup_entries[0]?.value)
     const squadTotal = _.reduce(squadSortedMembersByResult, (a, b) => { return a + b.user.matchup_entries[0].value }, 0)
-    return Math.round(squadTotal / (squadSortedMembersByResult.length || 1))
+    return Math.round(squadTotal)
 }
 
 function determineWinningAndLosingSquad(squadOne: any, squadTwo: any, challengeType: string): { winner?: Squad, loser?: Squad, isTie: boolean } {

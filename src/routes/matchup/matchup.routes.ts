@@ -1,7 +1,6 @@
 import { FastifyPluginAsync } from "fastify"
 import { authenticate } from "../../middleware/authentication"
 import { SCHEMA_MATCHUP_RETURN, SCHEMA_MATCHUPS_RETURN } from "./matchup.schema"
-import { getResultsAndSum } from "../../cron/post_matchup"
 import _ from "lodash"
 import { prisma } from "../../db"
 import { Squad } from "@prisma/client" 
@@ -55,6 +54,8 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     ends_at: true,
                     created_at: true,
                     squad_one_score: true,
+                    squad_two_score: true,
+                    squad_one_id: true,
                     squad_two_id: true,
                     challenge: {
                         select: {
@@ -170,6 +171,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     ends_at: true,
                     squad_one_score: true,
                     squad_two_score: true,
+                    completed: true,
                     squad_one: {
                         select: {
                             name: true
@@ -245,6 +247,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                             challenge_id: challengeId,
                             squad_one_id: mySquad.id,
                             squad_two_id: squadToChallenge.id,
+                            starts_at: now,
                             ends_at: endsAtDate,
                         }
                     }),
@@ -305,6 +308,7 @@ const matchupRoutes: FastifyPluginAsync = async (fastify) => {
                     created_at: true,
                     squad_one_score: true,
                     squad_two_score: true,
+                    completed: true,
                     challenge: {
                         select: {
                             description: true,

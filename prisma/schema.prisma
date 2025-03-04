@@ -125,6 +125,7 @@ model Activity {
   user_id                 String
   source                  String
   source_id               String         @unique
+  source_created_at       DateTime       @default(now())
   polyline                String
   name                    String
   description             String?

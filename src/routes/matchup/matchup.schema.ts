@@ -18,6 +18,7 @@ export const SCHEMA_MATCHUP_RETURN = {
         squad_one: SCHEMA_SQUAD_RETURN,
         squad_two: SCHEMA_SQUAD_RETURN,
         squad_one_score: { type: 'number' },
+        completed: { type: 'boolean' },
         squad_two_score: { type: 'number' },
         starts_at: { type: 'string' },
         ends_at: { type: 'string' },
