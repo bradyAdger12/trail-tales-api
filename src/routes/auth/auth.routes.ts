@@ -2,7 +2,6 @@ import { FastifyPluginAsync } from 'fastify';
 import _ from 'lodash'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SAFE_USER_RETURN } from '../../lib/safe_return_data';
 import * as crypto from "node:crypto";
 import { sendEmail } from '../../resend/send_email';
 import { SCHEMA_USER_RETURN } from '../user/user.schema';
@@ -46,7 +45,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         const user_with_same_email = await prisma.user.findFirst({
-            select: SAFE_USER_RETURN,
             where: {
                 email: {
                     equals: email
@@ -57,7 +55,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             return reply.status(500).send({ message: 'User with same email exists' })
         }
         await prisma.user.create({
-            select: SAFE_USER_RETURN,
             data: {
                 email: body.email,
                 hashed_password: hash,
