@@ -17,6 +17,7 @@ model User {
   updated_at           DateTime           @default(now())
   strava_access_token  String?
   strava_refresh_token String?
+  strava_owner_id      Int?
   members              SquadMember[]
   squad_join_requests  SquadJoinRequest[]
   activity             Activity[]
