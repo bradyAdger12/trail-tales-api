@@ -1,4 +1,4 @@
-import { Character, PrismaClient } from '@prisma/client'
+import { Character, PrismaClient, StoryTemplate } from '@prisma/client'
 import { randomUUID } from 'crypto'
 const prisma = new PrismaClient()
 const characters = [
@@ -27,6 +27,29 @@ const characters = [
         thirst: 50
     }
 ] as Character[]
+
+const stories =
+    [
+        {
+            id: 'f49445c7-d8de-4496-81e3-b3d98c135db9',
+            title: "Escape from the Neon Grid",
+            difficulty: 'easy',
+            description: "You wake up in a futuristic city, your mind a blur. A voice crackles in your earpiece: 'They found you. Run.' You’re being hunted by a ruthless AI syndicate that has marked you as an anomaly in their system. Your only chance of survival? Reach a rogue hacker known as Cipher, who can erase your digital footprint—before the drones catch you."
+        },
+        {
+            id: 'a49443c7-d8de-4446-81e3-b2d98c335db9',
+            title: "Curse of the Moonlit Jungle",
+            difficulty: 'medium',
+            description: "You are an archaeologist who discovers an ancient temple deep within a jungle, rumored to hold a cursed artifact. The moment you touch it, a chilling whisper fills the air: 'You have awakened the Watchers.' Now, spectral guardians hunt you, and the only way to break the curse is to outrun them and return the artifact to its rightful place."
+        },
+        {
+            id: 'l49c3c7-d8de-4446-81e3-b2d98c335db9',
+            title: "Operation Titanfall",
+            difficulty: 'medium',
+            description: "You are a resistance fighter on the distant planet Titan-X, where Earth's forces battle an alien empire for survival. The enemy has activated a doomsday weapon capable of wiping out your entire colony. You are the only one who can reach the control center in time to disable it."
+        }
+
+    ] as StoryTemplate[]
 async function main() {
     for (const character of characters) {
         await prisma.character.upsert({
@@ -37,7 +60,16 @@ async function main() {
             update: { ...character }
         })
     }
-   
+    for (const story of stories) {
+        await prisma.storyTemplate.upsert({
+            where: {
+                id: story.id
+            },
+            create: { ...story },
+            update: { ...story }
+        })
+    }
+
     // await prisma.challenge.upsert({
     //     where: { id: '133b9349-c038-4d16-a0ee-f7e44e9b6f6e' },
     //     update: {
