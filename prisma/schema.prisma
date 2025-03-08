@@ -7,107 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Difficulty {
+  easy
+  medium
+  hard
+}
+
 model User {
-  id                   String             @id @default(uuid())
-  email                String             @unique
-  display_name         String?            @unique
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  display_name         String?  @unique
   hashed_password      String
   avatar_file_key      String?
-  created_at           DateTime           @default(now())
-  updated_at           DateTime           @default(now())
   strava_access_token  String?
   strava_refresh_token String?
   strava_owner_id      Int?
-  members              SquadMember[]
-  squad_join_requests  SquadJoinRequest[]
-  activity             Activity[]
-  matchup_entries      MatchupEntry[]
+  created_at           DateTime @default(now())
+  updated_at           DateTime @default(now())
 
   @@map("users")
 }
 
-model SquadMember {
-  user_id    String
-  squad_id   String
-  squad      Squad    @relation(fields: [squad_id], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
+model Character {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  health      Int
+  hunger      Int
+  thirst      Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
 
-  @@id([user_id, squad_id])
-  @@map("squad_members")
+  @@map("characters")
 }
 
-enum Level {
-  A
-  B
-  C
-  D
-}
+model StoryTemplate {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  difficulty  Difficulty @default(easy)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now())
 
-model Squad {
-  id                  String             @id @default(uuid())
-  owner_id            String
-  wins                Int                @default(0)
-  losses              Int                @default(0)
-  ties                Int                @default(0)
-  level               Level              @default(D)
-  xp                  Int                @default(0)
-  name                String
-  description         String
-  created_at          DateTime           @default(now())
-  updated_at          DateTime           @default(now())
-  is_engaged          Boolean            @default(false)
-  members             SquadMember[]
-  squad_join_requests SquadJoinRequest[]
-  matchup_one         Matchup[]          @relation("squad_matchup_one")
-  matchup_two         Matchup[]          @relation("squad_matchup_two")
-
-  @@map("squads")
-}
-
-model Matchup {
-  id              String         @id @default(uuid())
-  challenge_id    String
-  squad_one_id    String
-  squad_two_id    String
-  squad_one_score Float?          
-  squad_two_score Float?
-  starts_at       DateTime       @default(now())
-  ends_at         DateTime
-  created_at      DateTime       @default(now())
-  completed       Boolean        @default(false)
-  squad_one       Squad          @relation(name: "squad_matchup_one", fields: [squad_one_id], references: [id], onDelete: Cascade)
-  squad_two       Squad          @relation(name: "squad_matchup_two", fields: [squad_two_id], references: [id], onDelete: Cascade)
-  challenge       Challenge      @relation(fields: [challenge_id], references: [id])
-  matchup_entries MatchupEntry[]
-
-  @@map("matchups")
-}
-
-model MatchupEntry {
-  id          String    @default(uuid())
-  matchup_id  String
-  activity_id String?
-  user_id     String
-  value       Float
-  created_at  DateTime  @default(now())
-  matchup     Matchup   @relation(fields: [matchup_id], references: [id], onDelete: Cascade)
-  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  activity    Activity? @relation(fields: [activity_id], references: [id], onDelete: Cascade)
-
-  @@id([user_id, matchup_id])
-  @@map("matchup_entries")
-}
-
-model SquadJoinRequest {
-  user_id    String
-  squad_id   String
-  created_at DateTime @default(now())
-  squad      Squad    @relation(fields: [squad_id], references: [id])
-  user       User     @relation(fields: [user_id], references: [id])
-
-  @@id([user_id, squad_id])
-  @@map("squad_join_requests")
+  @@map("story_templates")
 }
 
 model PasswordResetToken {
@@ -119,36 +61,4 @@ model PasswordResetToken {
 
   @@id([user_id, token])
   @@map("password_reset_tokens")
-}
-
-model Activity {
-  id                      String         @id @default(uuid())
-  user_id                 String
-  source                  String
-  source_id               String         @unique
-  source_created_at       DateTime       @default(now())
-  polyline                String
-  name                    String
-  description             String?
-  distance_series         Float[]
-  time_series             Int[]
-  distance_in_meters      Float
-  elapsed_time_in_seconds Float
-  created_at              DateTime       @default(now())
-  updated_at              DateTime       @default(now())
-  user                    User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  matchup_entries         MatchupEntry[]
-
-  @@map("activities")
-}
-
-model Challenge {
-  id          String    @id @default(uuid())
-  name        String
-  label       String    @default("")
-  type        String    @default("time")
-  description String
-  matchups    Matchup[]
-
-  @@map("challenges")
 }

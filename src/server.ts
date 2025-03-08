@@ -3,13 +3,16 @@ import 'dotenv/config'
 import _ from 'lodash'
 import authRoutes from "./routes/auth/auth.routes";
 import userRoutes from "./routes/user/user.routes";
-import squadRoutes from "./routes/squad/squad.routes";
-import memberRoutes from "./routes/member/member.routes";
-import activityRoutes from "./routes/activity/activity.routes";
-import matchupRoutes from "./routes/matchup/matchup.routes";
-import stravaRoutes from "./routes/strava/strava.routes";
-import challengeRoutes from "./routes/challenge/challenge.routes";
 import { sendEmail } from "./resend/send_email";
+import characterRoutes from "./routes/character/character.routes";
+import { APP_NAME } from "./lib/constants";
+import { User } from "@prisma/client";
+
+declare module 'fastify' {
+  interface FastifyRequest {
+    user?: User
+  }
+}
 
 // Build Server
 function buildServer() {
@@ -18,6 +21,7 @@ function buildServer() {
   const fastify = Fastify({
     logger: false
   });
+
 
   fastify.register(require('@fastify/swagger'), {
     openapi: {
@@ -36,10 +40,7 @@ function buildServer() {
       tags: [
         { name: 'auth', description: 'Unauthenticated User related end-points' },
         { name: 'user', description: 'User related end-points' },
-        { name: 'squad', description: 'Squad related end-points' },
-        { name: 'member', description: 'Member related end-points' },
-        { name: 'matchup', description: 'Matchup related end-points' },
-        { name: 'activity', description: 'Activity related end-points' }
+        { name: 'character', description: 'Character related end-points' }
       ],
       components: {
         securitySchemes: {
@@ -65,12 +66,7 @@ function buildServer() {
   // Register components
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
-  fastify.register(squadRoutes, { prefix: '/squad' })
-  fastify.register(memberRoutes, { prefix: '/member' })
-  fastify.register(activityRoutes, { prefix: '/activity' })
-  fastify.register(matchupRoutes, { prefix: '/matchup' })
-  fastify.register(stravaRoutes, { prefix: '/strava' })
-  fastify.register(challengeRoutes, { prefix: '/challenges' })
+  fastify.register(characterRoutes, { prefix: '/characters' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
@@ -78,7 +74,7 @@ function buildServer() {
 
   fastify.post('/contact', {
     schema: {
-      description: 'Send a message to squadrn email',
+      description: `Send a message to ${APP_NAME} email`,
       security: [{ bearerAuth: [] }],
       tags: ['contact'],
       body: {

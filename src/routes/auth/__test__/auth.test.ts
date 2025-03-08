@@ -1,8 +1,6 @@
 import { teardown, test } from 'tap'
 import buildServer from '../../../server'
 import { faker } from '@faker-js/faker'
-import { prisma } from '../../../db'
-import { postMatchupCron } from '../../../cron/post_matchup'
 
 const display_name = faker.person.firstName()
 const email = faker.internet.email()
