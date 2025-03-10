@@ -7,6 +7,7 @@ import { sendEmail } from "./resend/send_email";
 import characterRoutes from "./routes/character/character.routes";
 import { APP_NAME } from "./lib/constants";
 import { User } from "@prisma/client";
+import storyRoutes from "./routes/story/story.routes";
 
 declare module 'fastify' {
   interface FastifyRequest {
@@ -67,6 +68,7 @@ function buildServer() {
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
   fastify.register(characterRoutes, { prefix: '/characters' })
+  fastify.register(storyRoutes, { prefix: '/stories' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
