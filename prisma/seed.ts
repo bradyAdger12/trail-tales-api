@@ -1,4 +1,4 @@
-import { Character, PrismaClient, StoryTemplate } from '@prisma/client'
+import { CharacterTemplate, PrismaClient, StoryTemplate } from '@prisma/client'
 import { randomUUID } from 'crypto'
 const prisma = new PrismaClient()
 const characters = [
@@ -26,7 +26,7 @@ const characters = [
         hunger: 90,
         thirst: 50
     }
-] as Character[]
+] as CharacterTemplate[]
 
 const stories =
     [
@@ -40,7 +40,7 @@ const stories =
     ] as StoryTemplate[]
 async function main() {
     for (const character of characters) {
-        await prisma.character.upsert({
+        await prisma.characterTemplate.upsert({
             where: {
                 id: character.id
             },

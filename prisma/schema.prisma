@@ -14,23 +14,29 @@ enum Difficulty {
 }
 
 model User {
-  id                   String    @id @default(uuid())
-  email                String    @unique
-  display_name         String?   @unique
-  hashed_password      String
-  avatar_file_key      String?
-  strava_access_token  String?
-  strava_refresh_token String?
-  strava_owner_id      Int?
-  created_at           DateTime  @default(now())
-  updated_at           DateTime  @default(now())
-  Story                Story[]
-  Chapter              Chapter[]
+  id                            String    @id @default(uuid())
+  email                         String    @unique
+  display_name                  String?   @unique
+  hashed_password               String
+  avatar_file_key               String?
+  strava_access_token           String?
+  strava_refresh_token          String?
+  strava_owner_id               Int?
+  threshold_pace_seconds        Int?
+  weekly_distance_in_kilometers Int?
+  health                        Int       @default(50)
+  hunger                        Int       @default(50)
+  thirst                        Int       @default(50)
+  created_at                    DateTime  @default(now())
+  updated_at                    DateTime  @default(now())
+  Story                         Story[]
+  Chapter                       Chapter[]
+  Action                        Action[]
 
   @@map("users")
 }
 
-model Character {
+model CharacterTemplate {
   id          String   @id @default(uuid())
   name        String
   description String
@@ -40,7 +46,7 @@ model Character {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
 
-  @@map("characters")
+  @@map("character_templates")
 }
 
 model StoryTemplate {
@@ -68,7 +74,7 @@ model Story {
   updated_at      DateTime      @default(now())
   storyTemplate   StoryTemplate @relation(fields: [template_id], references: [id])
   user            User          @relation(fields: [user_id], references: [id])
-  Chapter         Chapter[]
+  chapters        Chapter[]
 
   @@map("stories")
 }
@@ -81,10 +87,29 @@ model Chapter {
   description String
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
-  story       Story    @relation(fields: [story_id], references: [id])
-  user        User     @relation(fields: [user_id], references: [id])
+  story       Story    @relation(fields: [story_id], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  actions     Action[]
 
   @@map("chapters")
+}
+
+model Action {
+  id                 String     @id @default(uuid())
+  chapter_id         String
+  user_id            String
+  description        String
+  distance_in_meters Int
+  health             Int
+  food               Int
+  water              Int
+  difficulty         Difficulty
+  created_at         DateTime   @default(now())
+  updated_at         DateTime   @default(now())
+  chapter            Chapter    @relation(fields: [chapter_id], references: [id], onDelete: Cascade)
+  user               User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("actions")
 }
 
 model PasswordResetToken {

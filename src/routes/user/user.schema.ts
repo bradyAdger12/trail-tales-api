@@ -5,6 +5,8 @@ export const SCHEMA_USER_RETURN = {
         email: { type: 'string' },
         display_name: { type: 'string' },
         avatar_file_key: { type: 'string' },
+        threshold_pace_seconds: { type: 'number' },
+        weekly_distance_in_kilometers: { type: 'number' },
         created_at: { type: 'string' },
         updated_at: { type: 'string' },
         strava_access_token: { type: 'string' },

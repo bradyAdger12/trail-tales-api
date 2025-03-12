@@ -1,10 +1,11 @@
 import Fastify from "fastify";
 import 'dotenv/config'
+import cors from '@fastify/cors'
 import _ from 'lodash'
 import authRoutes from "./routes/auth/auth.routes";
 import userRoutes from "./routes/user/user.routes";
 import { sendEmail } from "./resend/send_email";
-import characterRoutes from "./routes/character/character.routes";
+// import characterRoutes from "./routes/character/character.routes";
 import { APP_NAME } from "./lib/constants";
 import { User } from "@prisma/client";
 import storyRoutes from "./routes/story/story.routes";
@@ -22,6 +23,19 @@ function buildServer() {
   const fastify = Fastify({
     logger: false
   });
+
+  fastify.register(cors, {
+    origin: (origin, cb) => {
+      const hostname = new URL(origin as string).hostname
+      if (hostname === "localhost") {
+        //  Request from localhost will pass
+        cb(null, true)
+        return
+      }
+      // Generate an error on other origins, disabling access
+      cb(new Error("Not allowed"), false)
+    }
+  })
 
 
   fastify.register(require('@fastify/swagger'), {
@@ -67,7 +81,7 @@ function buildServer() {
   // Register components
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
-  fastify.register(characterRoutes, { prefix: '/characters' })
+  // fastify.register(characterRoutes, { prefix: '/characters' })
   fastify.register(storyRoutes, { prefix: '/stories' })
 
   fastify.get('/health', (request, reply) => {
