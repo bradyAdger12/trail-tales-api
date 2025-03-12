@@ -25,6 +25,8 @@ function buildServer() {
   });
 
   fastify.register(cors, {
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     origin: (origin, cb) => {
       const hostname = new URL(origin as string).hostname
       if (hostname === "localhost") {

@@ -154,21 +154,29 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     }, async (request, reply) => {
         const body = request.body as { email: string }
         const email = body.email
+        if (!email) {
+            return reply.status(400).send({ message: 'Email is required' })
+        }
+        console.log(request.headers.origin)
         const token = crypto.randomBytes(64).toString('hex');
         const salt = await bcrypt.genSalt(10)
         const hashed_token = await bcrypt.hash(token, salt)
         const expiry_date = new Date()
         expiry_date.setDate(expiry_date.getDate() + 1) // set 24 hour expiry time for password reset tokens
         const expiry_time = expiry_date
-        const user = await prisma.user.findFirst({
-            where: {
-                email: {
-                    equals: email
-                }
-            }
-        })
-        if (user) {
+
+        try {
+            let user
             try {
+                user = await prisma.user.findFirst({
+                    where: {
+                        email: {
+                            equals: email
+                        }
+                    }
+                })
+            } catch (e) { }
+            if (user) {
                 await prisma.passwordResetToken.create({
                     data: {
                         user_id: user.id,
@@ -176,11 +184,14 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                         expiry_time
                     }
                 })
-                await sendEmail('password_reset.html', { url: `${process.env.WEB_BASE_URL}/auth/reset-password?token=${hashed_token}` }, 'Reset Your Password')
-            } catch (e) {
-                return reply.status(500).send('Error sending email')
+                await sendEmail('password_reset.html', { url: `${request.headers.origin}/reset-password?token=${hashed_token}` }, 'Reset Your Password')
+            } else {
+                return { success: true }
             }
+        } catch (e) {
+            return reply.status(500).send({ message: 'Error sending email' })
         }
+
         return { success: true }
     })
 
@@ -194,7 +205,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                     token: { type: 'string' },
                     password: { type: 'string' }
                 },
-                required: ['email', 'password']
+                required: ['token', 'password']
             },
             response: {
                 200: { properties: { success: { type: 'boolean' } } }
@@ -203,35 +214,39 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     }, async (request, reply) => {
         const body = request.body as { password: string, token: string }
         const password = body.password as string
-        if (password.length < 8) {
-            return reply.status(400).send({ message: 'Password must be at least 8 characters long' })
-        }
-        const token = body.token as string
-        const password_reset_token = await prisma.passwordResetToken.findFirst({
-            where: {
-                token: {
-                    equals: token
+        try {
+            if (password.length < 8) {
+                return reply.status(400).send({ message: 'Password must be at least 8 characters long' })
+            }
+            const token = body.token as string
+            const password_reset_token = await prisma.passwordResetToken.findFirst({
+                where: {
+                    token: {
+                        equals: token
+                    }
                 }
+            })
+            if (!password_reset_token) {
+                return reply.status(404).send({ message: 'Password reset request was not found' })
             }
-        })
-        if (!password_reset_token) {
-            return reply.status(404).send('Password reset request was not found')
-        }
-        if (new Date() > password_reset_token.expiry_time) {
-            return reply.status(500).send('Token has expired')
-        }
+            if (new Date() > password_reset_token.expiry_time) {
+                return reply.status(500).send({ message: 'Token has expired' })
+            }
 
-        const salt = await bcrypt.genSalt(10)
-        const hashed_password = await bcrypt.hash(password, salt)
-        const updated_user = await prisma.user.update({
-            data: {
-                hashed_password
-            },
-            where: {
-                id: password_reset_token.user_id
-            }
-        })
-        return { success: true }
+            const salt = await bcrypt.genSalt(10)
+            const hashed_password = await bcrypt.hash(password, salt)
+            const updated_user = await prisma.user.update({
+                data: {
+                    hashed_password
+                },
+                where: {
+                    id: password_reset_token.user_id
+                }
+            })
+            return { success: true }
+        } catch (e) {
+            return reply.status(500).send({ message: 'Error resetting password' })
+        }
     })
 
 };
