@@ -157,7 +157,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
         if (!email) {
             return reply.status(400).send({ message: 'Email is required' })
         }
-        console.log(request.headers.origin)
         const token = crypto.randomBytes(64).toString('hex');
         const salt = await bcrypt.genSalt(10)
         const hashed_token = await bcrypt.hash(token, salt)
