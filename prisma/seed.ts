@@ -1,32 +1,5 @@
-import { CharacterTemplate, PrismaClient, StoryTemplate } from '@prisma/client'
-import { randomUUID } from 'crypto'
+import { PrismaClient, StoryTemplate } from '@prisma/client'
 const prisma = new PrismaClient()
-const characters = [
-    {
-        id: '00addf1a-884e-4f1c-893a-f0d6ff060667',
-        name: 'The Strava Addict',
-        description: 'If it’s not on Strava, did it even happen? Sprints the last 50 meters for an impressive pace, runs circles in the parking lot to hit an even mile, and will 100% die chasing a segment crown.',
-        health: 70,
-        hunger: 60,
-        thirst: 40
-    },
-    {
-        id: '9afb2b98-f1be-4352-9836-d62efad47970',
-        name: 'The Gear Junkie',
-        description: 'More shoes than miles. Will drop $300 on the latest super shoes but refuses to pay race entry fees. Loves talking about gear, hates talking about actual training.',
-        health: 80,
-        hunger: 50,
-        thirst: 70
-    },
-    {
-        id: '69e6fb91-9d7e-4c1f-87a2-947491b15bc3',
-        name: 'The Weekend Warrior',
-        description: 'Runs hard, brunches harder. Shows up once a week, goes full send, then spends the next six days "recovering" with pancakes and excuses.',
-        health: 65,
-        hunger: 90,
-        thirst: 50
-    }
-] as CharacterTemplate[]
 
 const stories =
     [
@@ -39,15 +12,6 @@ const stories =
         }
     ] as StoryTemplate[]
 async function main() {
-    for (const character of characters) {
-        await prisma.characterTemplate.upsert({
-            where: {
-                id: character.id
-            },
-            create: { ...character },
-            update: { ...character }
-        })
-    }
     for (const story of stories) {
         await prisma.storyTemplate.upsert({
             where: {

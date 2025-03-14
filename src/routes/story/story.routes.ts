@@ -65,6 +65,46 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
             return reply.status(500).send(e as string)
         }
     })
+    
+    
+    fastify.get('/me', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Fetch the user\'s current story',
+            tags: ['story'],
+            response: {
+                200: SCHEMA_STORY_RETURN,
+                404: { properties: { message: { type: 'string' } } }
+            }
+        }
+    }, async (request, reply) => {
+        try {
+            const story = await prisma.story.findFirst({
+                where: {
+                    user_id: request.user?.id
+                },
+                include: {
+                    chapters: {
+                        orderBy: {
+                            created_at: 'desc'
+                        },
+                        select: {
+                            id: true,
+                            title: true,
+                            description: true
+                        }
+                    }
+                }
+            })
+            if (!story) {
+                return reply.status(404).send({ message: 'No story found' })
+            }
+            return story
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
 
     fastify.post('/start', {
         preHandler: authenticate,
@@ -75,7 +115,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 properties: {
                     story_template_id: { type: 'string' }
                 },
-                required: ['story_template_id', 'character_template_id']
+                required: ['story_template_id' ]
             },
             description: 'Begin a story',
             tags: ['story'],
@@ -85,10 +125,10 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
         }
     }, async (request, reply) => {
         try {
-            const { template_id } = request.body as { template_id: string }
+            const { story_template_id } = request.body as { story_template_id: string }
             const storyTemplate = await prisma.storyTemplate.findFirst({
                 where: {
-                    id: template_id
+                    id: story_template_id
                 },
                 select: {
                     title: true,
@@ -106,12 +146,13 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 select: {
                     id: true,
                     health: true,
-                    hunger: true,
-                    thirst: true,
                     weekly_distance_in_kilometers: true,
                     threshold_pace_seconds: true
                 }
             })
+            if (!user?.weekly_distance_in_kilometers) {
+                return reply.status(400).send({ message: 'User has not set their weekly distance' })
+            }
             if (user?.id) {
                 const { output } = await ai.generate({
                     output: { schema: ChapterOutputSchema },
@@ -141,9 +182,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                         actions.push({
                             user_id: user.id,
                             distance_in_meters: distanceInMeters,
-                            food: Math.round(1 / (user.hunger / 100)),
                             health: Math.round(1 / (user.health / 100)),
-                            water: Math.round(1 / (user.thirst / 100)),
                             difficulty: item.difficulty,
                             description: item.action
                         })
@@ -154,9 +193,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                                 id: user.id
                             },
                             data: {
-                                health: 50,
-                                hunger: 50,
-                                thirst: 50
+                                health: 100,
                             }
                         }),
                         prisma.story.create({
@@ -165,7 +202,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                                 description: storyTemplate.description,
                                 cover_image_url: storyTemplate.cover_image_url,
                                 user_id: user.id,
-                                template_id,
+                                template_id: story_template_id,
                                 chapters: {
                                     create: {
                                         title: output.title,
@@ -192,9 +229,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                                             select: {
                                                 description: true,
                                                 difficulty: true,
-                                                food: true,
                                                 health: true,
-                                                water: true,
                                                 distance_in_meters: true
                                             }
                                         }
@@ -203,13 +238,17 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                             }
                         })
                     ])
+                    if (!story) {
+                        return reply.status(500).send({ message: 'Error creating story' })
+                    }
                     return story
                 }
             } else {
                 return reply.status(401).send({ message: 'You must be authorized to complete this action' })
             }
         } catch (e) {
-            return reply.status(500).send(e as string)
+            console.log(e)
+            return reply.status(500).send({ message: e as string })
         }
     })
 }

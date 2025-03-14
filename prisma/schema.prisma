@@ -14,9 +14,9 @@ enum Difficulty {
 }
 
 model User {
-  id                            String    @id @default(uuid())
-  email                         String    @unique
-  display_name                  String?   @unique
+  id                            String     @id @default(uuid())
+  email                         String     @unique
+  display_name                  String?    @unique
   hashed_password               String
   avatar_file_key               String?
   strava_access_token           String?
@@ -24,29 +24,15 @@ model User {
   strava_owner_id               Int?
   threshold_pace_seconds        Int?
   weekly_distance_in_kilometers Int?
-  health                        Int       @default(50)
-  hunger                        Int       @default(50)
-  thirst                        Int       @default(50)
-  created_at                    DateTime  @default(now())
-  updated_at                    DateTime  @default(now())
+  health                        Int        @default(100)
+  created_at                    DateTime   @default(now())
+  updated_at                    DateTime   @default(now())
   Story                         Story[]
   Chapter                       Chapter[]
   Action                        Action[]
+  Activity                      Activity[]
 
   @@map("users")
-}
-
-model CharacterTemplate {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  health      Int
-  hunger      Int
-  thirst      Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
-
-  @@map("character_templates")
 }
 
 model StoryTemplate {
@@ -62,10 +48,31 @@ model StoryTemplate {
   @@map("story_templates")
 }
 
+model Activity {
+  id                      String   @id @default(uuid())
+  user_id                 String
+  source                  String
+  source_id               String   @unique
+  source_created_at       DateTime @default(now())
+  polyline                String
+  name                    String
+  description             String?
+  distance_series         Float[]
+  time_series             Int[]
+  distance_in_meters      Float
+  elapsed_time_in_seconds Float
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now())
+  user                    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  chapter                 Chapter?
+
+  @@map("activities")
+}
+
 model Story {
   id              String        @id @default(uuid())
   template_id     String
-  user_id         String
+  user_id         String        @unique
   title           String
   description     String
   cover_image_url String
@@ -80,15 +87,17 @@ model Story {
 }
 
 model Chapter {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   story_id    String
   user_id     String
+  activity_id String?   @unique
   title       String
   description String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
-  story       Story    @relation(fields: [story_id], references: [id], onDelete: Cascade)
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  story       Story     @relation(fields: [story_id], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  activity    Activity? @relation(fields: [activity_id], references: [id])
   actions     Action[]
 
   @@map("chapters")
@@ -101,8 +110,7 @@ model Action {
   description        String
   distance_in_meters Int
   health             Int
-  food               Int
-  water              Int
+  selected           Boolean    @default(false)
   difficulty         Difficulty
   created_at         DateTime   @default(now())
   updated_at         DateTime   @default(now())

@@ -9,7 +9,9 @@ import { sendEmail } from "./resend/send_email";
 import { APP_NAME } from "./lib/constants";
 import { User } from "@prisma/client";
 import storyRoutes from "./routes/story/story.routes";
-
+import chapterRoutes from "./routes/chapter/chapter.routes";
+import stravaRoutes from "./routes/strava/strava.routes";
+import activityRoutes from "./routes/activity/activity.routes";
 declare module 'fastify' {
   interface FastifyRequest {
     user?: User
@@ -83,9 +85,11 @@ function buildServer() {
   // Register components
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
-  // fastify.register(characterRoutes, { prefix: '/characters' })
   fastify.register(storyRoutes, { prefix: '/stories' })
-
+  fastify.register(chapterRoutes, { prefix: '/chapters' })
+  fastify.register(stravaRoutes, { prefix: '/strava' })
+  fastify.register(activityRoutes, { prefix: '/activities' })
+  
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
   })

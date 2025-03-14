@@ -4,9 +4,7 @@ export const SCHEMA_CHARACTER_RETURN = {
         id: { type: 'string' },
         name: { type: 'string' },
         description: { type: 'string' },
-        hunger: { type: 'string' },
-        food: { type: 'string' },
-        thirst: { type: 'string' }
+        health: { type: 'number' }
     }
 }
 
