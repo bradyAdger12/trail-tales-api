@@ -4,17 +4,7 @@ import { SCHEMA_STORIES_RETURN, SCHEMA_STORY_RETURN } from "./story.schema";
 import { prisma } from "../../db";
 import { authenticate } from "../../middleware/authentication";
 import { ai } from "../../genkit";
-import { z } from 'genkit'; // Import Zod, which is re-exported by Genkit.
-import { Action } from "@prisma/client";
-const UserActionSchema = z.object({
-    action: z.string().describe('a short description for the user action '),
-    difficulty: z.enum(['easy', 'medium', 'hard']).describe('the difficulty of the action being performed')
-})
-const ChapterOutputSchema = z.object({
-    title: z.string().describe('chapter title'),
-    description: z.string().describe('chapter description'),
-    actions: z.array(UserActionSchema).describe('list of user actions')
-}).describe('chapter')
+import { ChapterOutputSchema, getHealthDecrement } from "./story.controller";
 
 const storyRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.get('/templates', {
@@ -182,12 +172,17 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                         actions.push({
                             user_id: user.id,
                             distance_in_meters: distanceInMeters,
-                            health: Math.round(1 / (user.health / 100)),
+                            health: getHealthDecrement(item.difficulty),
                             difficulty: item.difficulty,
                             description: item.action
                         })
                     }
                     const [userUpdate, story] = await prisma.$transaction([
+                        prisma.item.deleteMany({
+                            where: {
+                                user_id: user.id
+                            }
+                        }),
                         prisma.user.update({
                             where: {
                                 id: user.id
@@ -247,7 +242,6 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 return reply.status(401).send({ message: 'You must be authorized to complete this action' })
             }
         } catch (e) {
-            console.log(e)
             return reply.status(500).send({ message: e as string })
         }
     })

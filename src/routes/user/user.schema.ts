@@ -1,3 +1,5 @@
+import { SCHEMA_ITEMS_RETURN } from "../item/item.schema";
+
 export const SCHEMA_USER_RETURN = {
     type: 'object',
     properties: {
@@ -7,6 +9,7 @@ export const SCHEMA_USER_RETURN = {
         health: { type: 'number' },
         hunger: { type: 'number' },
         thirst: { type: 'number' },
+        items: SCHEMA_ITEMS_RETURN,
         avatar_file_key: { type: 'string' },
         threshold_pace_seconds: { type: 'number' },
         weekly_distance_in_kilometers: { type: 'number' },

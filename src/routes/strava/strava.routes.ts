@@ -3,58 +3,8 @@ import _ from "lodash"
 import { prisma } from "../../db"
 import axios from "axios"
 import { authenticate } from "../../middleware/authentication"
-import { fetchStravaActivity, refreshStravaToken } from "./strava.controller"
-import { SCHEMA_ACTIVITY_RETURN } from "../activity/activity.schema"
-import { handleUserStory } from "../activity/activity.controller"
+import { refreshStravaToken } from "./strava.controller"
 const stravaRoutes: FastifyPluginAsync = async (fastify) => {
-    // https://www.strava.com/oauth/token?client_id=${process.env.STRAVA_CLIENT_ID}&client_secret=${process.env.STRAVA_CLIENT_SECRET}&refresh_token=${refresh_token}&grant_type=refresh_token
-
-    fastify.route({
-        url: '/activities/:stravaActivityId/import',
-        method: ['POST'],
-        preHandler: authenticate,
-        schema: {
-            security: [{ bearerAuth: [] }],
-            description: 'Import a Strava activity',
-            tags: ['strava'],
-            response: {
-                200: SCHEMA_ACTIVITY_RETURN
-            }
-        },
-        handler: async (request, reply) => {
-            try {
-                const { stravaActivityId } = request.params as { stravaActivityId: string }
-                await refreshStravaToken(request.user?.id)
-                const user = await prisma.user.findFirst({
-                    where: {
-                        id: request.user?.id
-                    }
-                })
-                if (!user) {
-                    return reply.status(404).send({ message: 'user not found' })
-                }
-                const stravaActivity = await fetchStravaActivity(stravaActivityId, user?.strava_access_token)
-                const activity = await prisma.activity.create({
-                    data: {
-                        source: 'strava',
-                        source_id: stravaActivity.id.toString(),
-                        name: stravaActivity.name,
-                        distance_in_meters: stravaActivity.distance,
-                        elapsed_time_in_seconds: stravaActivity.elapsed_time,
-                        polyline: stravaActivity.map.summary_polyline,
-                        user_id: user.id,
-                        source_created_at: stravaActivity.start_date
-                    }
-                })
-                handleUserStory(user, activity.distance_in_meters)
-                return activity
-            } catch (e) {
-                console.error(e)
-                return e
-            }
-        }
-    })
-
     fastify.route({
         url: '/activities',
         method: ['GET'],

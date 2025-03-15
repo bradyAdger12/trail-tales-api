@@ -25,6 +25,7 @@ const chapterRoutes: FastifyPluginAsync = async (fastify) => {
                     id
                 },
                 include: {
+                    activity: true,
                     actions: {
                         orderBy: {
                             difficulty: 'asc'

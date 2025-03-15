@@ -89,7 +89,7 @@ function buildServer() {
   fastify.register(chapterRoutes, { prefix: '/chapters' })
   fastify.register(stravaRoutes, { prefix: '/strava' })
   fastify.register(activityRoutes, { prefix: '/activities' })
-  
+
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
   })
@@ -114,7 +114,6 @@ function buildServer() {
     }
   }, async (request, reply) => {
     const { email, message, name } = request.body as { name: string, message: string, email: string }
-    console.log('ok')
     try {
       await sendEmail('contact_submission.html', { email, message, name }, 'Contact Submission')
     } catch (e) {

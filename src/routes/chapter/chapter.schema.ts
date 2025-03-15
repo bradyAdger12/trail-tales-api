@@ -1,3 +1,5 @@
+import { SCHEMA_ACTIVITY_RETURN } from "../activity/activity.schema"
+
 export const SCHEMA_ACTION_RETURN = {
     type: 'object',
     properties: {
@@ -13,6 +15,8 @@ export const SCHEMA_CHAPTER_RETURN = {
     type: 'object',
     properties: {
         id: { type: 'string' },
+        activity_id: { type: 'string' },
+        activity: SCHEMA_ACTIVITY_RETURN,
         title: { type: 'string' },
         description: { type: 'string' },
         actions: { type: 'array', items: SCHEMA_ACTION_RETURN }

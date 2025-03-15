@@ -79,11 +79,15 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             const user = await prisma.user.findFirst({
                 where: {
                     id: request.user?.id
+                },
+                include: {
+                    items: true
                 }
             })
             if (!user) {
                 return reply.status(404).send('User not found')
             }
+            console.log(user)
             return user
         } catch (e) {
             return reply.status(500).send(e as string)
