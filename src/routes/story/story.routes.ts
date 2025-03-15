@@ -55,8 +55,63 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
             return reply.status(500).send(e as string)
         }
     })
-    
-    
+
+    fastify.delete('/:id', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Delete a story by id',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                }
+            },
+            tags: ['story'],
+            response: {
+                200: { properties: { success: { type: 'boolean' } } },
+                404: { properties: { message: { type: 'string' } } }
+            }
+        }
+    }, async (request, reply) => {
+        try {
+            const { id } = request.params as { id: string }
+            const [story, userUpdate, activities, items] = await prisma.$transaction([
+                prisma.story.delete({
+                    where: {
+                        id,
+                        user_id: request.user?.id
+                    }
+                }),
+                prisma.user.update({
+                    where: {
+                        id: request.user?.id
+                    },
+                    data: {
+                        health: 100
+                    }
+                }),
+                prisma.activity.deleteMany({
+                    where: {
+                        user_id: request.user?.id
+                    }
+                }),
+                prisma.item.deleteMany({
+                    where: {
+                        user_id: request.user?.id
+                    }
+                })
+            ])
+            if (!story) {
+                return reply.status(404).send({ message: 'No story found' })
+            }
+            return { success: true }
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+
     fastify.get('/me', {
         preHandler: authenticate,
         schema: {
@@ -80,6 +135,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                             created_at: 'desc'
                         },
                         select: {
+                            activity_id: true,
                             id: true,
                             title: true,
                             description: true
@@ -105,7 +161,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 properties: {
                     story_template_id: { type: 'string' }
                 },
-                required: ['story_template_id' ]
+                required: ['story_template_id']
             },
             description: 'Begin a story',
             tags: ['story'],
