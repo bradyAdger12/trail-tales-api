@@ -8,7 +8,7 @@ export const getPercentageDifference = (current: number, previous: number) => {
     return ((current - previous) / previous) * 100
 }
 
-export const processChapter = async (user: User, activity: Activity) => {
+export const processChapter = async (user: User, activity: Activity): Promise<{ items: Item[] } | undefined> => {
     let items: Item[] = []
     const story = await prisma.story.findFirst({
         where: {

@@ -19,39 +19,21 @@ enum ItemBenefit {
 }
 
 model User {
-  id                            String     @id @default(uuid())
-  email                         String     @unique
-  display_name                  String?    @unique
-  hashed_password               String
-  avatar_file_key               String?
-  strava_access_token           String?
-  strava_refresh_token          String?
-  strava_owner_id               Int?
-  threshold_pace_seconds        Int?
-  weekly_distance_in_kilometers Int?
-  health                        Int        @default(100)
-  created_at                    DateTime   @default(now())
-  updated_at                    DateTime   @default(now())
-  story                       Story?
-  chapters                      Chapter[]
-  actions                       Action[]
-  activites                     Activity[]
-  items                         Item[]
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  display_name         String?    @unique
+  hashed_password      String
+  avatar_file_key      String?
+  strava_access_token  String?
+  strava_refresh_token String?
+  strava_owner_id      Int?
+  health               Int        @default(100)
+  created_at           DateTime   @default(now())
+  updated_at           DateTime   @default(now())
+  activities           Activity[]
+  Game                 Game?
 
   @@map("users")
-}
-
-model StoryTemplate {
-  id              String     @id @default(uuid())
-  title           String
-  description     String
-  cover_image_url String
-  difficulty      Difficulty @default(easy)
-  created_at      DateTime   @default(now())
-  updated_at      DateTime   @default(now())
-  Story           Story[]
-
-  @@map("story_templates")
 }
 
 model Activity {
@@ -70,74 +52,36 @@ model Activity {
   created_at              DateTime @default(now())
   updated_at              DateTime @default(now())
   user                    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  chapter                 Chapter?
 
   @@map("activities")
 }
 
-model Story {
-  id              String        @id @default(uuid())
-  template_id     String
-  user_id         String        @unique
-  title           String
-  description     String
-  cover_image_url String
-  difficulty      Difficulty    @default(easy)
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @default(now())
-  storyTemplate   StoryTemplate @relation(fields: [template_id], references: [id])
-  user            User          @relation(fields: [user_id], references: [id])
-  chapters        Chapter[]
+model Game {
+  id         String     @id @default(uuid())
+  user_id    String     @unique
+  health     Int        @default(100)
+  thirst     Int        @default(100)
+  hunger     Int        @default(100)
+  difficulty Difficulty @default(easy)
+  days       Int        @default(7)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  user       User       @relation(fields: [user_id], references: [id])
+  Day        Day[]
 
-  @@map("stories")
+  @@map("games")
 }
 
-model Chapter {
-  id          String    @id @default(uuid())
-  story_id    String
-  user_id     String
-  activity_id String?   @unique
-  title       String
+model Day {
+  id          String   @id @default(uuid())
+  game_id     String
   description String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  story       Story     @relation(fields: [story_id], references: [id], onDelete: Cascade)
-  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  activity    Activity? @relation(fields: [activity_id], references: [id], onDelete: Cascade)
-  actions     Action[]
+  number      Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  game        Game     @relation(fields: [game_id], references: [id], onDelete: Cascade)
 
-  @@map("chapters")
-}
-
-model Action {
-  id                 String     @id @default(uuid())
-  chapter_id         String
-  user_id            String
-  description        String
-  distance_in_meters Int
-  health             Int
-  selected           Boolean    @default(false)
-  difficulty         Difficulty
-  created_at         DateTime   @default(now())
-  updated_at         DateTime   @default(now())
-  chapter            Chapter    @relation(fields: [chapter_id], references: [id], onDelete: Cascade)
-  user               User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@map("actions")
-}
-
-model Item {
-  id          String      @id @default(uuid())
-  user_id     String
-  name        String
-  description String
-  benefit     ItemBenefit
-  value       Int
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @default(now())
-  user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@map("items")
+  @@map("days")
 }
 
 model PasswordResetToken {

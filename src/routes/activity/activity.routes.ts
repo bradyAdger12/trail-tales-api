@@ -6,6 +6,7 @@ import { SCHEMA_ACTIVITIES_RETURN, SCHEMA_ACTIVITY_RETURN } from "../activity/ac
 import { fetchStravaActivity } from "../strava/strava.controller"
 import { refreshStravaToken } from "../strava/strava.controller"
 import {  processChapter } from "./activity.controller"
+import { SCHEMA_ITEMS_RETURN } from "../item/item.schema"
 const activityRoutes: FastifyPluginAsync = async (fastify) => {
 
     fastify.route({
@@ -24,7 +25,13 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
             },
             tags: ['activity'],
             response: {
-                200: SCHEMA_ACTIVITY_RETURN
+                200: {
+                    type: 'object',
+                    properties: {
+                        activity: SCHEMA_ACTIVITY_RETURN,
+                        items: SCHEMA_ITEMS_RETURN
+                    }
+                }
             }
         },
         handler: async (request, reply) => {
@@ -53,8 +60,8 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                             source_created_at: stravaActivity.start_date
                         }
                     })
-                    await processChapter(user, activity)
-                    return activity
+                    const response = await processChapter(user, activity)
+                    return { activity, items: response?.items }
                 }
             } catch (e) {
                 console.error(e)

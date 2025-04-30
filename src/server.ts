@@ -12,6 +12,7 @@ import storyRoutes from "./routes/story/story.routes";
 import chapterRoutes from "./routes/chapter/chapter.routes";
 import stravaRoutes from "./routes/strava/strava.routes";
 import activityRoutes from "./routes/activity/activity.routes";
+import itemRoutes from "./routes/item/item.routes";
 declare module 'fastify' {
   interface FastifyRequest {
     user?: User
@@ -89,6 +90,7 @@ function buildServer() {
   fastify.register(chapterRoutes, { prefix: '/chapters' })
   fastify.register(stravaRoutes, { prefix: '/strava' })
   fastify.register(activityRoutes, { prefix: '/activities' })
+  fastify.register(itemRoutes, { prefix: '/items' })
 
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }

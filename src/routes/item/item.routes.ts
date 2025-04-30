@@ -72,6 +72,11 @@ const characterRoutes: FastifyPluginAsync = async (fastify) => {
                     }
                 })
             }
+            await prisma.item.delete({
+                where: {
+                    id
+                }
+            })
             return reply.status(200).send('Item used')
         } catch (e) {
             return reply.status(500).send(e as string)
