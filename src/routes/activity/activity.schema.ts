@@ -13,8 +13,3 @@ export const SCHEMA_ACTIVITY_RETURN = {
         created_at: { type: 'string' }
     }
 }
-
-export const SCHEMA_ACTIVITIES_RETURN = {
-    type: 'array',
-    items: SCHEMA_ACTIVITY_RETURN
-}
