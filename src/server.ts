@@ -5,12 +5,12 @@ import _ from 'lodash'
 import authRoutes from "./routes/auth/auth.routes";
 import userRoutes from "./routes/user/user.routes";
 import { sendEmail } from "./resend/send_email";
-// import characterRoutes from "./routes/character/character.routes";
 import { APP_NAME } from "./lib/constants";
 import { User } from "@prisma/client";
 import stravaRoutes from "./routes/strava/strava.routes";
 import activityRoutes from "./routes/activity/activity.routes";
 import gameRoutes from "./routes/game/game.routes";
+import survivalDayRoutes from "./routes/survival_day/survival_day.routes";
 declare module 'fastify' {
   interface FastifyRequest {
     user?: User
@@ -84,6 +84,7 @@ function buildServer() {
   // Register components
   fastify.register(authRoutes);
   fastify.register(userRoutes, { prefix: '/user' })
+  fastify.register(survivalDayRoutes, { prefix: '/survival-days' })
   fastify.register(gameRoutes, { prefix: '/games' })
   fastify.register(stravaRoutes, { prefix: '/strava' })
   fastify.register(activityRoutes, { prefix: '/activities' })

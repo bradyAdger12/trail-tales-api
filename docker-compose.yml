@@ -11,4 +11,4 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: runsquad_dev
+      POSTGRES_DB: trail_tales_dev

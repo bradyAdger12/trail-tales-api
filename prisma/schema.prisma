@@ -27,7 +27,6 @@ model User {
   strava_access_token  String?
   strava_refresh_token String?
   strava_owner_id      Int?
-  health               Int        @default(100)
   created_at           DateTime   @default(now())
   updated_at           DateTime   @default(now())
   activities           Activity[]
@@ -56,32 +55,43 @@ model Activity {
   @@map("activities")
 }
 
-model Game {
-  id         String     @id @default(uuid())
-  user_id    String     @unique
-  health     Int        @default(100)
-  thirst     Int        @default(100)
-  hunger     Int        @default(100)
-  difficulty Difficulty @default(easy)
-  days       Int        @default(7)
-  created_at DateTime   @default(now())
-  updated_at DateTime   @default(now())
-  user       User       @relation(fields: [user_id], references: [id])
-  Day        Day[]
+model Character {
+  id String @id @default(uuid())
+  game_id String @unique
+  name String
+  description String?
+  health Int @default(100)
+  food Int @default(1)
+  water Int @default(1)
+  weekly_distance_in_kilometers Int @default(0)
+  threshold_pace_in_seconds Int @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  game Game @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  @@map("characters")
+}
 
+model Game {
+  id              String        @id @default(uuid())
+  user_id         String        @unique
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @default(now())
+  user            User          @relation(fields: [user_id], references: [id])
+  survival_days   SurvivalDay[]
+  character       Character?
   @@map("games")
 }
 
-model Day {
+model SurvivalDay {
   id          String   @id @default(uuid())
   game_id     String
-  description String
-  number      Int
+  description String?
+  day         Int
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   game        Game     @relation(fields: [game_id], references: [id], onDelete: Cascade)
 
-  @@map("days")
+  @@map("survival_days")
 }
 
 model PasswordResetToken {
