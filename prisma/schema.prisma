@@ -87,6 +87,7 @@ model SurvivalDay {
   game_id     String
   description String?
   day         Int
+  options     Json?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   game        Game     @relation(fields: [game_id], references: [id], onDelete: Cascade)

@@ -76,7 +76,6 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             if (!user) {
                 return reply.status(404).send('User not found')
             }
-            console.log(user)
             return user
         } catch (e) {
             return reply.status(500).send(e as string)

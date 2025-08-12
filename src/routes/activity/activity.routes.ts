@@ -2,9 +2,10 @@ import { FastifyPluginAsync } from "fastify"
 import _ from "lodash"
 import { prisma } from "../../db"
 import { authenticate } from "../../middleware/authentication"
-import { SCHEMA_ACTIVITY_RETURN } from "../activity/activity.schema"
+import { SCHEMA_ACTIVITY_RETURN, SCHEMA_ACTIVITY_RETURN_ARRAY } from "../activity/activity.schema"
 import { fetchStravaActivity } from "../strava/strava.controller"
 import { refreshStravaToken } from "../strava/strava.controller"
+import { processDay } from "./activity.controller"
 const activityRoutes: FastifyPluginAsync = async (fastify) => {
 
     fastify.route({
@@ -44,7 +45,7 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                     return reply.status(404).send({ message: 'user not found' })
                 }
                 if (source === 'strava') {
-                    const stravaActivity = await fetchStravaActivity(source_id, user?.strava_access_token)
+                    const stravaActivity = await fetchStravaActivity(source_id, user?.strava_access_token)              
                     const activity = await prisma.activity.create({
                         data: {
                             source,
@@ -57,8 +58,7 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                             source_created_at: stravaActivity.start_date
                         }
                     })
-                    // const response = await processChapter(user, activity)
-                    // return { activity, items: response?.items }
+                    const response = await processDay(user, activity)
                     return { activity }
                 }
             } catch (e) {
@@ -83,7 +83,7 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             },
             response: {
-                200: SCHEMA_ACTIVITY_RETURN
+                200: SCHEMA_ACTIVITY_RETURN_ARRAY
             }
         },
         handler: async (request, reply) => {

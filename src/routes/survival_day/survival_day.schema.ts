@@ -4,6 +4,7 @@ export const SCHEMA_SURVIVAL_DAY_RETURN = {
         id: { type: 'string' },
         game_id: { type: 'string' },
         description: { type: 'string' },
+        options: { type: 'array' },
         day: { type: 'number' }
     }
 }

@@ -7,6 +7,8 @@ export const SCHEMA_CHARACTER_TEMPLATE = {
         description: { type: 'string' },
         health: { type: 'number' },
         food: { type: 'number' },
+        weekly_distance_in_kilometers: { type: 'number' },
+        threshold_pace_in_seconds: { type: 'number' },
         water: { type: 'number' }
     }
 }
