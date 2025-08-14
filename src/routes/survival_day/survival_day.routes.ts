@@ -34,6 +34,13 @@ const survivalDayRoutes: FastifyPluginAsync = async (fastify) => {
             const survivalDay = await prisma.survivalDay.findFirst({
                 where: {
                     id
+                },
+                include: {
+                    options: {
+                        include: {
+                            activity: true
+                        }
+                    }
                 }
             })
             if (!survivalDay) {
