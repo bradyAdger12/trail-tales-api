@@ -20,9 +20,10 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 properties: {
                     email: { type: 'string' },
                     password: { type: 'string' },
+                    timezone: { type: 'string' },
                     display_name: { type: 'string' }
                 },
-                required: ['email', 'password', 'display_name']
+                required: ['email', 'password', 'display_name', 'timezone']
             },
             response: {
                 201: {
@@ -34,10 +35,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         }
     }, async (request, reply) => {
-        const body = request.body as { email: string, password: string, display_name: string }
+        const body = request.body as { email: string, password: string, display_name: string, timezone: string }
         const email = body.email
         const password = body.password as string
         const displayName = body.display_name as string
+        const timezone = body.timezone as string
 
         if (password.length < 8) {
             return reply.status(400).send({ message: 'Password must be at least 8 characters long' })
@@ -58,7 +60,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             data: {
                 email: body.email,
                 hashed_password: hash,
-                display_name: displayName
+                display_name: displayName,
+                timezone: timezone
             }
         })
         return { success: true }

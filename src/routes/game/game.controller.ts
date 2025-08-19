@@ -8,7 +8,7 @@ import { generateSurvivalDay } from "../survival_day/survival_day.controller";
 export async function startGame(userId: string, weekly_distance_in_kilometers: number, threshold_pace_minutes: number, threshold_pace_seconds: number, character: Character) {
     const gameId = randomUUID()
     try {
-        const { description, options } = await generateSurvivalDay(1, character, weekly_distance_in_kilometers)
+        const { description, options } = await generateSurvivalDay(1, character, weekly_distance_in_kilometers, null)
         const [game, characterFull, survivalDay] = await prisma.$transaction([
             prisma.game.create({
                 data: {

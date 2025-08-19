@@ -26,8 +26,13 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 },
                 include: {
                     character: true,
-                    survival_days: true
+                    survival_days: {
+                        orderBy: {
+                            day: 'asc'
+                        }
+                    }
                 }
+
             })
             if (!game) {
                 return null
