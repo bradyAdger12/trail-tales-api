@@ -10,7 +10,7 @@ import { advanceSurvivalDay } from './routes/survival_day/survival_day.controlle
 const task = cron.schedule('*/1 * * * *', async () => {
   try {
     console.log('Running cron job')
-    const games =await prisma.game.findMany({
+    const games = await prisma.game.findMany({
       include: {
         user: {
           include: {
@@ -22,11 +22,11 @@ const task = cron.schedule('*/1 * * * *', async () => {
     for (const game of games) {
       const userTimezone = game.user.timezone
       const now = new Date()
-      const localTime = new Date(now.toLocaleString("en-US", {timeZone: userTimezone}))
-      const hour = localTime.getHours() 
-      advanceSurvivalDay(game, game.user.character!)
+      const localTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }))
+      const hour = localTime.getHours()
+      advanceSurvivalDay(game)
     }
-   } catch (error) {
+  } catch (error) {
     console.error('Error in hourly cron job:', error)
   }
 })
@@ -36,7 +36,8 @@ const main = async () => {
   try {
     const port = (process.env.PORT || 3000) as number
     await server.listen({ port, host: '0.0.0.0' });
-    task.start()
+    // task.start()
+    task.stop()
     console.log(`Server listening on port ${port}`)
   } catch (err) {
     console.error(err)

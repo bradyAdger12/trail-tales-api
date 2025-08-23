@@ -26,14 +26,13 @@ async function handleCharacterUpdates(user: User, option: SurvivalDayOption, act
                 user_id: user.id
             },
             data: {
-                health: { decrement: option.health_loss },
                 food: { increment: foundItems ? 10 : 0 },
                 water: { increment: foundItems ? 10 : 0 }
             }
         }),
-        prisma.survivalDayOption.update({
+        prisma.survivalDay.update({
             where: {
-                id: option.id
+                id: option.survival_day_id
             },
             data: {
                 activity_id: activity.id

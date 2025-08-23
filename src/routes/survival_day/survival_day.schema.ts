@@ -7,10 +7,10 @@ export const SCHEMA_SURVIVAL_DAY_OPTION_RETURN = {
         description: { type: 'string' },
         difficulty: { type: 'string' },
         distance_in_kilometers: { type: 'number' },
+        item_gain_percentage: { type: 'number' },
         activity_id: { type: 'string' },
         activity: SCHEMA_ACTIVITY_RETURN,
-        health_loss: { type: 'number' },
-        chance_to_find_items: { type: 'number' },
+        chance_to_find_items: { type: 'number' }
     }
 }
 export const SCHEMA_SURVIVAL_DAY_RETURN = {

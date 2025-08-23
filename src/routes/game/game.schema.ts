@@ -17,8 +17,13 @@ export const SCHEMA_GAME_RETURN = {
     type: 'object',
     properties: {
         id: { type: 'string' },
+        difficulty: { type: 'string' },
         character: SCHEMA_CHARACTER_TEMPLATE,
-        survival_days: SCHEMA_DAYS_RETURN   
+        survival_days: SCHEMA_DAYS_RETURN,
+        daily_food_loss: { type: 'number' },
+        daily_water_loss: { type: 'number' },
+        min_distance_in_kilometers: { type: 'number' },
+        max_distance_in_kilometers: { type: 'number' }
     }
 }
 

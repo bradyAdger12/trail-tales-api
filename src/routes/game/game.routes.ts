@@ -5,6 +5,7 @@ import { prisma } from "../../db";
 import { authenticate } from "../../middleware/authentication";
 import { startGame } from "./game.controller";
 import { Character } from "@prisma/client";
+import { gameConfig } from "../../lib/game_config";
 
 
 const storyRoutes: FastifyPluginAsync = async (fastify) => {
@@ -43,6 +44,23 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
+    fastify.get('/difficulty', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Get the difficulty options of the game',
+            tags: ['game'],
+            response: {
+                200: {
+                    type: 'object',
+                    additionalProperties: true
+                }
+            }
+        }
+    }, async () => {
+        return gameConfig.difficulty
+    })
+
     fastify.post('/start', {
         preHandler: authenticate,
         schema: {
@@ -52,10 +70,7 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
             body: {
                 type: 'object',
                 properties: {
-                    weekly_distance_in_kilometers: { type: 'number' },
-                    threshold_pace_minutes: { type: 'number' },
-                    threshold_pace_seconds: { type: 'number' },
-                    character: SCHEMA_CHARACTER_TEMPLATE
+                    difficulty: { type: 'string' }
                 }
             },
             response: {
@@ -66,9 +81,9 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
         if (!request.user?.id) {
             return reply.status(401).send({ message: 'Unauthorized' })
         }
-        const { weekly_distance_in_kilometers, threshold_pace_minutes, threshold_pace_seconds, character } = request.body as { weekly_distance_in_kilometers: number, threshold_pace_minutes: number, threshold_pace_seconds: number, character: Character }
+        const { difficulty } = request.body as { difficulty: string }
         try {
-            const game = await startGame(request.user?.id, weekly_distance_in_kilometers, threshold_pace_minutes, threshold_pace_seconds, character)
+            const game = await startGame(request.user?.id, difficulty)
             return game
         } catch (e) {
             return reply.status(500).send(e as string)
