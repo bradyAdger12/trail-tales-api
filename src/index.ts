@@ -11,6 +11,9 @@ const task = cron.schedule('*/1 * * * *', async () => {
   try {
     console.log('Running cron job')
     const games = await prisma.game.findMany({
+      where: {
+        status: 'active'
+      },
       include: {
         user: {
           include: {

@@ -2,19 +2,19 @@ import { SurvivalDay, SurvivalDayOption, User } from "@prisma/client"
 import { Activity } from "@prisma/client"
 import { prisma } from "../../db"
 
-function toLocalDate(date: Date) {
+function toLocalDate(date: Date, timezone: string) {
     const dateObject = new Date(date)
-    return dateObject.toLocaleString('en-US', { timeZone: 'America/Denver' }).split(',')[0]
+    return dateObject.toLocaleString('en-US', { timeZone: timezone }).split(',')[0]
 }
 
-function findLargestDistanceCompleted(survivalDay: SurvivalDay & { options: SurvivalDayOption[] }, activity: Activity) {
+function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOption[] }, activity: Activity) {
     const activityDistanceInKm = activity.distance_in_meters / 1000
     const matchingOption = survivalDay.options
         .filter(option => activityDistanceInKm >= option.distance_in_kilometers).sort((a, b) => b.distance_in_kilometers - a.distance_in_kilometers)[0]
     return matchingOption
 }
 
-async function handleCharacterUpdates(user: User, option: SurvivalDayOption, activity: Activity,) {
+async function handleCharacterUpdates({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
     let foundItems = false
     const odds = Math.random() * 100
     if (odds < option.chance_to_find_items) {
@@ -26,8 +26,8 @@ async function handleCharacterUpdates(user: User, option: SurvivalDayOption, act
                 user_id: user.id
             },
             data: {
-                food: { increment: foundItems ? 10 : 0 },
-                water: { increment: foundItems ? 10 : 0 }
+                food: { increment: foundItems ? option.item_gain_percentage : 0 },
+                water: { increment: foundItems ? option.item_gain_percentage : 0 }
             }
         }),
         prisma.survivalDay.update({
@@ -42,30 +42,30 @@ async function handleCharacterUpdates(user: User, option: SurvivalDayOption, act
 }
 
 export async function processDay(user: User, activity: Activity) {
-    const activityDay = toLocalDate(activity.source_created_at)
-    const survivalDay = await prisma.survivalDay.findFirst({
+    const activityDay = toLocalDate(activity.source_created_at, user.timezone)
+    const game = await prisma.game.findFirst({
         where: {
-            user_id: user.id,
-        },
-        orderBy: {
-            day: 'desc'
+            user_id: user.id
         },
         include: {
-            options: true,
-            game: {
-                select: {
-                    id: true
+            survival_days: {
+                include: {
+                    options: true
+                },
+                orderBy: {
+                    day: 'desc'
                 }
             }
         }
     })
-    if (survivalDay) {
-        const survivalDaySpan = toLocalDate(new Date(survivalDay.created_at))
+    if (game?.survival_days && game.survival_days.length > 0) {
+        const survivalDay = game.survival_days[0] as SurvivalDay & { options: SurvivalDayOption[] }
+        const survivalDaySpan = toLocalDate(new Date(survivalDay.created_at), user.timezone)
         if (activityDay === survivalDaySpan) {
-            const option = findLargestDistanceCompleted(survivalDay, activity)
+            const option: SurvivalDayOption | null = findCompletedOption(survivalDay, activity)
             if (option) {
                 try {
-                    await handleCharacterUpdates(user, option, activity)
+                    await handleCharacterUpdates({ user, option, activity, survivalDay })
                 } catch (error) {
                     throw new Error('~~ Error processing day: ' + error)
                 }
