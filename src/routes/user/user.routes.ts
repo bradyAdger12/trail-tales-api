@@ -18,7 +18,8 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
                     avatar_file_key: { type: 'string' },
                     strava_access_token: { type: 'string' },
                     strava_refresh_token: { type: 'string' },
-                    display_name: { type: 'string' }
+                    display_name: { type: 'string' },
+                    timezone: { type: 'string' }
                 }
             },
             response: {
@@ -41,6 +42,9 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             }
             if (_.has(body, 'strava_refresh_token')) {
                 payload.strava_refresh_token = body.strava_refresh_token as string
+            }
+            if (_.has(body, 'timezone')) {
+                payload.timezone = body.timezone as string
             }
             const user = await prisma.user.update({
                 data: payload,

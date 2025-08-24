@@ -82,36 +82,37 @@ model Character {
 }
 
 model Game {
-  id                      String         @id @default(uuid())
-  difficulty              GameDifficulty
-  user_id                 String         @unique
-  status                  GameStatus     @default(active)
-  created_at              DateTime       @default(now())
-  updated_at              DateTime       @default(now())
-  daily_food_loss         Int            @default(10)
-  daily_water_loss        Int            @default(10)
+  id                         String         @id @default(uuid())
+  difficulty                 GameDifficulty
+  user_id                    String         @unique
+  status                     GameStatus     @default(active)
+  created_at                 DateTime       @default(now())
+  updated_at                 DateTime       @default(now())
+  daily_food_loss            Int            @default(10)
+  daily_water_loss           Int            @default(10)
   min_distance_in_kilometers Int            @default(1)
   max_distance_in_kilometers Int            @default(5)
-  user                    User           @relation(fields: [user_id], references: [id])
-  survival_days           SurvivalDay[]
-  character               Character?
+  user                       User           @relation(fields: [user_id], references: [id])
+  survival_days              SurvivalDay[]
+  character                  Character?
 
   @@map("games")
 }
 
 model SurvivalDay {
-  id          String              @id @default(uuid())
-  game_id     String
-  user_id     String
-  activity_id String?             @unique
-  description String?
-  day         Int
-  created_at  DateTime            @default(now())
-  updated_at  DateTime            @default(now())
-  activity    Activity?           @relation(fields: [activity_id], references: [id], onDelete: SetNull)
-  user        User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  game        Game                @relation(fields: [game_id], references: [id], onDelete: Cascade)
-  options     SurvivalDayOption[]
+  id                   String              @id @default(uuid())
+  game_id              String
+  user_id              String
+  activity_id          String?             @unique
+  completed_difficulty DayDifficulty?
+  description          String?
+  day                  Int
+  created_at           DateTime            @default(now())
+  updated_at           DateTime            @default(now())
+  activity             Activity?           @relation(fields: [activity_id], references: [id], onDelete: SetNull)
+  user                 User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  game                 Game                @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  options              SurvivalDayOption[]
 
   @@map("survival_days")
 }

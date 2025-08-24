@@ -8,8 +8,6 @@ export const SCHEMA_SURVIVAL_DAY_OPTION_RETURN = {
         difficulty: { type: 'string' },
         distance_in_kilometers: { type: 'number' },
         item_gain_percentage: { type: 'number' },
-        activity_id: { type: 'string' },
-        activity: SCHEMA_ACTIVITY_RETURN,
         chance_to_find_items: { type: 'number' }
     }
 }
@@ -19,7 +17,11 @@ export const SCHEMA_SURVIVAL_DAY_RETURN = {
         id: { type: 'string' },
         game_id: { type: 'string' },
         description: { type: 'string' },
+        activity_id: { type: 'string' },
+        completed_difficulty: { type: 'string' },
+        activity: SCHEMA_ACTIVITY_RETURN,
         day: { type: 'number' },
+        created_at: { type: 'string' },
         options: {
             type: 'array',
             items: SCHEMA_SURVIVAL_DAY_OPTION_RETURN

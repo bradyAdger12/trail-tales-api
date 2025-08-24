@@ -36,6 +36,7 @@ const survivalDayRoutes: FastifyPluginAsync = async (fastify) => {
                     id
                 },
                 include: {
+                    activity: true,
                     options: true
                 }
             })

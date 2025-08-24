@@ -35,7 +35,8 @@ async function handleCharacterUpdates({ user, option, activity, survivalDay }: {
                 id: option.survival_day_id
             },
             data: {
-                activity_id: activity.id
+                activity_id: activity.id,
+                completed_difficulty: option.difficulty
             }
         })
     ])
