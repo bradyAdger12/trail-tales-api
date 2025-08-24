@@ -1,4 +1,4 @@
-import { Character, Game, SurvivalDay, SurvivalDayOption, User    } from "@prisma/client"
+import { Character, Game, SurvivalDay, SurvivalDayOption, User } from "@prisma/client"
 import { ai } from "../../genkit"
 import { z } from "zod"
 import { prisma } from "../../db"
@@ -6,7 +6,7 @@ import { gameConfig, GameConfig } from "../../lib/game_config"
 
 const OptionSchema = z.object({
     description: z.string(),
-    difficulty: z.enum(['easy', 'medium', 'hard'])
+    difficulty: z.enum(['easy', 'medium', 'hard', 'rest'])
 })
 
 const OutputSchema = z.object({
@@ -41,12 +41,15 @@ function addDistancesToOptions(options: Option[], config: GameConfig) {
         } else if (option.difficulty === 'hard') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.80 + Math.random() * 0.20))
             option.chance_to_find_items = 80
+        } else if (option.difficulty === 'rest') {
+            option.distance_in_kilometers = 0
+            option.chance_to_find_items = 0
         }
     })
 }
 
 export async function advanceSurvivalDay(game: Game) {
-    const survivalDay = await prisma.survivalDay.findFirst({
+    const currentSurvivalDay = await prisma.survivalDay.findFirst({
         where: {
             game_id: game.id
         },
@@ -54,14 +57,20 @@ export async function advanceSurvivalDay(game: Game) {
             day: 'desc'
         },
         include: {
+            activity: {
+                select: {
+                    id: true
+                }
+            },
             options: true
         }
     })
-    if (!survivalDay) {
+    if (!currentSurvivalDay) {
         return
     }
-    const nextDay = survivalDay.day + 1
-    const { description, options } = await generateSurvivalDay(nextDay, gameConfig.difficulty[game.difficulty], survivalDay)
+    const hasActivity = !!currentSurvivalDay.activity_id
+    const nextDay = currentSurvivalDay.day + 1
+    const { description, options } = await generateSurvivalDay(nextDay, gameConfig.difficulty[game.difficulty], currentSurvivalDay)
     const character = await prisma.character.findUnique({
         where: {
             user_id: game.user_id
@@ -80,7 +89,7 @@ export async function advanceSurvivalDay(game: Game) {
         totalHealthLoss += 10
     }
     const healthLevel = Math.max(0, character.health - totalHealthLoss)
-    await prisma.$transaction([
+    const transactions = [
         prisma.survivalDay.create({
             data: {
                 user_id: game.user_id,
@@ -102,8 +111,19 @@ export async function advanceSurvivalDay(game: Game) {
                 health: healthLevel
             }
         })
-    ])
-    
+    ]
+    if (hasActivity) {
+        transactions.push(prisma.survivalDay.update({
+            where: {
+                id: currentSurvivalDay.id
+            },
+            data: {
+                completed_difficulty: 'rest'
+            }
+        }))
+    }
+    await prisma.$transaction(transactions)
+
 }
 
 export async function generateSurvivalDay(day: number, config: GameConfig, previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null): Promise<{ description: string, options: Option[] }> {
@@ -123,14 +143,23 @@ export async function generateSurvivalDay(day: number, config: GameConfig, previ
 
                         Description of the day....\n\n
 
-                        You should also provide 3 options for the player to choose from. The options should be in the format of a text adventure game. Tell the story in second person.
+                        You should also provide 4 options for the player to choose from. The options should be in the format of a text adventure game. \n\n
+
+                        ## Options
+
+                        Easy Option: This option should be easy for the survivor to complete.\n
+                        Medium Option: This option should be medium for the survivor to complete.\n
+                        Hard Option: This option should be hard for the survivor to complete.\n
+                        Rest Option: This option should be a rest day.\n
+                        
+                        Tell the story in second person.
 
                         `
                     }
                 ]
             }
         ],
-        output: { schema: OutputSchema } 
+        output: { schema: OutputSchema }
     });
     const options = response.output!.options as Option[]
     addDistancesToOptions(options, config)

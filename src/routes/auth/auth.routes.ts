@@ -8,6 +8,7 @@ import { SCHEMA_USER_RETURN } from '../user/user.schema';
 import { prisma } from '../../db';
 import { User } from '@prisma/client';
 import { signAccessToken, signRefreshToken } from './auth.controller';
+import { jwtDecode } from 'jwt-decode';
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
 
@@ -110,6 +111,54 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             user
         })
     });
+
+    // Google Auth
+    fastify.post('/google/auth', {
+        schema: {
+            tags: ['auth'],
+            body: {
+                type: 'object',
+                properties: {
+                    token: { type: 'string' }
+                },
+                required: ['token']
+            },
+            response: {
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } }
+            }
+        }
+    }, async (request, reply) => {
+        const body = request.body as { token: string }
+        const googleToken = body.token as string
+        const decoded = jwtDecode(googleToken) as { email: string, name: string, sub: string }
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(decoded.sub, salt);
+        let user
+        if (decoded.sub) {
+            user = await prisma.user.findFirst({
+                where: {
+                    email: decoded.email
+                }
+            })
+            if (!user) {
+                user = await prisma.user.create({
+                    data: {
+                        google_id: decoded.sub,
+                        email: decoded.email,
+                        hashed_password: hash,
+                        display_name: decoded.name
+                    }
+                })
+            }
+            const token = signAccessToken(user)
+            const refreshToken = signRefreshToken(user)
+            return reply.status(200).send({
+                token,
+                refreshToken,
+                user
+            })
+        }
+    })
 
     fastify.post('/refresh', {
         schema: {
