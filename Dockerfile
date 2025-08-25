@@ -1,5 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
+
+ARG DATABASE_URL
+
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
