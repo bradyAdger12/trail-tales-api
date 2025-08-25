@@ -7,7 +7,6 @@ COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
 RUN npx prisma migrate deploy
-RUN npx prisma db seed
 RUN yarn generate --no-engine
 RUN yarn build
 EXPOSE 8080
