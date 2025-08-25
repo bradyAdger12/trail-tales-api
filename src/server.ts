@@ -30,7 +30,7 @@ function buildServer() {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     origin: (origin, cb) => {
       const hostname = new URL(origin as string).hostname
-      cb(null, true)
+      cb(null, '*')
       return
     }
   })
@@ -40,20 +40,13 @@ function buildServer() {
     openapi: {
       openapi: '3.0.0',
       info: {
-        title: 'Run Squad',
-        description: 'Testing the Run Squad swagger API',
+        title: 'Trail Tales',
+        description: 'Trail Tales swagger API',
         version: '0.1.0'
       },
-      servers: [
-        {
-          url: 'http://localhost:8080',
-          description: 'Development server'
-        }
-      ],
       tags: [
         { name: 'auth', description: 'Unauthenticated User related end-points' },
-        { name: 'user', description: 'User related end-points' },
-        { name: 'character', description: 'Character related end-points' }
+        { name: 'user', description: 'User related end-points' }
       ],
       components: {
         securitySchemes: {
