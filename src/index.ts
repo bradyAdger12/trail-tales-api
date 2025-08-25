@@ -34,6 +34,8 @@ const task = cron.schedule('*/1 * * * *', async () => {
   }
 })
 
+
+
 // Start Fastify server
 const main = async () => {
   try {
