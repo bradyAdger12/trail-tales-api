@@ -22,7 +22,7 @@ function buildServer() {
 
   // Define server
   const fastify = Fastify({
-    logger: false
+    logger: process.env.NODE_ENV === 'production'
   });
 
   fastify.register(cors, {
