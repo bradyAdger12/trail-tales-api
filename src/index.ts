@@ -7,6 +7,8 @@ import cron from 'node-cron'
 import { prisma } from './db'
 import { advanceSurvivalDay } from './routes/survival_day/survival_day.controller';
 
+console.log('DATABASE_URL', process.env.DATABASE_URL)
+
 const task = cron.schedule('*/1 * * * *', async () => {
   try {
     console.log('Running cron job')
