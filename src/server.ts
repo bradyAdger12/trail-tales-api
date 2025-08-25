@@ -30,13 +30,8 @@ function buildServer() {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     origin: (origin, cb) => {
       const hostname = new URL(origin as string).hostname
-      if (hostname === "localhost") {
-        //  Request from localhost will pass
-        cb(null, true)
-        return
-      }
-      // Generate an error on other origins, disabling access
-      cb(new Error("Not allowed"), false)
+      cb(null, true)
+      return
     }
   })
 
