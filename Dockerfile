@@ -8,7 +8,7 @@ COPY package.json ./
 RUN yarn install
 COPY . .
 RUN npx prisma migrate deploy
-RUN yarn generate --no-engine
+RUN yarn generate
 RUN yarn build
 EXPOSE 8080
 CMD ["yarn", "start"]
