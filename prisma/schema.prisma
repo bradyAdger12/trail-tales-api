@@ -120,16 +120,17 @@ model SurvivalDay {
 }
 
 model SurvivalDayOption {
-  id                     String        @id @default(uuid())
-  difficulty             DayDifficulty
-  survival_day_id        String
-  description            String?
-  chance_to_find_items   Int           @default(0)
-  item_gain_percentage   Int           @default(20)
-  distance_in_kilometers Int
-  created_at             DateTime      @default(now())
-  updated_at             DateTime      @default(now())
-  survival_day           SurvivalDay   @relation(fields: [survival_day_id], references: [id], onDelete: Cascade)
+  id                       String        @id @default(uuid())
+  difficulty               DayDifficulty
+  survival_day_id          String
+  description              String?
+  chance_to_find_items     Int           @default(0)
+  item_gain_percentage     Int           @default(20)
+  health_change_percentage Int           @default(-10)
+  distance_in_kilometers   Int
+  created_at               DateTime      @default(now())
+  updated_at               DateTime      @default(now())
+  survival_day             SurvivalDay   @relation(fields: [survival_day_id], references: [id], onDelete: Cascade)
 
   @@map("survival_day_options")
 }

@@ -4,6 +4,7 @@ import { prisma } from "../../db"
 import axios from "axios"
 import { authenticate } from "../../middleware/authentication"
 import { refreshStravaToken } from "./strava.controller"
+import { processDay } from "../activity/activity.controller"
 const stravaRoutes: FastifyPluginAsync = async (fastify) => {
     fastify.route({
         url: '/activities',
@@ -122,7 +123,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                             if (!streamData) {
                                 throw 'Activity must have stream data'
                             }
-                            await prisma.activity.create({
+                            const activity = await prisma.activity.create({
                                 data: {
                                     source: 'strava',
                                     source_id: body.object_id.toString(),
@@ -137,6 +138,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
 
                                 }
                             })
+                            await processDay(user, activity)
                         }
 
                     }

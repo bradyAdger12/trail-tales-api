@@ -83,7 +83,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             },
             response: {
                 200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -127,7 +127,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             },
             response: {
                 200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -168,13 +168,13 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             tags: ['auth'],
             response: {
                 200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' } } },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
         const authHeader = request.headers['authorization']
         if (!authHeader) {
-            return reply.status(403).send('You do have not have permissions to access this resource')
+            return reply.status(403).send({ message: 'You do have not have permissions to access this resource' })
         }
         try {
             const token: string = authHeader?.split(' ')[1]!
@@ -185,10 +185,10 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 const refreshToken = signRefreshToken(user)
                 return { token, refreshToken }
             } else {
-                return reply.status(401).send('Invalid refresh token')
+                return reply.status(401).send({ message: 'Invalid refresh token' })
             }
         } catch (e) {
-            return reply.status(401).send('You do have not have permissions to access this resource')
+            return reply.status(401).send({ message: 'You do have not have permissions to access this resource' })
         }
     });
 
@@ -205,7 +205,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             },
             response: {
                 200: { properties: { success: { type: 'boolean' } } },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -265,7 +265,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             },
             response: {
                 200: { properties: { success: { type: 'boolean' } } },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {

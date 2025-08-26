@@ -44,6 +44,7 @@ function addDistancesToOptions(options: Option[], config: GameConfig) {
         } else if (option.difficulty === 'rest') {
             option.distance_in_kilometers = 0
             option.chance_to_find_items = 0
+            option.health_change_percentage = 5
         }
     })
 }

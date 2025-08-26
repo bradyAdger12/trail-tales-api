@@ -16,10 +16,11 @@ function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOp
 
 async function handleCharacterUpdates({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
     let foundItems = false
-    const odds = Math.random() * 100
-    if (odds < option.chance_to_find_items) {
-        foundItems = true
-    }
+    let injurySustained = false
+    const oddsToFindItems = Math.random() * 100
+    const injuryOdds = Math.random() * 100
+    foundItems = oddsToFindItems < option.chance_to_find_items
+    injurySustained = injuryOdds < option.health_change_percentage
     await prisma.$transaction([
         prisma.character.update({
             where: {
@@ -27,7 +28,8 @@ async function handleCharacterUpdates({ user, option, activity, survivalDay }: {
             },
             data: {
                 food: { increment: foundItems ? option.item_gain_percentage : 0 },
-                water: { increment: foundItems ? option.item_gain_percentage : 0 }
+                water: { increment: foundItems ? option.item_gain_percentage : 0 },
+                health: { decrement: injurySustained ? option.health_change_percentage : 0 }
             }
         }),
         prisma.survivalDay.update({
