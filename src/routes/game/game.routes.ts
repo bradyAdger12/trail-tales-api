@@ -16,7 +16,8 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
             description: 'Fetch the user\'s current game',
             tags: ['game'],
             response: {
-                200: SCHEMA_GAME_RETURN
+                200: SCHEMA_GAME_RETURN,
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -74,7 +75,8 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             },
             response: {
-                200: SCHEMA_GAME_RETURN
+                200: SCHEMA_GAME_RETURN,
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {  

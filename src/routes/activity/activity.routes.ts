@@ -29,7 +29,8 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                     properties: {
                         activity: SCHEMA_ACTIVITY_RETURN
                     }
-                }
+                },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         },
         handler: async (request, reply) => {
@@ -83,7 +84,8 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             },
             response: {
-                200: SCHEMA_ACTIVITY_RETURN_ARRAY
+                200: SCHEMA_ACTIVITY_RETURN_ARRAY,
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         },
         handler: async (request, reply) => {

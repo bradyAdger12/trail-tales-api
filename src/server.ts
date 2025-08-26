@@ -92,7 +92,8 @@ function buildServer() {
         required: ['name', 'email', 'message']
       },
       response: {
-        200: { type: 'object', properties: { success: { type: 'boolean' } } }
+        200: { type: 'object', properties: { success: { type: 'boolean' } } },
+        default: { type: "object", properties: { error: { type: "string" } } }
       }
     }
   }, async (request, reply) => {

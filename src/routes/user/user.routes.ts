@@ -23,7 +23,8 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
                 }
             },
             response: {
-                200: SCHEMA_USER_RETURN
+                200: SCHEMA_USER_RETURN,
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -67,7 +68,8 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             description: 'Fetch me data',
             tags: ['user'],
             response: {
-                200: SCHEMA_USER_RETURN
+                200: SCHEMA_USER_RETURN,
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {

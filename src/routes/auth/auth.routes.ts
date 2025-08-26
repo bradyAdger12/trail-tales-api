@@ -32,7 +32,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                     properties: {
                         success: { type: 'boolean' }
                     }
-                }
+                },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -81,7 +82,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['email', 'password']
             },
             response: {
-                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } }
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -124,7 +126,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['token']
             },
             response: {
-                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } }
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' }, user: SCHEMA_USER_RETURN } },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -164,7 +167,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
         schema: {
             tags: ['auth'],
             response: {
-                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' } } }
+                200: { properties: { token: { type: 'string' }, refreshToken: { type: 'string' } } },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -200,7 +204,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['email']
             },
             response: {
-                200: { properties: { success: { type: 'boolean' } } }
+                200: { properties: { success: { type: 'boolean' } } },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -259,7 +264,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 required: ['token', 'password']
             },
             response: {
-                200: { properties: { success: { type: 'boolean' } } }
+                200: { properties: { success: { type: 'boolean' } } },
+                default: { type: "object", properties: { error: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
