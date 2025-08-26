@@ -2,8 +2,9 @@ FROM node:20-alpine
 WORKDIR /app
 
 ARG DB_URL
+ENV DB_URL=${DB_URL}
 
-COPY package.json yarn.lock ./
+COPY package.json ./
 RUN yarn install
 COPY . .
 RUN npx prisma migrate deploy
