@@ -113,7 +113,7 @@ export async function advanceSurvivalDay(game: Game) {
             }
         })
     ]
-    if (hasActivity) {
+    if (!hasActivity) {
         transactions.push(prisma.survivalDay.update({
             where: {
                 id: currentSurvivalDay.id
