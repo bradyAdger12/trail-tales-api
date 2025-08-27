@@ -34,7 +34,7 @@ function addDistancesToOptions(options: Option[], config: GameConfig) {
     options.forEach(option => {
         if (option.difficulty === 'easy') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25))
-            option.chance_to_find_items = 10
+            option.chance_to_find_items = 25
         } else if (option.difficulty === 'medium') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.40 + Math.random() * 0.35))
             option.chance_to_find_items = 50
