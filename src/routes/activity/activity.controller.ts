@@ -14,7 +14,7 @@ function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOp
     return matchingOption
 }
 
-async function handleCharacterUpdates({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
+async function processResourceEffects({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
     let foundItems = false
     let injurySustained = false
     const oddsToFindItems = Math.random() * 100
@@ -100,7 +100,7 @@ export async function processDay(user: User, activity: Activity) {
             const option: SurvivalDayOption | null = findCompletedOption(survivalDay, activity)
             if (option) {
                 try {
-                    await handleCharacterUpdates({ user, option, activity, survivalDay })
+                    await processResourceEffects({ user, option, activity, survivalDay })
                 } catch (error) {
                     throw new Error('~~ Error processing day: ' + error)
                 }
