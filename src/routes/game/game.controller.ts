@@ -2,7 +2,24 @@ import { prisma } from "../../db";
 import { randomUUID } from "node:crypto";
 import { generateSurvivalDay } from "../survival_day/survival_day.controller";
 import { gameConfig, GameConfig } from "../../lib/game_config";
-import { GameDifficulty } from "@prisma/client";
+import { GameDifficulty, GameNotification } from "@prisma/client";
+
+export async function getUnseenGameNotifications(gameId: string, userId: string): Promise<GameNotification[]> {
+    const notifications = await prisma.gameNotification.findMany({
+        where: { game_id: gameId, game: { user_id: userId }, seen: false }
+    })
+    return notifications
+}
+
+export async function markNotificationsAsSeen(gameId: string, userId: string): Promise<void> {
+    await prisma.gameNotification.updateMany({
+        where: {
+            game_id: gameId,
+            game: { user_id: userId }, seen: false
+        },
+        data: { seen: true }
+    })
+}
 
 export async function startGame(userId: string, difficulty: string) {
     const gameId = randomUUID()

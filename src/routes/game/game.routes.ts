@@ -1,10 +1,9 @@
 import { FastifyPluginAsync } from "fastify";
 import _ from "lodash";
-import { SCHEMA_CHARACTER_TEMPLATE, SCHEMA_GAME_RETURN } from "./game.schema";
+import { SCHEMA_GAME_RETURN } from "./game.schema";
 import { prisma } from "../../db";
 import { authenticate } from "../../middleware/authentication";
-import { startGame } from "./game.controller";
-import { Character } from "@prisma/client";
+import { getUnseenGameNotifications, markNotificationsAsSeen, startGame } from "./game.controller";
 import { gameConfig } from "../../lib/game_config";
 
 
@@ -87,6 +86,60 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
         try {
             const game = await startGame(request.user?.id, difficulty)
             return game
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.get('/:id/notifications', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Get the notifications for a game',
+            tags: ['game'],
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                },
+                required: ['id']
+            }
+        }
+    }, async (request, reply) => {  
+        if (!request.user?.id) {
+            return reply.status(401).send({ message: 'Unauthorized' })
+        }
+        const { id } = request.params as { id: string }
+        try {
+            const notifications = await getUnseenGameNotifications(id, request.user?.id)
+            return notifications
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
+    fastify.put('/:id/notifications/seen', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Update notifications',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                },
+                required: ['id']
+            },
+            tags: ['game']
+        }
+    }, async (request, reply) => {  
+        if (!request.user?.id) {
+            return reply.status(401).send({ message: 'Unauthorized' })
+        }
+        const { id } = request.params as { id: string }
+        try {
+            await markNotificationsAsSeen(id, request.user?.id)
+            return { success: true }
         } catch (e) {
             return reply.status(500).send(e as string)
         }

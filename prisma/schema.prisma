@@ -7,6 +7,12 @@ datasource db {
   url      = env("DB_URL")
 }
 
+enum Resource {
+  food
+  water
+  health
+}
+
 enum GameDifficulty {
   easy
   medium
@@ -97,8 +103,22 @@ model Game {
   user                       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   survival_days              SurvivalDay[]
   character                  Character?
-
+  game_notifications         GameNotification[]
   @@map("games")
+}
+
+model GameNotification {
+  id String @id @default(uuid())
+  game_id String
+  description String
+  day Int
+  seen Boolean @default(false)
+  resource Resource
+  resource_change_as_percent Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  game Game @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  @@map("game_notifications")
 }
 
 model SurvivalDay {
@@ -115,7 +135,6 @@ model SurvivalDay {
   user                 User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   game                 Game                @relation(fields: [game_id], references: [id], onDelete: Cascade)
   options              SurvivalDayOption[]
-
   @@map("survival_days")
 }
 

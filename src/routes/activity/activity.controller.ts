@@ -21,7 +21,7 @@ async function handleCharacterUpdates({ user, option, activity, survivalDay }: {
     const injuryOdds = Math.random() * 100
     foundItems = oddsToFindItems < option.chance_to_find_items
     injurySustained = injuryOdds < option.health_change_percentage
-    await prisma.$transaction([
+    const transaction: any[] = [
         prisma.character.update({
             where: {
                 user_id: user.id
@@ -41,7 +41,39 @@ async function handleCharacterUpdates({ user, option, activity, survivalDay }: {
                 completed_difficulty: option.difficulty
             }
         })
-    ])
+    ]
+    if (foundItems) {
+        transaction.push(prisma.gameNotification.create({
+            data: {
+                game_id: survivalDay.game_id,
+                description: 'You found food!',
+                resource: 'food',
+                resource_change_as_percent: option.item_gain_percentage,
+                day: survivalDay.day
+            }
+        }))
+        transaction.push(prisma.gameNotification.create({
+            data: {
+                game_id: survivalDay.game_id,
+                description: 'You found water!',
+                resource: 'water',
+                resource_change_as_percent: option.item_gain_percentage,
+                day: survivalDay.day
+            }
+        }))
+    }
+    if (injurySustained) {
+        transaction.push(prisma.gameNotification.create({
+            data: {
+                game_id: survivalDay.game_id,
+                description: 'You sustained an injury!',
+                resource: 'health',
+                resource_change_as_percent: option.health_change_percentage,
+                day: survivalDay.day
+            }
+        }))
+    }
+    await prisma.$transaction(transaction)
 }
 
 export async function processDay(user: User, activity: Activity) {
