@@ -34,13 +34,13 @@ function addDistancesToOptions(options: Option[], config: GameConfig) {
     options.forEach(option => {
         if (option.difficulty === 'easy') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25))
-            option.chance_to_find_items = 25
+            option.chance_to_find_items = 50
         } else if (option.difficulty === 'medium') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.40 + Math.random() * 0.35))
-            option.chance_to_find_items = 50
+            option.chance_to_find_items = 75
         } else if (option.difficulty === 'hard') {
             option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.80 + Math.random() * 0.20))
-            option.chance_to_find_items = 80
+            option.chance_to_find_items = 90
         } else if (option.difficulty === 'rest') {
             option.distance_in_kilometers = 0
             option.chance_to_find_items = 0
