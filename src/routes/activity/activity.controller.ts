@@ -20,7 +20,7 @@ async function handleCharacterUpdates({ user, option, activity, survivalDay }: {
     const oddsToFindItems = Math.random() * 100
     const injuryOdds = Math.random() * 100
     foundItems = oddsToFindItems < option.chance_to_find_items
-    injurySustained = injuryOdds < option.health_change_percentage
+    injurySustained = injuryOdds < option.chance_to_find_items
     const transaction: any[] = [
         prisma.character.update({
             where: {
