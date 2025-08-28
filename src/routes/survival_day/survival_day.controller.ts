@@ -80,16 +80,28 @@ export async function advanceSurvivalDay(game: Game) {
     if (!character) {
         return
     }
+
+    // Calculate food and water levels based on game configuration
     const foodLevel = Math.max(0, character.food - gameConfig.difficulty[game.difficulty].dailyFoodLoss)
     const waterLevel = Math.max(0, character.water - gameConfig.difficulty[game.difficulty].dailyWaterLoss)
-    let totalHealthLoss = 0
+    let totalHealthDelta = 0
     if (foodLevel <= 0) {
-        totalHealthLoss += 10
+        totalHealthDelta -= 10
     }
     if (waterLevel <= 0) {
-        totalHealthLoss += 10
+        totalHealthDelta -= 10
     }
-    const healthLevel = Math.max(0, character.health - totalHealthLoss)
+    
+    //If there is no activity, the user rested and should gain health
+    if (!hasActivity) {
+        const restOption = options.find(option => option.difficulty === 'rest')
+        if (restOption) {
+            totalHealthDelta += restOption.health_change_percentage
+        }
+    }
+
+    const healthLevel = Math.max(0, character.health + totalHealthDelta)
+    
     const transactions = [
         prisma.survivalDay.create({
             data: {
