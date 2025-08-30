@@ -2,7 +2,18 @@ import { prisma } from "../../db";
 import { randomUUID } from "node:crypto";
 import { generateSurvivalDay } from "../survival_day/survival_day.controller";
 import { gameConfig, GameConfig } from "../../lib/game_config";
-import { GameDifficulty, GameNotification } from "@prisma/client";
+import { Activity, GameDifficulty, GameNotification } from "@prisma/client";
+
+export async function getGameStats(gameId: string, userId: string): Promise<Pick<Activity, 'elapsed_time_in_seconds' | 'distance_in_meters'>> {
+    const stats = await prisma.activity.aggregate({
+        where: { user_id: userId, survival_day: { game_id: gameId } },
+        _sum: {
+            elapsed_time_in_seconds: true,
+            distance_in_meters: true
+        }
+    })
+    return { distance_in_meters: stats._sum.distance_in_meters || 0, elapsed_time_in_seconds: stats._sum.elapsed_time_in_seconds || 0 }
+}
 
 export async function getUnseenGameNotifications(gameId: string, userId: string): Promise<GameNotification[]> {
     const notifications = await prisma.gameNotification.findMany({
