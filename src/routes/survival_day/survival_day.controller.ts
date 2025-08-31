@@ -146,7 +146,7 @@ export async function generateSurvivalDay(day: number, config: GameConfig, previ
                 content: [
                     {
                         type: 'text',
-                        text: `Create a story for the day ${day}. The description for the day should be kept to 2 paragraphs. The output should be in markdown format. I'd like the format to look like a text adventure game.\n\n
+                        text: `Create a story for the day ${day}. The description for the day should be kept to 1 paragraph. The output should be in markdown format. I'd like the format to look like a text adventure game.\n\n
 
                         ${day > 1 ? `Make the story a continuation of the previous day:\n\n${addPreviousDayDescription(previous_day)}` : ''}
 
