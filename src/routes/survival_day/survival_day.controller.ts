@@ -16,19 +16,15 @@ const OutputSchema = z.object({
 
 type Option = z.infer<typeof OptionSchema> & SurvivalDayOption
 
-// function addPreviousDayDescription(previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null) {
-//     if (!previous_day) {
-//         return ''   
-//     }
-//     let userResponse = null
-//     const options = previous_day.options.filter(option => option.activity_id !== null)
-//     if (options.length > 0) {
-//         userResponse = options[0]
-//     }
-//     return `Previous day: ${previous_day.description}\n\n
-//     ${userResponse ? `User response: ${userResponse.description}` : 'Decided to sit next to the fire and rest.'}
-//     `
-// }
+function addPreviousDayDescription(previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null) {
+    if (!previous_day) {
+        return ''   
+    }
+    const selectedOption = previous_day.options.find(option => option.difficulty === previous_day.completed_difficulty)
+    return `Previous day: ${previous_day.description}\n\n
+    ${selectedOption ? `User response: ${selectedOption.description}` : 'Decided to sit next to the fire and rest.'}
+    `
+}
 
 function addDistancesToOptions(options: Option[], config: GameConfig) {
     options.forEach(option => {
@@ -152,9 +148,7 @@ export async function generateSurvivalDay(day: number, config: GameConfig, previ
                         type: 'text',
                         text: `Create a story for the day ${day}. The description for the day should be kept to 2 paragraphs. The output should be in markdown format. I'd like the format to look like a text adventure game.\n\n
 
-                        ## Day ${day}
-
-                        Description of the day....\n\n
+                        ${day > 1 ? `Make the story a continuation of the previous day:\n\n${addPreviousDayDescription(previous_day)}` : ''}
 
                         You should also provide 4 options for the player to choose from. The options should be in the format of a text adventure game. \n\n
 
