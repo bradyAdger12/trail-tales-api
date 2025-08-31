@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import _ from 'lodash'
 import buildServer from "./server";
-const server = buildServer()
 // Cron job to run every hour and check for users at midnight
 import cron from 'node-cron'
 import { prisma } from './db'
@@ -41,6 +40,7 @@ const task = cron.schedule('0 * * * *', async () => {
 // Start Fastify server
 const main = async () => {
   try {
+    const server = await buildServer()
     const port = (process.env.PORT || 3000) as number
     await server.listen({ port, host: '0.0.0.0' });
     task.start()

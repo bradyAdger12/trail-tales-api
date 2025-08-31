@@ -18,20 +18,28 @@ declare module 'fastify' {
 }
 
 // Build Server
-function buildServer() {
+export async function buildServer() {
 
   // Define server
   const fastify = Fastify({
     logger: process.env.NODE_ENV === 'production'
   });
 
+  // Register cors
   fastify.register(cors, {
     allowedHeaders: ['Authorization', 'Content-Type'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     origin: true
   })
 
+  // Register rate limit
+  await fastify.register(import('@fastify/rate-limit'), {
+    max: 100,
+    timeWindow: '1 minute'
+  })
 
+
+  // Register swagger
   fastify.register(require('@fastify/swagger'), {
     openapi: {
       openapi: '3.0.0',
@@ -56,6 +64,7 @@ function buildServer() {
     }
   })
 
+  // Register swagger ui
   fastify.register(import('@fastify/swagger-ui'), {
     routePrefix: '/docs',
     uiConfig: {
