@@ -7,7 +7,7 @@ const email = faker.internet.email()
 const password = faker.internet.password()
 
 test('GET /health', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'GET', url: '/health' })
     t.same(response.json(), { status: 'ok' })
 
@@ -17,7 +17,7 @@ test('GET /health', async (t) => {
 })
 
 test('POST /login - user cannot login without email', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/login', payload: {} })
     t.equal(response.statusCode, 400)
     t.equal(response.json().message, `body must have required property 'email'`)
@@ -28,7 +28,7 @@ test('POST /login - user cannot login without email', async (t) => {
 })
 
 test('POST /login - user cannot login without password', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/login', payload: { email } })
     t.equal(response.statusCode, 400)
     t.equal(response.json().message, `body must have required property 'password'`)
@@ -39,7 +39,7 @@ test('POST /login - user cannot login without password', async (t) => {
 })
 
 test('POST /login - invalid credentials', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/login', payload: { email, password } })
     t.equal(response.statusCode, 401)
     t.equal(response.json().message, `Username or password is incorrect`)
@@ -50,7 +50,7 @@ test('POST /login - invalid credentials', async (t) => {
 })
 
 test('POST /register - password must be 8 characters', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/register', payload: { email, password: 'foobar', display_name } })
     t.equal(response.statusCode, 400)
     t.equal(response.json().message, 'Password must be at least 8 characters long')
@@ -61,7 +61,7 @@ test('POST /register - password must be 8 characters', async (t) => {
 })
 
 test('POST /register - success', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name } })
     t.same(response.json(), { success: true })
 
@@ -71,7 +71,7 @@ test('POST /register - success', async (t) => {
 })
 
 test('POST /login - success', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     const response = await fastify.inject({ method: 'POST', url: '/login', payload: { email, password } })
     t.hasProps(response.json(), ['token', 'refreshToken', 'user'])
 
@@ -81,7 +81,7 @@ test('POST /login - success', async (t) => {
 })
 
 test('POST /register - email already exists', async (t) => {
-    const fastify = buildServer()
+    const fastify = await buildServer()
     await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name } })
     const response1 = await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name } })
     t.same(response1.json().message, 'User with same email exists')
