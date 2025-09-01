@@ -20,7 +20,7 @@ export async function getGameStats(gameId: string, userId: string): Promise<Game
         }
     })
     const daysNotRested = await prisma.survivalDay.count({ where: { game_id: gameId, activity_id: { not: null } } })
-    const daysRested = await prisma.survivalDay.count({ where: { game_id: gameId, activity_id: null } })
+    const daysRested = await prisma.survivalDay.count({ where: { game_id: gameId, activity_id: null, completed_difficulty: { not: null } } })
     return { distance_in_meters: stats._sum.distance_in_meters || 0, elapsed_time_in_seconds: stats._sum.elapsed_time_in_seconds || 0, days_not_rested: daysNotRested, days_rested: daysRested }
 }
 
