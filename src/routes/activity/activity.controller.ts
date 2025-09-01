@@ -15,20 +15,23 @@ function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOp
 }
 
 async function processResourceEffects({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
-    let foundItems = false
+    let foundFood = false
+    let foundWater = false
     let injurySustained = false
-    const oddsToFindItems = Math.random() * 100
-    const injuryOdds = Math.random() * 100
-    foundItems = oddsToFindItems < option.chance_to_find_items
-    injurySustained = injuryOdds < option.chance_to_find_items
+    const oddsToFindWater = Math.random() * 100
+    const oddsToFindFood = Math.random() * 100
+    const oddsOfInjury = Math.random() * 100
+    foundFood = oddsToFindFood < option.chance_to_find_items
+    foundWater = oddsToFindWater < option.chance_to_find_items
+    injurySustained = oddsOfInjury < option.chance_to_find_items
     const transaction: any[] = [
         prisma.character.update({
             where: {
                 user_id: user.id
             },
             data: {
-                food: { increment: foundItems ? option.item_gain_percentage : 0 },
-                water: { increment: foundItems ? option.item_gain_percentage : 0 },
+                food: { increment: foundFood ? option.item_gain_percentage : 0 },
+                water: { increment: foundWater ? option.item_gain_percentage : 0 },
                 health: { decrement: injurySustained ? option.health_change_percentage : 0 }
             }
         }),
@@ -42,7 +45,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
             }
         })
     ]
-    if (foundItems) {
+    if (foundFood) {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
@@ -52,6 +55,8 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
                 day: survivalDay.day
             }
         }))
+    }
+    if (foundWater) {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
