@@ -4,7 +4,14 @@ import { generateSurvivalDay } from "../survival_day/survival_day.controller";
 import { gameConfig, GameConfig } from "../../lib/game_config";
 import { Activity, GameDifficulty, GameNotification } from "@prisma/client";
 
-export async function getGameStats(gameId: string, userId: string): Promise<Pick<Activity, 'elapsed_time_in_seconds' | 'distance_in_meters'>> {
+type GameStats = {
+    distance_in_meters: number
+    elapsed_time_in_seconds: number
+    days_not_rested: number
+    days_rested: number
+}
+
+export async function getGameStats(gameId: string, userId: string): Promise<GameStats> {
     const stats = await prisma.activity.aggregate({
         where: { user_id: userId, survival_day: { game_id: gameId } },
         _sum: {
@@ -12,7 +19,9 @@ export async function getGameStats(gameId: string, userId: string): Promise<Pick
             distance_in_meters: true
         }
     })
-    return { distance_in_meters: stats._sum.distance_in_meters || 0, elapsed_time_in_seconds: stats._sum.elapsed_time_in_seconds || 0 }
+    const daysNotRested = await prisma.survivalDay.count({ where: { game_id: gameId, activity_id: {} } })
+    const daysRested = await prisma.survivalDay.count({ where: { game_id: gameId, activity_id: { not: null } } })
+    return { distance_in_meters: stats._sum.distance_in_meters || 0, elapsed_time_in_seconds: stats._sum.elapsed_time_in_seconds || 0, days_not_rested: daysNotRested, days_rested: daysRested }
 }
 
 export async function getUnseenGameNotifications(gameId: string, userId: string): Promise<GameNotification[]> {
