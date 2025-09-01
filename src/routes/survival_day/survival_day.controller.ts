@@ -18,7 +18,7 @@ type Option = z.infer<typeof OptionSchema> & SurvivalDayOption
 
 function addPreviousDayDescription(previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null) {
     if (!previous_day) {
-        return ''   
+        return ''
     }
     const selectedOption = previous_day.options.find(option => option.difficulty === previous_day.completed_difficulty)
     return `Previous day: ${previous_day.description}\n\n
@@ -65,6 +65,7 @@ export async function advanceSurvivalDay(game: Game) {
     if (!currentSurvivalDay) {
         return
     }
+    let transactions: any[] = []
     const hasActivity = !!currentSurvivalDay.activity_id
     const nextDay = currentSurvivalDay.day + 1
     const { description, options } = await generateSurvivalDay(nextDay, gameConfig.difficulty[game.difficulty], currentSurvivalDay)
@@ -83,11 +84,29 @@ export async function advanceSurvivalDay(game: Game) {
     let totalHealthDelta = 0
     if (foodLevel <= 0) {
         totalHealthDelta -= 10
+        transactions.push(prisma.gameNotification.create({
+            data: {
+                game_id: game.id,
+                description: 'Lost health due to starvation',
+                day: nextDay,
+                resource: 'health',
+                resource_change_as_percent: -10
+            }
+        }))
     }
     if (waterLevel <= 0) {
         totalHealthDelta -= 10
+        transactions.push(prisma.gameNotification.create({
+            data: {
+                game_id: game.id,
+                description: 'Lost health due to dehydration',
+                day: nextDay,
+                resource: 'health',
+                resource_change_as_percent: -10
+            }
+        }))
     }
-    
+
     //If there is no activity, the user rested and should gain health
     if (!hasActivity) {
         const restOption = options.find(option => option.difficulty === 'rest')
@@ -97,8 +116,26 @@ export async function advanceSurvivalDay(game: Game) {
     }
 
     const healthLevel = Math.max(0, character.health + totalHealthDelta)
-    
-    const transactions = [
+
+    transactions = transactions.concat([
+        prisma.gameNotification.create({
+            data: {
+                game_id: game.id,
+                description: 'Food consumed',
+                day: nextDay,
+                resource: 'food',
+                resource_change_as_percent: -gameConfig.difficulty[game.difficulty].dailyFoodLoss
+            }
+        }),
+        prisma.gameNotification.create({
+            data: {
+                game_id: game.id,
+                description: 'Water consumed',
+                day: nextDay,
+                resource: 'water',
+                resource_change_as_percent: -gameConfig.difficulty[game.difficulty].dailyWaterLoss
+            }
+        }),
         prisma.survivalDay.create({
             data: {
                 user_id: game.user_id,
@@ -120,8 +157,17 @@ export async function advanceSurvivalDay(game: Game) {
                 health: healthLevel
             }
         })
-    ]
+    ])
     if (!hasActivity) {
+        transactions.push(prisma.gameNotification.create({
+            data: {
+                game_id: game.id,
+                description: 'Rested for the day',
+                day: nextDay,
+                resource: 'health',
+                resource_change_as_percent: options.find(option => option.difficulty === 'rest')?.health_change_percentage ?? 0
+            }
+        }))
         transactions.push(prisma.survivalDay.update({
             where: {
                 id: currentSurvivalDay.id
