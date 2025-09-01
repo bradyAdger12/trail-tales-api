@@ -73,7 +73,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
                 game_id: survivalDay.game_id,
                 description: 'You sustained an injury!',
                 resource: 'health',
-                resource_change_as_percent: option.health_change_percentage,
+                resource_change_as_percent: -10,
                 day: survivalDay.day
             }
         }))
