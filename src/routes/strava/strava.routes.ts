@@ -25,12 +25,12 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
         handler: async (request, reply) => {
             const { page, per_page } = request.query as { page: number, per_page: number }
             try {
-                const { access_token } = await refreshStravaToken(request.user?.id)
                 const user = await prisma.user.findFirst({
                     where: {
                         id: request.user?.id
                     }
                 })
+                const { access_token } = await refreshStravaToken(request.user?.id, user?.strava_refresh_token || '')
                 if (!user) {
                     return reply.status(404).send({ message: 'user not found' })
                 } else if (!user.strava_access_token) {
@@ -39,7 +39,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                 const response = await axios.get('https://strava.com/api/v3/athlete/activities', {
                     params: {
                         page,
-                        per_page,
+                        per_page, 
                     },
                     headers: {
                         Authorization: `Bearer ${access_token}`
@@ -47,7 +47,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                 })
                 return response.data
             } catch (e) {
-                return e
+                return reply.status(500).send({ message: 'error fetching activities' })
             }
         }
     })
