@@ -36,7 +36,6 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
         handler: async (request, reply) => {
             try {
                 const { source_id, source } = request.body as { source_id: string, source: string }
-                await refreshStravaToken(request.user?.id)
                 const user = await prisma.user.findFirst({
                     where: {
                         id: request.user?.id
@@ -45,6 +44,7 @@ const activityRoutes: FastifyPluginAsync = async (fastify) => {
                 if (!user) {
                     return reply.status(404).send({ message: 'user not found' })
                 }
+                await refreshStravaToken(request.user?.id, user?.strava_refresh_token || '')
                 if (source === 'strava') {
                     const stravaActivity = await fetchStravaActivity(source_id, user?.strava_access_token)              
                     const activity = await prisma.activity.create({

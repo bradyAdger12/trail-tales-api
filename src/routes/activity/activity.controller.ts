@@ -24,15 +24,26 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
     foundFood = oddsToFindFood < option.chance_to_find_items
     foundWater = oddsToFindWater < option.chance_to_find_items
     injurySustained = oddsOfInjury < option.chance_to_find_items
+    const character = await prisma.character.findFirst({
+        where: {
+            user_id: user.id
+        }
+    })
+    if (!character) {
+        throw new Error('Character not found')
+    }
+    const characterFood = Math.min(character.food + (foundFood ? option.item_gain_percentage : 0), 100)
+    const characterWater = Math.min(character.water + (foundWater ? option.item_gain_percentage : 0), 100)
+    const characterHealth = Math.min(character.health - (injurySustained ? option.health_change_percentage : 0), 100)
     const transaction: any[] = [
         prisma.character.update({
             where: {
                 user_id: user.id
             },
             data: {
-                food: { increment: foundFood ? option.item_gain_percentage : 0 },
-                water: { increment: foundWater ? option.item_gain_percentage : 0 },
-                health: { decrement: injurySustained ? option.health_change_percentage : 0 }
+                food: characterFood,
+                water: characterWater,
+                health: characterHealth
             }
         }),
         prisma.survivalDay.update({

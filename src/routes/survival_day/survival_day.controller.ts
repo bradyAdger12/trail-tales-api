@@ -115,7 +115,7 @@ export async function advanceSurvivalDay(game: Game) {
         }
     }
 
-    const healthLevel = Math.max(0, character.health + totalHealthDelta)
+    const healthLevel = Math.min(100, Math.max(0, character.health + totalHealthDelta))
 
     transactions = transactions.concat([
         prisma.gameNotification.create({
