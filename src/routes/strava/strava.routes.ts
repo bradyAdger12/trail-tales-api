@@ -78,6 +78,14 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
             const { code } = request.body as { code: string }
             try {
                 const response = await axios.post(`https://www.strava.com/oauth/token?client_id=${process.env.STRAVA_CLIENT_ID}&client_secret=${process.env.STRAVA_CLIENT_SECRET}&code=${code}&grant_type=authorization_code`)
+                await prisma.user.update({
+                    where: {
+                        id: request.user?.id
+                    },
+                    data: {
+                        strava_owner_id: response.data.athlete.id,
+                    }
+                })
                 if (response.data) {
                     return { refresh_token: response.data.refresh_token, access_token: response.data.access_token }
                 }
@@ -93,6 +101,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
         method: ['GET', 'POST'],
         handler: async (request, reply) => {
             const query = request.query
+            const validActivityTypes = ['walk', 'run', 'hike']
             const body = request.body as { aspect_type: string, object_id: number, owner_id: number, object_type: string }
             if (_.has(query, 'hub.challenge')) {
                 return { "hub.challenge": query["hub.challenge"] }
@@ -110,7 +119,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                                 Authorization: `Bearer ${user.strava_access_token}`
                             }
                         })
-                        if (stravaActivityResponse.data && stravaActivityResponse.data.type.toLowerCase().includes('run')) {
+                        if (stravaActivityResponse.data && validActivityTypes.includes(stravaActivityResponse.data.type.toLowerCase())) {
                             let streamData
                             try {
                                 const streamResponse = await axios.get('https://strava.com/api/v3/activities/' + body.object_id + '/streams?keys=distance,time', {
