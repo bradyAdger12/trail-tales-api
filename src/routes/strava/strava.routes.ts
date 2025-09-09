@@ -114,9 +114,10 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                         }
                     })
                     if (user) {
+                        const { access_token } = await refreshStravaToken(user.id, user.strava_refresh_token || '')
                         const stravaActivityResponse = await axios.get('https://strava.com/api/v3/activities/' + body.object_id, {
                             headers: {
-                                Authorization: `Bearer ${user.strava_access_token}`
+                                Authorization: `Bearer ${access_token}`
                             }
                         })
                         if (stravaActivityResponse.data && validActivityTypes.includes(stravaActivityResponse.data.type.toLowerCase())) {
@@ -124,7 +125,7 @@ const stravaRoutes: FastifyPluginAsync = async (fastify) => {
                             try {
                                 const streamResponse = await axios.get('https://strava.com/api/v3/activities/' + body.object_id + '/streams?keys=distance,time', {
                                     headers: {
-                                        Authorization: `Bearer ${user.strava_access_token}`
+                                        Authorization: `Bearer ${access_token}`
                                     }
                                 })
                                 streamData = streamResponse.data
