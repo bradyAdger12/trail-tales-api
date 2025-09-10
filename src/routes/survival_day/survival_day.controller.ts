@@ -124,7 +124,7 @@ export async function advanceSurvivalDay(game: Game) {
         prisma.gameNotification.create({
             data: {
                 game_id: game.id,
-                description: 'Food consumed',
+                description: 'Daily food loss',
                 day: nextDay,
                 resource: 'food',
                 resource_change_as_percent: -gameConfig.difficulty[game.difficulty].dailyFoodLoss
@@ -133,7 +133,7 @@ export async function advanceSurvivalDay(game: Game) {
         prisma.gameNotification.create({
             data: {
                 game_id: game.id,
-                description: 'Water consumed',
+                description: 'Daily water loss',
                 day: nextDay,
                 resource: 'water',
                 resource_change_as_percent: -gameConfig.difficulty[game.difficulty].dailyWaterLoss
