@@ -111,6 +111,9 @@ export async function processDay(user: User, activity: Activity) {
     })
     if (game?.survival_days && game.survival_days.length > 0) {
         const survivalDay = game.survival_days[0] as SurvivalDay & { options: SurvivalDayOption[] }
+        if (survivalDay.activity_id) { // If the survival day has an activity, we don't need to process another activity
+            return
+        }
         const survivalDaySpan = toLocalDate(new Date(survivalDay.created_at), user.timezone)
         if (activityDay === survivalDaySpan) {
             const option: SurvivalDayOption | null = findCompletedOption(survivalDay, activity)
@@ -123,7 +126,4 @@ export async function processDay(user: User, activity: Activity) {
             }
         }
     }
-
-
-
 }
