@@ -34,7 +34,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
     }
     const characterFood = Math.min(character.food + (foundFood ? option.item_gain_percentage : 0), 100)
     const characterWater = Math.min(character.water + (foundWater ? option.item_gain_percentage : 0), 100)
-    const characterHealth = Math.min(character.health - (injurySustained ? option.health_change_percentage : 0), 100)
+    const characterHealth = Math.min(character.health + (injurySustained ? option.health_change_percentage : 0), 100)
     const transaction: any[] = [
         prisma.character.update({
             where: {
