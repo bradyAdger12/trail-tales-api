@@ -6,7 +6,7 @@ import cron from 'node-cron'
 import { prisma } from './db'
 import { advanceSurvivalDay } from './routes/survival_day/survival_day.controller';
 
-const task = cron.schedule('* * * * *', async () => {
+const task = cron.schedule('0 * * * *', async () => {
   try {
     console.log('~~ Running cron job')
     const games = await prisma.game.findMany({
