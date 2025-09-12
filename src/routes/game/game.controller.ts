@@ -1,8 +1,8 @@
 import { prisma } from "../../db";
 import { randomUUID } from "node:crypto";
-import { generateSurvivalDay } from "../survival_day/survival_day.controller";
 import { gameConfig, GameConfig } from "../../lib/game_config";
-import { Activity, GameDifficulty, GameNotification } from "@prisma/client";
+import { Activity, GameDifficulty, GameNotification, SurvivalDayOption } from "@prisma/client";
+import { generateNextDayOptions } from "../survival_day/survival_day.controller";
 
 type GameStats = {
     distance_in_meters: number
@@ -45,7 +45,7 @@ export async function startGame(userId: string, difficulty: string) {
     const gameId = randomUUID()
     const config = gameConfig.difficulty[difficulty as keyof typeof gameConfig.difficulty] as GameConfig
     try {
-        const { description, options } = await generateSurvivalDay(1, config, null)
+        const options = await generateNextDayOptions(config) as SurvivalDayOption[]
         const [game, characterFull, survivalDay] = await prisma.$transaction([
             prisma.game.create({
                 data: {
@@ -75,7 +75,6 @@ export async function startGame(userId: string, difficulty: string) {
                     game_id: gameId,
                     user_id: userId,
                     day: 1,
-                    description: description,
                     options: {
                         create: options
                     }

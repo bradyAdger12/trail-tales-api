@@ -8,6 +8,19 @@ export type GameConfig = {
   maxDistanceInKilometers: number;
   description: string;
 }
+
+export type StoryOption = {
+  name: string;
+  difficulty: string;
+  canFindFood: boolean;
+  canFindWater: boolean;
+  canFindHealth: boolean;
+  distance?: number;
+  hungerChange?: number;
+  thirstChange?: number;
+  healthChange?: number;
+  injuryChance?: number;
+}
 export const gameConfig = {
   difficulty: {
     easy: {
@@ -42,3 +55,49 @@ export const gameConfig = {
     } as GameConfig,
   },
 };
+
+
+export const easyStoryOptions: StoryOption[] = [
+  { name: "Search the crash site for supplies", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: true },
+  { name: "Collect rainwater in makeshift containers", difficulty: "easy", canFindFood: false, canFindWater: true, canFindHealth: false },
+  { name: "Gather coconuts from palm trees", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Search for edible plants", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Dig a small pit to trap rainwater", difficulty: "easy", canFindFood: false, canFindWater: true, canFindHealth: false },
+  { name: "Patch up torn clothing for warmth", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Forage for wild berries", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Search for dry tinder to start a fire", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Collect large leaves for shelter roofing", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true }
+]
+
+export const mediumStoryOptions: StoryOption[] = [
+  { name: "Explore the nearby forest", difficulty: "medium", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Fish along the rocky coast", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Search tide pools for crabs and shellfish", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Follow animal tracks to find fresh water", difficulty: "medium", canFindFood: false, canFindWater: true, canFindHealth: false },
+  { name: "Collect firewood for a signal fire", difficulty: "medium", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Build a makeshift spear", difficulty: "medium", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Search under driftwood for insects to eat", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Track birds to find a nesting area", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
+]
+
+export const hardStoryOptions: StoryOption[] = [
+  { name: "Build a makeshift shelter", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Climb the hill for a better view", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: false },
+  { name: "Hunt small animals with improvised tools", difficulty: "hard", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Venture deeper into the jungle", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Set up a signal using wreckage parts", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Inspect the coastline for possible escape routes", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: false },
+  { name: "Explore a nearby cave", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Attempt to repair a broken radio", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true }
+]
+
+export const restStoryOptions: StoryOption[] = [
+  { name: "Rest by the fire and tend to your wounds", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Sleep in your shelter to regain strength", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Meditate and focus on healing", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Stay put and conserve energy", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Lie down and let your body recover", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Take a peaceful nap in the shade", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Sit quietly and regain your composure", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Rest against a tree and watch the horizon", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+]

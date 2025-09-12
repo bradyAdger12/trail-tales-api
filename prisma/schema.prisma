@@ -127,7 +127,6 @@ model SurvivalDay {
   user_id              String
   activity_id          String?             @unique
   completed_difficulty DayDifficulty?
-  description          String?
   day                  Int
   created_at           DateTime            @default(now())
   updated_at           DateTime            @default(now())
@@ -143,9 +142,9 @@ model SurvivalDayOption {
   difficulty               DayDifficulty
   survival_day_id          String
   description              String?
-  chance_to_find_items     Int           @default(0)
-  item_gain_percentage     Int           @default(20)
-  health_change_percentage Int           @default(-10)
+  food_gain_percentage     Int           @default(5)
+  water_gain_percentage    Int           @default(5)
+  health_gain_percentage   Int           @default(5)
   distance_in_kilometers   Int
   created_at               DateTime      @default(now())
   updated_at               DateTime      @default(now())

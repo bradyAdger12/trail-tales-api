@@ -15,15 +15,7 @@ function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOp
 }
 
 async function processResourceEffects({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
-    let foundFood = false
-    let foundWater = false
-    let injurySustained = false
-    const oddsToFindWater = Math.random() * 100
-    const oddsToFindFood = Math.random() * 100
-    const oddsOfInjury = Math.random() * 100
-    foundFood = oddsToFindFood < option.chance_to_find_items
-    foundWater = oddsToFindWater < option.chance_to_find_items
-    injurySustained = oddsOfInjury < option.chance_to_find_items
+   
     const character = await prisma.character.findFirst({
         where: {
             user_id: user.id
@@ -32,18 +24,21 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
     if (!character) {
         throw new Error('Character not found')
     }
-    const characterFood = Math.min(character.food + (foundFood ? option.item_gain_percentage : 0), 100)
-    const characterWater = Math.min(character.water + (foundWater ? option.item_gain_percentage : 0), 100)
-    const characterHealth = Math.min(character.health + (injurySustained ? option.health_change_percentage : 0), 100)
     const transaction: any[] = [
         prisma.character.update({
             where: {
                 user_id: user.id
             },
             data: {
-                food: characterFood,
-                water: characterWater,
-                health: characterHealth
+                food: { 
+                    increment: option.food_gain_percentage || 0.
+                },
+                water: { 
+                    increment: option.water_gain_percentage || 0
+                },
+                health: {
+                    increment: option.health_gain_percentage || 0
+                }
             }
         }),
         prisma.survivalDay.update({
@@ -56,35 +51,35 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
             }
         })
     ]
-    if (foundFood) {
+    if (option.food_gain_percentage > 0) {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
                 description: 'You found food!',
                 resource: 'food',
-                resource_change_as_percent: option.item_gain_percentage,
+                resource_change_as_percent: option.food_gain_percentage,
                 day: survivalDay.day
             }
         }))
     }
-    if (foundWater) {
+    if (option.water_gain_percentage > 0) {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
                 description: 'You found water!',
                 resource: 'water',
-                resource_change_as_percent: option.item_gain_percentage,
+                resource_change_as_percent: option.water_gain_percentage,
                 day: survivalDay.day
             }
         }))
     }
-    if (injurySustained) {
+    if (option.health_gain_percentage > 0) {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
                 description: 'You sustained an injury!',
                 resource: 'health',
-                resource_change_as_percent: -10,
+                resource_change_as_percent: option.health_gain_percentage,
                 day: survivalDay.day
             }
         }))

@@ -6,7 +6,7 @@ import cron from 'node-cron'
 import { prisma } from './db'
 import { advanceSurvivalDay } from './routes/survival_day/survival_day.controller';
 
-const task = cron.schedule('0 * * * *', async () => {
+const task = cron.schedule('* * * * *', async () => {
   try {
     console.log('~~ Running cron job')
     const games = await prisma.game.findMany({
@@ -26,8 +26,8 @@ const task = cron.schedule('0 * * * *', async () => {
       const now = new Date()
       const localTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }))
       const hour = localTime.getHours()
-      if (hour === 0) {
-        advanceSurvivalDay(game)
+      if (hour) {
+        await advanceSurvivalDay(game)
       }
     }
   } catch (error) {

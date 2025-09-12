@@ -1,51 +1,47 @@
-import { Character, Game, SurvivalDay, SurvivalDayOption, User } from "@prisma/client"
-import { ai } from "../../genkit"
-import { z } from "zod"
+import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
-import { gameConfig, GameConfig } from "../../lib/game_config"
+import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, restStoryOptions } from "../../lib/game_config"
 
-const OptionSchema = z.object({
-    description: z.string(),
-    difficulty: z.enum(['easy', 'medium', 'hard', 'rest'])
-})
-
-const OutputSchema = z.object({
-    description: z.string(),
-    options: z.array(OptionSchema)
-})
-
-type Option = z.infer<typeof OptionSchema> & SurvivalDayOption
-
-function addPreviousDayDescription(previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null) {
-    if (!previous_day) {
-        return ''
-    }
-    const selectedOption = previous_day.options.find(option => option.difficulty === previous_day.completed_difficulty)
-    return `Previous day: ${previous_day.description}\n\n
-    ${selectedOption ? `User response: ${selectedOption.description}` : 'Decided to sit next to the fire and rest.'}
-    `
-}
-
-function addDistancesToOptions(options: Option[], config: GameConfig) {
-    options.forEach(option => {
-        if (option.difficulty === 'easy') {
-            option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25))
-            option.chance_to_find_items = 50
-            option.health_change_percentage = -10
-        } else if (option.difficulty === 'medium') {
-            option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.40 + Math.random() * 0.35))
-            option.chance_to_find_items = 75
-            option.health_change_percentage = -10
-        } else if (option.difficulty === 'hard') {
-            option.distance_in_kilometers = config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (0.80 + Math.random() * 0.20))
-            option.chance_to_find_items = 90
-            option.health_change_percentage = -10
-        } else if (option.difficulty === 'rest') {
-            option.distance_in_kilometers = 0
-            option.chance_to_find_items = 0
-            option.health_change_percentage = 5
-        }
+export async function generateNextDayOptions(config: GameConfig) {
+    const options: Partial<SurvivalDayOption>[] = []
+    const easyOption = easyStoryOptions[Math.floor(Math.random() * easyStoryOptions.length)]
+    const mediumOption = mediumStoryOptions[Math.floor(Math.random() * mediumStoryOptions.length)]
+    const hardOption = hardStoryOptions[Math.floor(Math.random() * hardStoryOptions.length)]
+    const restOption = restStoryOptions[Math.floor(Math.random() * restStoryOptions.length)]
+    options.push({
+        difficulty: 'easy',
+        description: easyOption.name,
+        food_gain_percentage: easyOption.canFindFood ? 5 : 0,
+        water_gain_percentage: easyOption.canFindWater ? 5 : 0,
+        health_gain_percentage: easyOption.canFindHealth ? 5 : 0,
+        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25)))
     })
+    options.push({
+        difficulty: 'medium',
+        description: mediumOption.name,
+        food_gain_percentage: mediumOption.canFindFood ? 10 : 0,
+        water_gain_percentage: mediumOption.canFindWater ? 10 : 0,
+        health_gain_percentage: mediumOption.canFindHealth ? 10 : 0,
+        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.50)))
+    })
+    options.push({
+        difficulty: 'hard',
+        description: hardOption.name,
+        food_gain_percentage: hardOption.canFindFood ? 15 : 0,
+        water_gain_percentage: hardOption.canFindWater ? 15 : 0,
+        health_gain_percentage: hardOption.canFindHealth ? 15 : 0,
+        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.90)))
+    })
+    options.push({
+        difficulty: 'rest',
+        description: restOption.name,
+        food_gain_percentage: 0,
+        water_gain_percentage: 0,
+        health_gain_percentage: Math.floor(Math.random() * 5) + 3,
+        distance_in_kilometers: 0
+    })
+
+    return options
 }
 
 export async function advanceSurvivalDay(game: Game) {
@@ -62,7 +58,8 @@ export async function advanceSurvivalDay(game: Game) {
                     id: true
                 }
             },
-            options: true
+            options: true,
+            game: true
         }
     })
     if (!currentSurvivalDay) {
@@ -71,7 +68,7 @@ export async function advanceSurvivalDay(game: Game) {
     let transactions: any[] = []
     const hasActivity = !!currentSurvivalDay.activity_id
     const nextDay = currentSurvivalDay.day + 1
-    const { description, options } = await generateSurvivalDay(nextDay, gameConfig.difficulty[game.difficulty], currentSurvivalDay)
+    const options = await generateNextDayOptions(gameConfig.difficulty[game.difficulty])
     const character = await prisma.character.findUnique({
         where: {
             user_id: game.user_id
@@ -114,7 +111,7 @@ export async function advanceSurvivalDay(game: Game) {
     if (!hasActivity) {
         const restOption = options.find(option => option.difficulty === 'rest')
         if (restOption) {
-            totalHealthDelta += restOption.health_change_percentage
+            totalHealthDelta += restOption.health_gain_percentage ?? 0
         }
     }
 
@@ -144,9 +141,10 @@ export async function advanceSurvivalDay(game: Game) {
                 user_id: game.user_id,
                 game_id: game.id,
                 day: nextDay,
-                description,
                 options: {
-                    create: options
+                    createMany: {
+                        data: options as SurvivalDayOption[]
+                    }
                 }
             }
         }),
@@ -168,7 +166,7 @@ export async function advanceSurvivalDay(game: Game) {
                 description: 'Rested for the day',
                 day: nextDay,
                 resource: 'health',
-                resource_change_as_percent: options.find(option => option.difficulty === 'rest')?.health_change_percentage ?? 0
+                resource_change_as_percent: options.find(option => option.difficulty === 'rest')?.health_gain_percentage ?? 0
             }
         }))
         transactions.push(prisma.survivalDay.update({
@@ -182,42 +180,4 @@ export async function advanceSurvivalDay(game: Game) {
     }
     await prisma.$transaction(transactions)
 
-}
-
-export async function generateSurvivalDay(day: number, config: GameConfig, previous_day: SurvivalDay & { options: SurvivalDayOption[] } | null): Promise<{ description: string, options: Option[] }> {
-    const response = await ai.generate({
-        system: `
-        You are a video game storyteller tasked with crafting an unforgettable adventure for a player. The preface to the story is a plane has crash on a remote island and you are the only survivor. You must survive the island for the next 21 days before help arrives.
-        `,
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: `Create a story for the day ${day}. The description for the day should be kept to 1 paragraph. The output should be in markdown format. I'd like the format to look like a text adventure game.\n\n
-
-                        ${day > 1 ? `Make the story a continuation of the previous day:\n\n${addPreviousDayDescription(previous_day)}` : ''}
-
-                        You should also provide 4 options for the player to choose from. The options should be in the format of a text adventure game. \n\n
-
-                        ## Options
-
-                        Easy Option: This option should be easy for the survivor to complete.\n
-                        Medium Option: This option should be medium for the survivor to complete.\n
-                        Hard Option: This option should be hard for the survivor to complete.\n
-                        Rest Option: This option should be a rest day.\n
-                        
-                        Tell the story in second person.
-
-                        `
-                    }
-                ]
-            }
-        ],
-        output: { schema: OutputSchema }
-    });
-    const options = response.output!.options as Option[]
-    addDistancesToOptions(options, config)
-    return { description: response.output!.description, options }
 }
