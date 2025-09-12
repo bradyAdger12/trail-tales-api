@@ -66,7 +66,10 @@ export const easyStoryOptions: StoryOption[] = [
   { name: "Patch up torn clothing for warmth", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Forage for wild berries", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Search for dry tinder to start a fire", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
-  { name: "Collect large leaves for shelter roofing", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true }
+  { name: "Collect large leaves for shelter roofing", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Search shallow pools for fish and fresh water", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Explore a small cave for shelter materials and edible roots", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: true },
+  { name: "Follow a stream to find drinking water and medicinal herbs", difficulty: "easy", canFindFood: false, canFindWater: true, canFindHealth: true },
 ]
 
 export const mediumStoryOptions: StoryOption[] = [
@@ -78,6 +81,9 @@ export const mediumStoryOptions: StoryOption[] = [
   { name: "Build a makeshift spear", difficulty: "medium", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Search under driftwood for insects to eat", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Track birds to find a nesting area", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: false },
+  { name: "Explore a freshwater stream for fish and drinking water", difficulty: "medium", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Search a fallen tree for grubs and collect sap for wounds", difficulty: "medium", canFindFood: true, canFindWater: false, canFindHealth: true },
+  { name: "Investigate a natural spring and gather medicinal plants nearby", difficulty: "medium", canFindFood: false, canFindWater: true, canFindHealth: true }
 ]
 
 export const hardStoryOptions: StoryOption[] = [
@@ -88,7 +94,10 @@ export const hardStoryOptions: StoryOption[] = [
   { name: "Set up a signal using wreckage parts", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Inspect the coastline for possible escape routes", difficulty: "hard", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Explore a nearby cave", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
-  { name: "Attempt to repair a broken radio", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true }
+  { name: "Attempt to repair a broken radio", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
+  { name: "Scale dangerous cliffs to reach a hidden waterfall and fruit trees", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
+  { name: "Navigate through thorny undergrowth to find a natural pharmacy of healing plants and fresh spring water", difficulty: "hard", canFindFood: false, canFindWater: true, canFindHealth: true },
+  { name: "Risk crossing a fast-moving river to access a grove with fruit trees and medicinal bark", difficulty: "hard", canFindFood: true, canFindWater: false, canFindHealth: true },
 ]
 
 export const restStoryOptions: StoryOption[] = [

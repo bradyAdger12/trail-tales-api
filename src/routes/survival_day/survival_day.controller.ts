@@ -2,8 +2,12 @@ import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
 import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, restStoryOptions } from "../../lib/game_config"
 
-export function getRandomValue(min: number, max: number) {
+function getRandomValue(min: number, max: number) {
     return Math.floor(min + (max - min) * Math.random())
+}
+
+function getRandomDistance(min: number, max: number, percentage: number) {
+    return Math.floor(min + ((max - min) * (Math.random() * percentage)))
 }
 
 export async function generateNextDayOptions(config: GameConfig) {
@@ -18,7 +22,7 @@ export async function generateNextDayOptions(config: GameConfig) {
         food_gain_percentage: easyOption.canFindFood ? getRandomValue(5, 7) : 0,
         water_gain_percentage: easyOption.canFindWater ? getRandomValue(5, 7) : 0,
         health_gain_percentage: easyOption.canFindHealth ? getRandomValue(5, 7) : 0,
-        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25)))
+        distance_in_kilometers: getRandomDistance(config.minDistanceInKilometers, config.maxDistanceInKilometers, 0.25)
     })
     options.push({
         difficulty: 'medium',
@@ -26,7 +30,7 @@ export async function generateNextDayOptions(config: GameConfig) {
         food_gain_percentage: mediumOption.canFindFood ? getRandomValue(8, 10) : 0,
         water_gain_percentage: mediumOption.canFindWater ? getRandomValue(8, 10) : 0,
         health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(8, 10) : 0,
-        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.50)))
+        distance_in_kilometers: getRandomDistance(config.minDistanceInKilometers, config.maxDistanceInKilometers, 0.70)
     })
     options.push({
         difficulty: 'hard',
@@ -34,7 +38,7 @@ export async function generateNextDayOptions(config: GameConfig) {
         food_gain_percentage: hardOption.canFindFood ? getRandomValue(10, 15) : 0,
         water_gain_percentage: hardOption.canFindWater ? getRandomValue(10, 15) : 0,
         health_gain_percentage: hardOption.canFindHealth ? getRandomValue(10, 15) : 0,
-        distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.90)))
+        distance_in_kilometers: getRandomDistance(config.minDistanceInKilometers, config.maxDistanceInKilometers, 0.90)
     })
     options.push({
         difficulty: 'rest',
