@@ -26,7 +26,7 @@ const task = cron.schedule('0 * * * *', async () => {
       const now = new Date()
       const localTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }))
       const hour = localTime.getHours()
-      if (hour) {
+      if (hour === 0) {
         await advanceSurvivalDay(game)
       }
     }
