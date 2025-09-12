@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { authenticate } from "../../middleware/authentication";
-import { User } from "@prisma/client";
+import { Unit, User } from "@prisma/client";
 import _ from "lodash";
 import { SCHEMA_USER_RETURN } from "./user.schema";
 import { prisma } from "../../db";
@@ -19,6 +19,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
                     strava_access_token: { type: 'string' },
                     strava_refresh_token: { type: 'string' },
                     display_name: { type: 'string' },
+                    unit: { type: 'string' },
                     timezone: { type: 'string' }
                 }
             },
@@ -47,6 +48,9 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             if (_.has(body, 'timezone')) {
                 payload.timezone = body.timezone as string
             }
+            if (_.has(body, 'unit')) {
+                payload.unit = body.unit as Unit
+            }
             const user = await prisma.user.update({
                 data: payload,
                 where: {
@@ -58,6 +62,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             }
             return user
         } catch (e) {
+            console.log(e)
             return reply.status(500).send(e as string)
         }
     })

@@ -7,6 +7,11 @@ datasource db {
   url      = env("DB_URL")
 }
 
+enum Unit {
+  metric
+  imperial
+}
+
 enum Resource {
   food
   water
@@ -37,6 +42,7 @@ model User {
   email                String        @unique
   display_name         String?       @unique
   hashed_password      String
+  unit                 Unit          @default(imperial)
   timezone             String        @default("America/Denver")
   avatar_file_key      String?
   google_id            String?       @unique

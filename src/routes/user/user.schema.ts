@@ -5,6 +5,7 @@ export const SCHEMA_USER_RETURN = {
         email: { type: 'string' },
         display_name: { type: 'string' },
         timezone: { type: 'string' },
+        unit: { type: 'string' },
         avatar_file_key: { type: 'string' },
         created_at: { type: 'string' },
         updated_at: { type: 'string' },
