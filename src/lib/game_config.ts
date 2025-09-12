@@ -44,13 +44,13 @@ export const gameConfig = {
       description: "You crawl from the twisted wreckage, blood trickling from several wounds. Your head throbs and your vision blurs intermittently. Your backpack is torn, and much of your gear has scattered across the crash site, leaving you with limited supplies for the harsh wilderness ahead.",
     } as GameConfig,
     hard: {
-      food: 20,
-      water: 20,
+      food: 40,
+      water: 40,
       health: 50,
-      dailyFoodLoss: 20,
-      dailyWaterLoss: 20,
+      dailyFoodLoss: 15,
+      dailyWaterLoss: 15,
       minDistanceInKilometers: 8,
-      maxDistanceInKilometers: 20,
+      maxDistanceInKilometers: 15,
       description: "You barely escape the burning wreckage with life-threatening injuries. Blood pours from multiple deep wounds, your left arm hangs useless, and every breath sends shooting pain through your ribs. Your backpack was destroyed in the crash, leaving you with nothing but the torn clothes on your back. The unforgiving wilderness stretches endlessly before you, and death feels closer than rescue.",
     } as GameConfig,
   },
@@ -82,11 +82,11 @@ export const mediumStoryOptions: StoryOption[] = [
 
 export const hardStoryOptions: StoryOption[] = [
   { name: "Build a makeshift shelter", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
-  { name: "Climb the hill for a better view", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: false },
+  { name: "Climb the hill for a better view", difficulty: "hard", canFindFood: false, canFindWater: true, canFindHealth: false },
   { name: "Hunt small animals with improvised tools", difficulty: "hard", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Venture deeper into the jungle", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
   { name: "Set up a signal using wreckage parts", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true },
-  { name: "Inspect the coastline for possible escape routes", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: false },
+  { name: "Inspect the coastline for possible escape routes", difficulty: "hard", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Explore a nearby cave", difficulty: "hard", canFindFood: true, canFindWater: true, canFindHealth: false },
   { name: "Attempt to repair a broken radio", difficulty: "hard", canFindFood: false, canFindWater: false, canFindHealth: true }
 ]

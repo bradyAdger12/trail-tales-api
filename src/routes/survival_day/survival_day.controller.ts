@@ -2,6 +2,10 @@ import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
 import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, restStoryOptions } from "../../lib/game_config"
 
+export function getRandomValue(min: number, max: number) {
+    return Math.floor(min + (max - min) * Math.random())
+}
+
 export async function generateNextDayOptions(config: GameConfig) {
     const options: Partial<SurvivalDayOption>[] = []
     const easyOption = easyStoryOptions[Math.floor(Math.random() * easyStoryOptions.length)]
@@ -11,25 +15,25 @@ export async function generateNextDayOptions(config: GameConfig) {
     options.push({
         difficulty: 'easy',
         description: easyOption.name,
-        food_gain_percentage: easyOption.canFindFood ? 5 : 0,
-        water_gain_percentage: easyOption.canFindWater ? 5 : 0,
-        health_gain_percentage: easyOption.canFindHealth ? 5 : 0,
+        food_gain_percentage: easyOption.canFindFood ? getRandomValue(5, 7) : 0,
+        water_gain_percentage: easyOption.canFindWater ? getRandomValue(5, 7) : 0,
+        health_gain_percentage: easyOption.canFindHealth ? getRandomValue(5, 7) : 0,
         distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.25)))
     })
     options.push({
         difficulty: 'medium',
         description: mediumOption.name,
-        food_gain_percentage: mediumOption.canFindFood ? 10 : 0,
-        water_gain_percentage: mediumOption.canFindWater ? 10 : 0,
-        health_gain_percentage: mediumOption.canFindHealth ? 10 : 0,
+        food_gain_percentage: mediumOption.canFindFood ? getRandomValue(8, 10) : 0,
+        water_gain_percentage: mediumOption.canFindWater ? getRandomValue(8, 10) : 0,
+        health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(8, 10) : 0,
         distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.50)))
     })
     options.push({
         difficulty: 'hard',
         description: hardOption.name,
-        food_gain_percentage: hardOption.canFindFood ? 15 : 0,
-        water_gain_percentage: hardOption.canFindWater ? 15 : 0,
-        health_gain_percentage: hardOption.canFindHealth ? 15 : 0,
+        food_gain_percentage: hardOption.canFindFood ? getRandomValue(10, 15) : 0,
+        water_gain_percentage: hardOption.canFindWater ? getRandomValue(10, 15) : 0,
+        health_gain_percentage: hardOption.canFindHealth ? getRandomValue(10, 15) : 0,
         distance_in_kilometers: Math.floor(config.minDistanceInKilometers + ((config.maxDistanceInKilometers - config.minDistanceInKilometers) * (Math.random() * 0.90)))
     })
     options.push({
