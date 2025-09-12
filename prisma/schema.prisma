@@ -141,7 +141,7 @@ model SurvivalDayOption {
   id                       String        @id @default(uuid())
   difficulty               DayDifficulty
   survival_day_id          String
-  description              String?
+  description              String
   food_gain_percentage     Int           @default(5)
   water_gain_percentage    Int           @default(5)
   health_gain_percentage   Int           @default(5)

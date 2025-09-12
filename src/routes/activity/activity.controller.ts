@@ -77,7 +77,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
-                description: 'You sustained an injury!',
+                description: option.description,
                 resource: 'health',
                 resource_change_as_percent: option.health_gain_percentage,
                 day: survivalDay.day
