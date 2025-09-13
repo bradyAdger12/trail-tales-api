@@ -3,7 +3,7 @@ import { prisma } from "../../db"
 import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, restStoryOptions } from "../../lib/game_config"
 
 function getRandomValue(min: number, max: number) {
-    return Math.floor(min + (max - min) * Math.random())
+    return Math.floor(min + ((max - min) * Math.random()))
 }
 
 export async function generateNextDayOptions(config: GameConfig) {
