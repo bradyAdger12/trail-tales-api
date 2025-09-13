@@ -171,7 +171,7 @@ export async function advanceSurvivalDay(game: Game) {
                 description: 'Rested for the day',
                 day: nextDay,
                 resource: 'health',
-                resource_change_as_percent: options.find(option => option.difficulty === 'rest')?.health_gain_percentage ?? 0
+                resource_change_as_percent: currentSurvivalDay.options.find(option => option.difficulty === 'rest')?.health_gain_percentage ?? 0
             }
         }))
         transactions.push(prisma.survivalDay.update({
