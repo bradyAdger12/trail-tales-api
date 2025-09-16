@@ -217,7 +217,7 @@ export async function advanceSurvivalDay(game: Game) {
         }))
     }
 
-    if (nextDay === DAYS_TO_SURVIVE + 1 && healthLevel > 0) {
+    if (currentSurvivalDay.day === DAYS_TO_SURVIVE && healthLevel > 0) {
         transactions.push(prisma.game.update({
             where: {
                 id: game.id
