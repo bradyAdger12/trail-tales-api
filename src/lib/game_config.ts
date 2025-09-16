@@ -9,6 +9,12 @@ export type GameConfig = {
   description: string;
 }
 
+export type OvernightEvent = {
+  name: string;
+  resource: 'food' | 'water' | 'health';
+  resource_change_as_percent: number;
+}
+
 export type StoryOption = {
   name: string;
   difficulty: string;
@@ -21,6 +27,7 @@ export type StoryOption = {
   healthChange?: number;
   injuryChance?: number;
 }
+
 export const gameConfig = {
   difficulty: {
     easy: {
@@ -37,8 +44,8 @@ export const gameConfig = {
       food: 60,
       water: 60,
       health: 80,
-      dailyFoodLoss: 15,
-      dailyWaterLoss: 15,
+      dailyFoodLoss: 10,
+      dailyWaterLoss: 10,
       minDistanceInKilometers: 5,
       maxDistanceInKilometers: 10,
       description: "You crawl from the twisted wreckage, blood trickling from several wounds. Your head throbs and your vision blurs intermittently. Your backpack is torn, and much of your gear has scattered across the crash site, leaving you with limited supplies for the harsh wilderness ahead.",
@@ -47,8 +54,8 @@ export const gameConfig = {
       food: 40,
       water: 40,
       health: 50,
-      dailyFoodLoss: 15,
-      dailyWaterLoss: 15,
+      dailyFoodLoss: 10,
+      dailyWaterLoss: 10,
       minDistanceInKilometers: 8,
       maxDistanceInKilometers: 15,
       description: "You barely escape the burning wreckage with life-threatening injuries. Blood pours from multiple deep wounds, your left arm hangs useless, and every breath sends shooting pain through your ribs. Your backpack was destroyed in the crash, leaving you with nothing but the torn clothes on your back. The unforgiving wilderness stretches endlessly before you, and death feels closer than rescue.",
@@ -109,4 +116,16 @@ export const restStoryOptions: StoryOption[] = [
   { name: "Take a peaceful nap in the shade", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Sit quietly and regain your composure", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Rest against a tree and watch the horizon", difficulty: "rest", canFindFood: false, canFindWater: false, canFindHealth: true },
+]
+
+
+export const overnightEvents: OvernightEvent[] = [
+  { name: "A wild storm passes through the night, but your shelter holds strong and you wake refreshed", resource: 'health', resource_change_as_percent: 10 },
+  { name: "You discover a hidden cache of food left by previous survivors", resource: 'food', resource_change_as_percent: 5 },
+  { name: "A friendly dolphin brings you fish while you rest by the shore", resource: 'food', resource_change_as_percent: 10 },
+  { name: "You find a natural hot spring that provides clean water", resource: 'water', resource_change_as_percent: 8 },
+  { name: "A flock of migrating birds drops exotic fruits near your camp", resource: 'food', resource_change_as_percent: 8 },
+  { name: "You witness a beautiful aurora that fills you with hope and renewed energy", resource: 'health', resource_change_as_percent: 10 },
+  { name: "A gentle rain fills your water containers while you sleep peacefully", resource: 'water', resource_change_as_percent: 10 },
+  { name: "You dream of home and wake with clarity about which direction to travel", resource: 'health', resource_change_as_percent: 10 },
 ]
