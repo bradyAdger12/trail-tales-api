@@ -63,6 +63,10 @@ export const gameConfig = {
   },
 };
 
+function getRandomNumber(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 
 export const easyStoryOptions: StoryOption[] = [
   { name: "Search the crash site for supplies", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: true },
@@ -120,12 +124,19 @@ export const restStoryOptions: StoryOption[] = [
 
 
 export const overnightEvents: OvernightEvent[] = [
-  { name: "A wild storm passes through the night, but your shelter holds strong and you wake refreshed", resource: 'health', resource_change_as_percent: 10 },
-  { name: "You discover a hidden cache of food left by previous survivors", resource: 'food', resource_change_as_percent: 5 },
-  { name: "A friendly dolphin brings you fish while you rest by the shore", resource: 'food', resource_change_as_percent: 10 },
-  { name: "You find a natural hot spring that provides clean water", resource: 'water', resource_change_as_percent: 8 },
-  { name: "A flock of migrating birds drops exotic fruits near your camp", resource: 'food', resource_change_as_percent: 8 },
-  { name: "You witness a beautiful aurora that fills you with hope and renewed energy", resource: 'health', resource_change_as_percent: 10 },
-  { name: "A gentle rain fills your water containers while you sleep peacefully", resource: 'water', resource_change_as_percent: 10 },
-  { name: "You dream of home and wake with clarity about which direction to travel", resource: 'health', resource_change_as_percent: 10 },
+  { name: "You discover a hidden cache of food left by previous survivors", resource: 'food', resource_change_as_percent: getRandomNumber(5, 10) },
+  { name: "A friendly dolphin brings you fish while you rest by the shore", resource: 'food', resource_change_as_percent: getRandomNumber(5, 10) },
+  { name: "You find a natural hot spring that provides clean water", resource: 'water', resource_change_as_percent: getRandomNumber(5, 10) },
+  { name: "A flock of migrating birds drops exotic fruits near your camp", resource: 'food', resource_change_as_percent: getRandomNumber(5, 10) },
+  { name: "A gentle rain fills your water containers while you sleep peacefully", resource: 'water', resource_change_as_percent: getRandomNumber(5, 10) },
+  { name: "A pack of wild animals circles your camp, keeping you awake and on edge all night", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "You develop a fever from an infected wound and spend the night shivering", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "Poisonous insects bite you repeatedly during the night", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "A severe thunderstorm destroys part of your shelter, leaving you exposed to the elements", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "You accidentally eat spoiled food and spend the night violently ill", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "Sharp rocks and thorns tear at your skin as you sleep restlessly", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10)   },
+  { name: "A venomous snake bites you in your sleep, causing weakness and nausea", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "Extreme cold penetrates your inadequate shelter, causing hypothermia symptoms", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "You fall into a hidden pit during the night and injure yourself climbing out", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
+  { name: "Toxic fumes from nearby volcanic activity make you sick throughout the night", resource: 'health', resource_change_as_percent: getRandomNumber(-5, -10) },
 ]

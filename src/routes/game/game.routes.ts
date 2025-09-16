@@ -145,6 +145,38 @@ const storyRoutes: FastifyPluginAsync = async (fastify) => {
         }
     })
 
+    fastify.put('/:id/reset', {
+        preHandler: authenticate,
+        schema: {
+            security: [{ bearerAuth: [] }],
+            description: 'Reset a game',
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' }
+                },
+                required: ['id']
+            },
+            tags: ['game']
+        }
+    }, async (request, reply) => {  
+        if (!request.user?.id) {
+            return reply.status(401).send({ message: 'Unauthorized' })
+        }
+        const { id } = request.params as { id: string }
+        try {
+            await prisma.game.delete({
+                where: {
+                    user_id: request.user?.id,
+                    id: id
+                }
+            })
+            return { success: true }
+        } catch (e) {
+            return reply.status(500).send(e as string)
+        }
+    })
+
     fastify.get('/:id/stats', {
         preHandler: authenticate,
         schema: {

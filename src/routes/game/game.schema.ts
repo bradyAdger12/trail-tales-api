@@ -20,6 +20,7 @@ export const SCHEMA_GAME_RETURN = {
         difficulty: { type: 'string' },
         character: SCHEMA_CHARACTER_TEMPLATE,
         survival_days: SCHEMA_DAYS_RETURN,
+        status: { type: 'string' },
         daily_food_loss: { type: 'number' },
         daily_water_loss: { type: 'number' },
         min_distance_in_kilometers: { type: 'number' },

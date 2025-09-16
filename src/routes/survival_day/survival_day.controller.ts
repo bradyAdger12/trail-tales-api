@@ -1,6 +1,7 @@
 import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
 import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, overnightEvents, restStoryOptions } from "../../lib/game_config"
+import { DAYS_TO_SURVIVE } from "../../lib/constants"
 
 function getRandomValue(min: number, max: number) {
     return Math.floor(min + ((max - min) * Math.random()))
@@ -112,29 +113,26 @@ export async function advanceSurvivalDay(game: Game) {
         }))
     }
 
-    // 30% chance of an overnight event
-    const chanceOfOvernightEvent = Math.random()
-    if (chanceOfOvernightEvent < 0.3) {
-        const overnightEvent = overnightEvents[Math.floor(Math.random() * overnightEvents.length)]
-        transactions.push(prisma.gameNotification.create({
-            data: {
-                game_id: game.id,
-                description: overnightEvent.name,
-                day: nextDay,
-                resource: overnightEvent.resource,
-                resource_change_as_percent: overnightEvent.resource_change_as_percent
-            }
-        }))
-        if (overnightEvent.resource === 'food') {
-            foodLevel += overnightEvent.resource_change_as_percent
+    const overnightEvent = overnightEvents[Math.floor(Math.random() * overnightEvents.length)]
+    transactions.push(prisma.gameNotification.create({
+        data: {
+            game_id: game.id,
+            description: overnightEvent.name,
+            day: nextDay,
+            resource: overnightEvent.resource,
+            resource_change_as_percent: overnightEvent.resource_change_as_percent
         }
-        if (overnightEvent.resource === 'water') {
-            waterLevel += overnightEvent.resource_change_as_percent
-        }
-        if (overnightEvent.resource === 'health') {
-            totalHealthDelta += overnightEvent.resource_change_as_percent
-        }
+    }))
+    if (overnightEvent.resource === 'food') {
+        foodLevel += overnightEvent.resource_change_as_percent
     }
+    if (overnightEvent.resource === 'water') {
+        waterLevel += overnightEvent.resource_change_as_percent
+    }
+    if (overnightEvent.resource === 'health') {
+        totalHealthDelta += overnightEvent.resource_change_as_percent
+    }
+
 
     //If there is no activity, the user rested and should gain health
     if (!hasActivity) {
@@ -145,6 +143,17 @@ export async function advanceSurvivalDay(game: Game) {
     }
 
     const healthLevel = character.health + totalHealthDelta
+
+    if (healthLevel <= 0) {
+        transactions.push(prisma.game.update({
+            where: {
+                id: game.id
+            },
+            data: {
+                status: 'lost'
+            }
+        }))
+    }
 
     transactions = transactions.concat([
         prisma.gameNotification.create({
@@ -204,6 +213,17 @@ export async function advanceSurvivalDay(game: Game) {
             },
             data: {
                 completed_difficulty: 'rest'
+            }
+        }))
+    }
+
+    if (nextDay === DAYS_TO_SURVIVE + 1 && healthLevel > 0) {
+        transactions.push(prisma.game.update({
+            where: {
+                id: game.id
+            },
+            data: {
+                status: 'won'
             }
         }))
     }
