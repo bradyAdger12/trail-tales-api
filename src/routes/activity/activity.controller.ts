@@ -1,6 +1,7 @@
 import { SurvivalDay, SurvivalDayOption, User } from "@prisma/client"
 import { Activity } from "@prisma/client"
 import { prisma } from "../../db"
+import { capValue } from "../../lib/helper"
 
 function toLocalDate(date: Date, timezone: string) {
     const dateObject = new Date(date)
@@ -32,9 +33,9 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
                 user_id: user.id
             },
             data: {
-                food: Math.min(foodLevel, 100),
-                water: Math.min(waterLevel, 100),
-                health: Math.min(healthLevel, 100)
+                food: capValue(foodLevel, 0, 100),
+                water: capValue(waterLevel, 0, 100),
+                health: capValue(healthLevel, 0, 100)
             }
         }),
         prisma.survivalDay.update({

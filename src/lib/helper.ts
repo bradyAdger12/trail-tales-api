@@ -10,3 +10,7 @@ export async function registerAndLoginUser(fastify: FastifyInstance): Promise<{ 
     const loginResponse = await fastify.inject({ method: 'POST', url: '/login', payload: { email, password } })
     return loginResponse.json()
 }
+
+export function capValue(value: number, min: number, max: number) {
+    return Math.max(Math.min(value, max), min)
+}

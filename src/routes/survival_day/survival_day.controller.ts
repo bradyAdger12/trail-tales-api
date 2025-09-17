@@ -2,6 +2,7 @@ import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
 import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, overnightEvents, restStoryOptions } from "../../lib/game_config"
 import { DAYS_TO_SURVIVE } from "../../lib/constants"
+import { capValue } from "../../lib/helper"
 
 function getRandomValue(min: number, max: number) {
     return Math.floor(min + ((max - min) * Math.random()))
@@ -190,9 +191,9 @@ export async function advanceSurvivalDay(game: Game) {
                 user_id: game.user_id
             },
             data: {
-                food: Math.max(0, Math.min(100, foodLevel)),
-                water: Math.max(0, Math.min(100, waterLevel)),
-                health: Math.max(0, Math.min(100, healthLevel))
+                food: capValue(foodLevel, 0, 100),
+                water: capValue(waterLevel, 0, 100),
+                health: capValue(healthLevel, 0, 100)
             }
         })
     ])
