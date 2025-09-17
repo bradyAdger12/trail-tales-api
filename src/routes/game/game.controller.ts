@@ -54,8 +54,8 @@ export async function startGame(userId: string, difficulty: string) {
                     difficulty: difficulty as GameDifficulty,
                     daily_food_loss: config.dailyFoodLoss,
                     daily_water_loss: config.dailyWaterLoss,
-                    min_distance_in_kilometers: config.minDistanceInKilometers,
-                    max_distance_in_kilometers: config.maxDistanceInKilometers
+                    min_duration_in_seconds: config.minDurationInSeconds,
+                    max_duration_in_seconds: config.maxDurationInSeconds
                 },
                 include: {
                     survival_days: true

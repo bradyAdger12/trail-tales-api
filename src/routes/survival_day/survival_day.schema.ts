@@ -6,7 +6,7 @@ export const SCHEMA_SURVIVAL_DAY_OPTION_RETURN = {
         id: { type: 'string' },
         description: { type: 'string' },
         difficulty: { type: 'string' },
-        distance_in_kilometers: { type: 'number' },
+        duration_in_seconds: { type: 'number' },
         food_gain_percentage: { type: 'number' },
         water_gain_percentage: { type: 'number' },
         health_gain_percentage: { type: 'number' }

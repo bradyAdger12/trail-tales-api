@@ -4,8 +4,8 @@ export type GameConfig = {
   health: number;
   dailyFoodLoss: number;
   dailyWaterLoss: number;
-  minDistanceInKilometers: number;
-  maxDistanceInKilometers: number;
+  minDurationInSeconds: number;
+  maxDurationInSeconds: number;
   description: string;
 }
 
@@ -28,36 +28,39 @@ export type StoryOption = {
   injuryChance?: number;
 }
 
+const DAILY_FOOD_LOSS = 10
+const DAILY_WATER_LOSS = 10
+
 export const gameConfig = {
   difficulty: {
     easy: {
       food: 80,
       water: 80,
       health: 90,
-      dailyFoodLoss: 10,
-      dailyWaterLoss: 10,
-      minDistanceInKilometers: 1,
-      maxDistanceInKilometers: 5,
+      dailyFoodLoss: DAILY_FOOD_LOSS,
+      dailyWaterLoss: DAILY_WATER_LOSS, 
+      minDurationInSeconds: 60 * 20,
+      maxDurationInSeconds: 60 * 35,
       description: "You emerge from the wreckage with minor injuries but your survival instincts intact. Your backpack contains ample provisions to sustain you through the initial days of your wilderness ordeal.",
     } as GameConfig,
     medium: {
       food: 60,
       water: 60,
       health: 80,
-      dailyFoodLoss: 10,
-      dailyWaterLoss: 10,
-      minDistanceInKilometers: 5,
-      maxDistanceInKilometers: 10,
+      dailyFoodLoss: DAILY_FOOD_LOSS,
+      dailyWaterLoss: DAILY_WATER_LOSS,
+      minDurationInSeconds: 60 * 35,
+      maxDurationInSeconds: 60 * 45,
       description: "You crawl from the twisted wreckage, blood trickling from several wounds. Your head throbs and your vision blurs intermittently. Your backpack is torn, and much of your gear has scattered across the crash site, leaving you with limited supplies for the harsh wilderness ahead.",
     } as GameConfig,
     hard: {
       food: 40,
       water: 40,
       health: 50,
-      dailyFoodLoss: 10,
-      dailyWaterLoss: 10,
-      minDistanceInKilometers: 8,
-      maxDistanceInKilometers: 15,
+      dailyFoodLoss: DAILY_FOOD_LOSS,
+      dailyWaterLoss: DAILY_WATER_LOSS,
+      minDurationInSeconds: 60 * 45,
+      maxDurationInSeconds: 60 * 60,
       description: "You barely escape the burning wreckage with life-threatening injuries. Blood pours from multiple deep wounds, your left arm hangs useless, and every breath sends shooting pain through your ribs. Your backpack was destroyed in the crash, leaving you with nothing but the torn clothes on your back. The unforgiving wilderness stretches endlessly before you, and death feels closer than rescue.",
     } as GameConfig,
   },

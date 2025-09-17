@@ -8,9 +8,9 @@ function toLocalDate(date: Date, timezone: string) {
 }
 
 function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOption[] }, activity: Activity) {
-    const activityDistanceInKm = activity.distance_in_meters / 1000
+    const activityDurationInSeconds = activity.elapsed_time_in_seconds
     const matchingOption = survivalDay.options
-        .filter(option => activityDistanceInKm >= option.distance_in_kilometers).sort((a, b) => b.distance_in_kilometers - a.distance_in_kilometers)[0]
+        .filter(option => activityDurationInSeconds >= option.duration_in_seconds).sort((a, b) => b.duration_in_seconds - a.duration_in_seconds)[0]
     return matchingOption
 }
 
@@ -31,7 +31,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
             },
             data: {
                 food: { 
-                    increment: option.food_gain_percentage || 0.
+                    increment: option.food_gain_percentage || 0
                 },
                 water: { 
                     increment: option.water_gain_percentage || 0
@@ -55,7 +55,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
-                description: 'You found food!',
+                description: option.description,
                 resource: 'food',
                 resource_change_as_percent: option.food_gain_percentage,
                 day: survivalDay.day
@@ -66,7 +66,7 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
         transaction.push(prisma.gameNotification.create({
             data: {
                 game_id: survivalDay.game_id,
-                description: 'You found water!',
+                description: option.description,
                 resource: 'water',
                 resource_change_as_percent: option.water_gain_percentage,
                 day: survivalDay.day

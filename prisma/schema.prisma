@@ -104,8 +104,8 @@ model Game {
   updated_at                 DateTime       @default(now())
   daily_food_loss            Int            @default(10)
   daily_water_loss           Int            @default(10)
-  min_distance_in_kilometers Int            @default(1)
-  max_distance_in_kilometers Int            @default(5)
+  min_duration_in_seconds    Int?           @default(20)
+  max_duration_in_seconds    Int?           @default(30)
   user                       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   survival_days              SurvivalDay[]
   character                  Character?
@@ -151,7 +151,7 @@ model SurvivalDayOption {
   food_gain_percentage     Int           @default(5)
   water_gain_percentage    Int           @default(5)
   health_gain_percentage   Int           @default(5)
-  distance_in_kilometers   Int
+  duration_in_seconds      Int           @default(20)
   created_at               DateTime      @default(now())
   updated_at               DateTime      @default(now())
   survival_day             SurvivalDay   @relation(fields: [survival_day_id], references: [id], onDelete: Cascade)

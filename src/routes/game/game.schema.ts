@@ -23,8 +23,8 @@ export const SCHEMA_GAME_RETURN = {
         status: { type: 'string' },
         daily_food_loss: { type: 'number' },
         daily_water_loss: { type: 'number' },
-        min_distance_in_kilometers: { type: 'number' },
-        max_distance_in_kilometers: { type: 'number' }
+        min_duration_in_seconds: { type: 'number' },
+        max_duration_in_seconds: { type: 'number' }
     }
 }
 
