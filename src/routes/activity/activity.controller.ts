@@ -15,7 +15,6 @@ function findCompletedOption(survivalDay: SurvivalDay & { options: SurvivalDayOp
 }
 
 async function processResourceEffects({ user, option, activity, survivalDay }: { user: User, option: SurvivalDayOption, activity: Activity, survivalDay: SurvivalDay & { options: SurvivalDayOption[] } }) {
-   
     const character = await prisma.character.findFirst({
         where: {
             user_id: user.id
@@ -24,21 +23,18 @@ async function processResourceEffects({ user, option, activity, survivalDay }: {
     if (!character) {
         throw new Error('Character not found')
     }
+    const foodLevel = character.food + option.food_gain_percentage
+    const waterLevel = character.water + option.water_gain_percentage
+    const healthLevel = character.health + option.health_gain_percentage
     const transaction: any[] = [
         prisma.character.update({
             where: {
                 user_id: user.id
             },
             data: {
-                food: { 
-                    increment: option.food_gain_percentage || 0
-                },
-                water: { 
-                    increment: option.water_gain_percentage || 0
-                },
-                health: {
-                    increment: option.health_gain_percentage || 0
-                }
+                food: Math.min(foodLevel, 100),
+                water: Math.min(waterLevel, 100),
+                health: Math.min(healthLevel, 100)
             }
         }),
         prisma.survivalDay.update({
