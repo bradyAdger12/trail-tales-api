@@ -8,7 +8,7 @@ function getRandomValue(min: number, max: number) {
     return Math.floor(min + ((max - min) * Math.random()))
 }
 
-export async function generateNextDayOptions(config: GameConfig) {
+export async function generateNextDayOptions(game: Pick<Game, 'min_duration_in_seconds' | 'max_duration_in_seconds'>) {
     const options: Partial<SurvivalDayOption>[] = []
     const easyOption = easyStoryOptions[Math.floor(Math.random() * easyStoryOptions.length)]
     const mediumOption = mediumStoryOptions[Math.floor(Math.random() * mediumStoryOptions.length)]
@@ -20,23 +20,23 @@ export async function generateNextDayOptions(config: GameConfig) {
         food_gain_percentage: easyOption.canFindFood ? getRandomValue(5, 7) : 0,
         water_gain_percentage: easyOption.canFindWater ? getRandomValue(5, 7) : 0,
         health_gain_percentage: easyOption.canFindHealth ? getRandomValue(5, 7) : 0,
-        duration_in_seconds: config.minDurationInSeconds
+        duration_in_seconds: game.min_duration_in_seconds!
     })
     options.push({
         difficulty: 'medium',
         description: mediumOption.name,
-        food_gain_percentage: mediumOption.canFindFood ? getRandomValue(8, 10) : 0,
-        water_gain_percentage: mediumOption.canFindWater ? getRandomValue(8, 10) : 0,
-        health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(8, 10) : 0,
-        duration_in_seconds: config.minDurationInSeconds + (60 * getRandomValue(3, 7))
+        food_gain_percentage: mediumOption.canFindFood ? getRandomValue(5, 7) : 0,
+        water_gain_percentage: mediumOption.canFindWater ? getRandomValue(5, 7) : 0,
+        health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(5, 7) : 0,
+        duration_in_seconds: game.min_duration_in_seconds! + (60 * getRandomValue(3, 7))
     })
     options.push({
         difficulty: 'hard',
         description: hardOption.name,
-        food_gain_percentage: hardOption.canFindFood ? getRandomValue(10, 15) : 0,
-        water_gain_percentage: hardOption.canFindWater ? getRandomValue(10, 15) : 0,
-        health_gain_percentage: hardOption.canFindHealth ? getRandomValue(10, 15) : 0,
-        duration_in_seconds: config.minDurationInSeconds + (60 * getRandomValue(10, 14))
+        food_gain_percentage: hardOption.canFindFood ? getRandomValue(7, 9) : 0,
+        water_gain_percentage: hardOption.canFindWater ? getRandomValue(7, 9) : 0,
+        health_gain_percentage: hardOption.canFindHealth ? getRandomValue(7, 9) : 0,
+        duration_in_seconds: game.min_duration_in_seconds! + (60 * getRandomValue(10, 14))
     })
     options.push({
         difficulty: 'rest',
@@ -74,7 +74,7 @@ export async function advanceSurvivalDay(game: Game) {
     let transactions: any[] = []
     const hasActivity = !!currentSurvivalDay.activity_id
     const nextDay = currentSurvivalDay.day + 1
-    const options = await generateNextDayOptions(gameConfig.difficulty[game.difficulty])
+    const options = await generateNextDayOptions(game)
     const character = await prisma.character.findUnique({
         where: {
             user_id: game.user_id

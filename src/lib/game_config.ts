@@ -28,8 +28,8 @@ export type StoryOption = {
   injuryChance?: number;
 }
 
-const DAILY_FOOD_LOSS = 10
-const DAILY_WATER_LOSS = 10
+const DAILY_FOOD_LOSS = 5
+const DAILY_WATER_LOSS = 5
 
 export const gameConfig = {
   difficulty: {

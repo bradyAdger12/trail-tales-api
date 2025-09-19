@@ -104,8 +104,8 @@ model Game {
   updated_at                 DateTime       @default(now())
   daily_food_loss            Int            @default(10)
   daily_water_loss           Int            @default(10)
-  min_duration_in_seconds    Int?           @default(20)
-  max_duration_in_seconds    Int?           @default(30)
+  min_duration_in_seconds    Int           @default(20)
+  max_duration_in_seconds    Int           @default(30)
   user                       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   survival_days              SurvivalDay[]
   character                  Character?
