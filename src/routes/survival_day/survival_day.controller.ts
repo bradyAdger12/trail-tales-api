@@ -43,7 +43,7 @@ export async function generateNextDayOptions(game: Pick<Game, 'min_duration_in_s
         description: restOption.name,
         food_gain_percentage: 0,
         water_gain_percentage: 0,
-        health_gain_percentage: Math.floor(Math.random() * 5) + 3,
+        health_gain_percentage: 3,
         duration_in_seconds: 0
     })
 
