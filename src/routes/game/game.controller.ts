@@ -24,9 +24,41 @@ export async function getGameStats(gameId: string, userId: string): Promise<Game
     return { distance_in_meters: stats._sum.distance_in_meters || 0, elapsed_time_in_seconds: stats._sum.elapsed_time_in_seconds || 0, days_not_rested: daysNotRested, days_rested: daysRested }
 }
 
-export async function getUnseenGameNotifications(gameId: string, userId: string): Promise<GameNotification[]> {
+export async function fetchGameNotifications(gameId: string, userId: string, limit: number, offset: number) {
+    const whereClause = {
+        game_id: gameId,
+        game: { user_id: userId },
+
+    }
+    const payload = {
+        skip: offset,
+        take: limit,
+        where: whereClause,
+        orderBy: {
+            day: 'desc'
+        },
+    }
+    const [notifications, count] = await prisma.$transaction([
+        prisma.gameNotification.findMany(payload as any),
+        prisma.gameNotification.count({
+            where: whereClause
+        })
+
+    ])
+    return {
+        pagination: {
+            total: count
+        },
+        data: notifications
+    }
+}
+
+export async function fetchUnseenGameNotifications(gameId: string, userId: string): Promise<GameNotification[]> {
     const notifications = await prisma.gameNotification.findMany({
-        where: { game_id: gameId, game: { user_id: userId }, seen: false }
+        where: { game_id: gameId, game: { user_id: userId }, seen: false },
+        orderBy: {
+            day: 'desc'
+        }
     })
     return notifications
 }
