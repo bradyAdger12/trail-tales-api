@@ -62,7 +62,7 @@ test('POST /register - password must be 8 characters', async (t) => {
 
 test('POST /register - success', async (t) => {
     const fastify = await buildServer()
-    const response = await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name } })
+    const response = await fastify.inject({ method: 'POST', url: '/register', payload: { email, password, display_name, unit: 'imperial', timezone: 'America/Denver' } })
     t.same(response.json(), { success: true })
 
     t.teardown(async () => {

@@ -1,11 +1,44 @@
 import { Game, SurvivalDayOption } from "@prisma/client"
 import { prisma } from "../../db"
-import { easyStoryOptions, gameConfig, GameConfig, hardStoryOptions, mediumStoryOptions, overnightEvents, restStoryOptions } from "../../lib/game_config"
+import { easyStoryOptions, gameConfig, hardStoryOptions, mediumStoryOptions, overnightEvents, restStoryOptions } from "../../lib/game_config"
 import { DAYS_TO_SURVIVE } from "../../lib/constants"
 import { capValue } from "../../lib/helper"
 
+const MIN_EASY_FOOD_GAIN = 5
+const MIN_EASY_WATER_GAIN = 5
+const MIN_EASY_HEALTH_GAIN = 5
+const MAX_EASY_FOOD_GAIN = 10
+const MAX_EASY_WATER_GAIN = 10
+const MAX_EASY_HEALTH_GAIN = 10
+
+const MIN_MEDIUM_FOOD_GAIN = 5
+const MIN_MEDIUM_WATER_GAIN = 5
+const MIN_MEDIUM_HEALTH_GAIN = 5
+const MAX_MEDIUM_FOOD_GAIN = 9
+const MAX_MEDIUM_WATER_GAIN = 9
+const MAX_MEDIUM_HEALTH_GAIN = 9
+
+const MIN_HARD_FOOD_GAIN = 7
+const MIN_HARD_WATER_GAIN = 7
+const MIN_HARD_HEALTH_GAIN = 7
+const MAX_HARD_FOOD_GAIN = 12
+const MAX_HARD_WATER_GAIN = 12
+const MAX_HARD_HEALTH_GAIN = 12
+
 function getRandomValue(min: number, max: number) {
     return Math.floor(min + ((max - min) * Math.random()))
+}
+
+export function easyActionDuration(game: Pick<Game, 'min_duration_in_seconds' | 'max_duration_in_seconds'>) {
+    return game.min_duration_in_seconds!
+}
+
+export function mediumActionDuration(game: Pick<Game, 'min_duration_in_seconds' | 'max_duration_in_seconds'>) {
+    return game.min_duration_in_seconds! + (60 * getRandomValue(3, 7))
+}
+
+export function hardActionDuration(game: Pick<Game, 'min_duration_in_seconds' | 'max_duration_in_seconds'>) {
+    return game.min_duration_in_seconds! + (60 * getRandomValue(10, 14))
 }
 
 export async function generateNextDayOptions(game: Pick<Game, 'min_duration_in_seconds' | 'max_duration_in_seconds'>) {
@@ -17,26 +50,26 @@ export async function generateNextDayOptions(game: Pick<Game, 'min_duration_in_s
     options.push({
         difficulty: 'easy',
         description: easyOption.name,
-        food_gain_percentage: easyOption.canFindFood ? getRandomValue(5, 7) : 0,
-        water_gain_percentage: easyOption.canFindWater ? getRandomValue(5, 7) : 0,
-        health_gain_percentage: easyOption.canFindHealth ? getRandomValue(5, 7) : 0,
-        duration_in_seconds: game.min_duration_in_seconds!
+        food_gain_percentage: easyOption.canFindFood ? getRandomValue(MIN_EASY_FOOD_GAIN, MAX_EASY_FOOD_GAIN) : 0,
+        water_gain_percentage: easyOption.canFindWater ? getRandomValue(MIN_EASY_WATER_GAIN, MAX_EASY_WATER_GAIN) : 0,
+        health_gain_percentage: easyOption.canFindHealth ? getRandomValue(MIN_EASY_HEALTH_GAIN, MAX_EASY_HEALTH_GAIN) : 0,
+        duration_in_seconds: easyActionDuration(game)
     })
     options.push({
         difficulty: 'medium',
         description: mediumOption.name,
-        food_gain_percentage: mediumOption.canFindFood ? getRandomValue(5, 7) : 0,
-        water_gain_percentage: mediumOption.canFindWater ? getRandomValue(5, 7) : 0,
-        health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(5, 7) : 0,
-        duration_in_seconds: game.min_duration_in_seconds! + (60 * getRandomValue(3, 7))
+        food_gain_percentage: mediumOption.canFindFood ? getRandomValue(MIN_MEDIUM_FOOD_GAIN, MAX_MEDIUM_FOOD_GAIN) : 0,
+        water_gain_percentage: mediumOption.canFindWater ? getRandomValue(MIN_MEDIUM_WATER_GAIN, MAX_MEDIUM_WATER_GAIN) : 0,
+        health_gain_percentage: mediumOption.canFindHealth ? getRandomValue(MIN_MEDIUM_HEALTH_GAIN, MAX_MEDIUM_HEALTH_GAIN) : 0,
+        duration_in_seconds: mediumActionDuration(game)
     })
     options.push({
         difficulty: 'hard',
         description: hardOption.name,
-        food_gain_percentage: hardOption.canFindFood ? getRandomValue(7, 9) : 0,
-        water_gain_percentage: hardOption.canFindWater ? getRandomValue(7, 9) : 0,
-        health_gain_percentage: hardOption.canFindHealth ? getRandomValue(7, 9) : 0,
-        duration_in_seconds: game.min_duration_in_seconds! + (60 * getRandomValue(10, 14))
+        food_gain_percentage: hardOption.canFindFood ? getRandomValue(MIN_HARD_FOOD_GAIN, MAX_HARD_FOOD_GAIN) : 0,
+        water_gain_percentage: hardOption.canFindWater ? getRandomValue(MIN_HARD_WATER_GAIN, MAX_HARD_WATER_GAIN) : 0,
+        health_gain_percentage: hardOption.canFindHealth ? getRandomValue(MIN_HARD_HEALTH_GAIN, MAX_HARD_HEALTH_GAIN) : 0,
+        duration_in_seconds: hardActionDuration(game)
     })
     options.push({
         difficulty: 'rest',

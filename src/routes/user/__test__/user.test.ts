@@ -1,7 +1,6 @@
 import { test, teardown } from 'tap'
 import buildServer from '../../../server'
-import { registerAndLoginUser } from '../../../lib/helper'
-import { prisma } from '../../../db'
+import { registerAndLoginUser } from '../../../test/setup'
 
 test('GET /user/me - fetch own user data', async (t) => {
     const fastify = await buildServer()

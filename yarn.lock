@@ -5488,7 +5488,7 @@ tap-yaml@4.0.0:
     yaml "^2.4.1"
     yaml-types "^0.4.0"
 
-tap@^21.0.1:
+tap@^21.1.0:
   version "21.1.0"
   resolved "https://registry.yarnpkg.com/tap/-/tap-21.1.0.tgz#6c187ca3b9fd86f03e231a8bff4e9257b1c3a962"
   integrity sha512-O01H/+6SOB8Fai2eehPjOLpQamG/lCkBe+eTq7aNQbIxF8BzZMTc77iyaWM+q5PP/rU2pQ+nc5jyySybwbv6ZA==

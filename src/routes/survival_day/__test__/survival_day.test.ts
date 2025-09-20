@@ -1,6 +1,6 @@
 import { test } from 'tap'
 import buildServer from '../../../server'
-import { registerAndLoginUser } from '../../../lib/helper'
+import { registerAndLoginUser } from '../../../test/setup'
 
 test('POST /story/start - Begin story', async (t) => {
     const fastify = await buildServer()

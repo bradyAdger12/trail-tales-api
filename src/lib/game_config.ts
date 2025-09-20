@@ -34,9 +34,9 @@ const DAILY_WATER_LOSS = 5
 export const gameConfig = {
   difficulty: {
     easy: {
-      food: 80,
-      water: 80,
-      health: 90,
+      food: 60,
+      water: 60,
+      health: 60,
       dailyFoodLoss: DAILY_FOOD_LOSS,
       dailyWaterLoss: DAILY_WATER_LOSS, 
       minDurationInSeconds: 60 * 20,
@@ -44,9 +44,9 @@ export const gameConfig = {
       description: "You emerge from the wreckage with minor injuries but your survival instincts intact. Your backpack contains ample provisions to sustain you through the initial days of your wilderness ordeal.",
     } as GameConfig,
     medium: {
-      food: 60,
+      food: 50,
       water: 60,
-      health: 80,
+      health: 60,
       dailyFoodLoss: DAILY_FOOD_LOSS,
       dailyWaterLoss: DAILY_WATER_LOSS,
       minDurationInSeconds: 60 * 35,
@@ -54,8 +54,8 @@ export const gameConfig = {
       description: "You crawl from the twisted wreckage, blood trickling from several wounds. Your head throbs and your vision blurs intermittently. Your backpack is torn, and much of your gear has scattered across the crash site, leaving you with limited supplies for the harsh wilderness ahead.",
     } as GameConfig,
     hard: {
-      food: 40,
-      water: 40,
+      food: 50,
+      water: 50,
       health: 50,
       dailyFoodLoss: DAILY_FOOD_LOSS,
       dailyWaterLoss: DAILY_WATER_LOSS,
@@ -72,7 +72,7 @@ function getRandomNumber(min: number, max: number) {
 
 
 export const easyStoryOptions: StoryOption[] = [
-  { name: "Search the crash site for supplies", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: true },
+  { name: "Search the crash site for supplies", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Collect rainwater in makeshift containers", difficulty: "easy", canFindFood: false, canFindWater: true, canFindHealth: false },
   { name: "Gather coconuts from palm trees", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: false },
   { name: "Search for edible plants", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: false },
@@ -82,7 +82,7 @@ export const easyStoryOptions: StoryOption[] = [
   { name: "Search for dry tinder to start a fire", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Collect large leaves for shelter roofing", difficulty: "easy", canFindFood: false, canFindWater: false, canFindHealth: true },
   { name: "Search shallow pools for fish and fresh water", difficulty: "easy", canFindFood: true, canFindWater: true, canFindHealth: false },
-  { name: "Explore a small cave for shelter materials and edible roots", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: true },
+  { name: "Explore a small cave for shelter materials and edible roots", difficulty: "easy", canFindFood: true, canFindWater: false, canFindHealth: false },
   { name: "Follow a stream to find drinking water and medicinal herbs", difficulty: "easy", canFindFood: false, canFindWater: true, canFindHealth: true },
 ]
 

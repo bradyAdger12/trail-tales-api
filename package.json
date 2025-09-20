@@ -9,6 +9,8 @@
     "test": "npx dotenv -e .env.test -- tap --jobs=3",
     "test:auth": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/auth/__test__/auth.test.ts",
     "test:user": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/user/__test__/user.test.ts",
+    "test:game": "npx dotenv -e .env.test -- tap --jobs=1 src/routes/game/__test__/game.test.ts",
+    "simulation:game": "npx dotenv -e .env.test -- tsx src/simulations/run_game_simulation.ts",
     "migrate": "npx prisma migrate dev",
     "generate": "npx prisma generate",
     "migrate:test": "dotenv -e .env.test -- npx prisma migrate deploy"
@@ -35,7 +37,7 @@
     "node-cron": "^4.2.1",
     "prisma": "^6.14.0",
     "resend": "^4.0.1",
-    "tap": "^21.0.1",
+    "tap": "^21.1.0",
     "ts-mock-imports": "^1.3.16",
     "uuid": "^11.0.4"
   },
