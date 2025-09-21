@@ -167,9 +167,9 @@ export async function advanceSurvivalDay(game: Game) {
     }
 
 
-    //If there is no activity, the user rested and should gain health
+    // If there is no activity, the user rested and should gain health
     if (!hasActivity) {
-        const restOption = options.find(option => option.difficulty === 'rest')
+        const restOption = currentSurvivalDay.options.find(option => option.difficulty === 'rest')
         if (restOption) {
             totalHealthDelta += restOption.health_gain_percentage ?? 0
         }
