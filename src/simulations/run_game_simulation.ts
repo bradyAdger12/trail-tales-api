@@ -14,10 +14,10 @@ dotenv.config({ path: '.env.test' })
 
 let lostGames = 0
 let wonGames = 0
-const REST_ACTIVITIES = 17
-const EASY_ACTIVITIES = 4
-const MEDIUM_ACTIVITIES = 0
-const HARD_ACTIVITIES = 0
+const REST_ACTIVITIES = 9
+const EASY_ACTIVITIES = 5
+const MEDIUM_ACTIVITIES = 4
+const HARD_ACTIVITIES = 3
 const DAILY_FOOD_LOSS = Number(process.argv[3])
 const DAILY_WATER_LOSS = Number(process.argv[4])
 const SIMULATIONS = Number(process.argv[5]) || 30
