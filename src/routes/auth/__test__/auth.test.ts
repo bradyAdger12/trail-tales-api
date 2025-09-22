@@ -29,6 +29,7 @@ test('auth', async (t) => {
             }
         })
         await fastify.close()
+        await prisma.$disconnect()
     })
 
     await t.test('GET /health', async (t) => {
