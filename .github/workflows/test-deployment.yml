@@ -5,6 +5,9 @@ on:
 jobs:
   BuildAndTest:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Node.js
@@ -19,4 +22,3 @@ jobs:
       run: yarn build
     - name: Test
       run: yarn test:auth
-      
