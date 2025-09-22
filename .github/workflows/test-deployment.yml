@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: development
+      DB_URL: ${{ secrets.DB_URL }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
     - uses: actions/checkout@v4
