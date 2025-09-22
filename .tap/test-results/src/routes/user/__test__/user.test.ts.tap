@@ -1,56 +1,11 @@
 TAP version 14
-# Subtest: GET /user/me - fetch own user data
-    not ok 1 - (0 , helper_1.registerAndLoginUser) is not a function
-      ---
-      stack: |
-        Test.<anonymous> (src/routes/user/__test__/user.test.ts:8:55)
-      at:
-        fileName: src\routes\user\__test__\user.test.ts
-        lineNumber: 8
-        columnNumber: 55
-        typeName: Test
-        methodName: <anonymous>
-        functionName: Test.<anonymous>
-      type: TypeError
-      tapCaught: returnedPromiseRejection
-      source: "test('GET /user/me - fetch own user data', async (t) => {\r
-      
-        \    const fastify = await buildServer()\r
-      
-        \    const { token, user } = await registerAndLoginUser(fastify)\r
-      
-        ------------------------------------------------------^
-      
-        \    const response = await fastify.inject({ method: 'GET', url: '/user/me',
-        headers: { authorization: `Bearer ${token}` } })\r
-      
-        \    t.hasProps(response.json(), ['display_name', 'email',
-        'avatar_file_key'])\n"
-      ...
+# Subtest: users
+    # Subtest: GET /user/me - fetch own user data
+        ok 1 - should have all specified properties
+        1..1
+    ok 1 - GET /user/me - fetch own user data # time=719.56ms
     
     1..1
-not ok 1 - GET /user/me - fetch own user data # time=173.934ms
-  ---
-  at:
-    fileName: src\routes\user\__test__\user.test.ts
-    lineNumber: 6
-    columnNumber: 6
-    typeName: Object
-    generated:
-      fileName: src/routes/user/__test__/user.test.ts
-      lineNumber: 9
-      columnNumber: 16
-  source: "import { prisma } from '../../../db'\r
-  
-    \r
-  
-    test('GET /user/me - fetch own user data', async (t) => {\r
-  
-    -----^
-  
-    \    const fastify = await buildServer()\r
-  
-    \    const { token, user } = await registerAndLoginUser(fastify)\n"
-  ...
+ok 1 - users # time=868.576ms
 
 1..1

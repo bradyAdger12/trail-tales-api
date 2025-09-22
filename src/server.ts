@@ -82,6 +82,42 @@ export async function buildServer() {
   fastify.register(stravaRoutes, { prefix: '/strava' })
   fastify.register(activityRoutes, { prefix: '/activities' })
 
+  // Register error handler
+  fastify.setErrorHandler((error, request, reply) => {
+    fastify.log.error(error)
+    
+    // Handle validation errors
+    if (error.validation) {
+      return reply.status(400).send({
+        error: 'Validation error',
+        message: error.validation[0].message
+      })
+    }
+    
+    // Handle JWT errors
+    if (error.message.includes('jwt') || error.message.includes('token')) {
+      return reply.status(401).send({
+        error: 'Authentication error',
+        message: 'Invalid or expired token'
+      })
+    }
+    
+    // Handle rate limit errors
+    if (error.statusCode === 429) {
+      return reply.status(429).send({
+        error: 'Rate limit exceeded',
+        message: 'Too many requests, please try again later'
+      })
+    }
+    
+    // Default error response
+    const statusCode = error.statusCode || 500
+    reply.status(statusCode).send({
+      error: statusCode >= 500 ? 'Internal server error' : error.message,
+      message: statusCode >= 500 ? 'Something went wrong' : error.message
+    })
+  })
+
   fastify.get('/health', (request, reply) => {
     return { status: 'ok' }
   })

@@ -33,7 +33,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                         success: { type: 'boolean' }
                     }
                 },
-                default: { type: "object", properties: { error: { type: "string" } } }
+                default: { type: "object", properties: { message: { type: "string" } } }
             }
         }
     }, async (request, reply) => {
@@ -56,7 +56,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
             }
         })
         if (user_with_same_email) {
-            return reply.status(500).send({ message: 'User with same email exists' })
+            return reply.status(400).send({ message: 'User with same email exists' })
         }
         await prisma.user.create({
             data: {
@@ -66,7 +66,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
                 timezone: timezone
             }
         })
-        return { success: true }
+        return reply.status(201).send({ success: true })
     });
 
     // Login
