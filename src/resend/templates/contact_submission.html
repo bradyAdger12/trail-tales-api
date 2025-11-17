@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            background-color: #007bff;
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-header img {
+            max-width: 150px;
+        }
+
+        .email-body {
+            padding: 20px;
+            color: #333333;
+        }
+
+        .email-body h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .email-body p {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .email-body a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .email-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #666666;
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <img src="https://runsquad-ba-8402.s3.us-west-2.amazonaws.com/company/squadrn_logo.png" alt="Company Logo">
+        </div>
+        <div class="email-body">
+            <h1>Contact Submission</h1>
+            <p>
+                <strong>Name:</strong><span> {{name}}</span>
+            </p>
+            <p>
+                <strong>Email:</strong><span> {{email}}</span>
+            </p>
+            <p>
+                <strong>Message:</strong><span> {{message}}</span>
+            </p>
+        </div>
+        <div class="email-footer">
+            &copy; 2025 Squadrn. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>

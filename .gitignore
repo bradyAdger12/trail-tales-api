@@ -1,0 +1,18 @@
+node_modules
+# Keep environment variables out of version control
+.env*
+prod.env
+.build_commands.md
+.tap
+dist
+docker-compose.yml
+
+# Ignore Terraform provider plugins
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+
+
+# Plan output files
+*.plan
+*.tfplan
