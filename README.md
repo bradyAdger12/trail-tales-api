@@ -4,6 +4,10 @@
 
 This is the backend API for the **Trail Tales** app, built with modern technologies to support all app functionality including user authentication, game mechanics, and third-party integrations.
 
+## Architecture
+
+![Architecture](./docs/architecture.webp)
+
 ## Features
 
 - **Fastify** web framework for fast and efficient HTTP services.
